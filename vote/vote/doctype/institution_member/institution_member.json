@@ -1,0 +1,194 @@
+{
+ "actions": [],
+ "autoname": "format: V{######}",
+ "creation": "2020-12-02 14:34:49.612250",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "institution",
+  "column_break_3",
+  "member_id",
+  "section_break_3",
+  "surname",
+  "column_break_7",
+  "other_names",
+  "full_name",
+  "section_break_4",
+  "date_of_joining",
+  "column_break_11",
+  "member_status",
+  "current_position",
+  "section_break_13",
+  "is_elective",
+  "contacts_and_address_section",
+  "contact_and_address_information",
+  "contact_information_section",
+  "cell_number",
+  "column_break_20",
+  "email_address",
+  "app_user_section",
+  "user_id",
+  "create_application_user"
+ ],
+ "fields": [
+  {
+   "fieldname": "member_id",
+   "fieldtype": "Data",
+   "label": "Institution ID"
+  },
+  {
+   "fieldname": "surname",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Surname",
+   "reqd": 1
+  },
+  {
+   "fieldname": "other_names",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Other Names",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "date_of_joining",
+   "fieldtype": "Date",
+   "label": "Date of Joining"
+  },
+  {
+   "fieldname": "contacts_and_address_section",
+   "fieldtype": "Section Break",
+   "label": "Physical Address"
+  },
+  {
+   "fieldname": "contact_and_address_information",
+   "fieldtype": "Text",
+   "label": "Physical Address Information"
+  },
+  {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "label": "Institution",
+   "options": "Institution",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Member",
+   "depends_on": "eval:doc.member_status==\"Active\"",
+   "fieldname": "current_position",
+   "fieldtype": "Link",
+   "label": "Current Position",
+   "mandatory_depends_on": "eval:doc.member_status==\"Active\"",
+   "options": "Institution Position"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fetch_from": "current_position.is_elective",
+   "fieldname": "is_elective",
+   "fieldtype": "Check",
+   "label": "Is Elective",
+   "read_only": 1
+  },
+  {
+   "default": "Active",
+   "fieldname": "member_status",
+   "fieldtype": "Select",
+   "label": "Member Status",
+   "options": "Active\nLeft"
+  },
+  {
+   "fieldname": "contact_information_section",
+   "fieldtype": "Section Break",
+   "label": "Contact Information"
+  },
+  {
+   "fieldname": "cell_number",
+   "fieldtype": "Data",
+   "label": "Cell Number"
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "app_user_section",
+   "fieldtype": "Section Break",
+   "label": "Application User"
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Link",
+   "label": "User Id",
+   "options": "User"
+  },
+  {
+   "description": "This will apply Institution Permissions to all Doctypes.",
+   "fieldname": "create_application_user",
+   "fieldtype": "Button",
+   "label": "Create Application User",
+   "options": "create_application_user"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2020-12-05 16:11:46.863824",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Institution Member",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "full_name",
+ "track_changes": 1
+}

@@ -1,0 +1,147 @@
+{
+ "_comments": "[]",
+ "_liked_by": "[]",
+ "actions": [],
+ "autoname": "format:EL-{institution}-{YYYY}-{####}",
+ "creation": "2020-12-02 19:04:18.360590",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "institution",
+  "valid_period_section",
+  "election_start",
+  "column_break_4",
+  "election_ends",
+  "section_break_5",
+  "applicable_voter_register",
+  "column_break_8",
+  "eballots",
+  "sb10",
+  "candidate_link",
+  "candidates",
+  "section_break_10",
+  "election_officials",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Institution",
+   "options": "Institution",
+   "reqd": 1
+  },
+  {
+   "fieldname": "valid_period_section",
+   "fieldtype": "Section Break",
+   "label": "Valid Period"
+  },
+  {
+   "fieldname": "election_start",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Election Start",
+   "reqd": 1
+  },
+  {
+   "fieldname": "election_ends",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Election Ends",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "applicable_voter_register",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Applicable Voter Register",
+   "options": "Voter Register",
+   "reqd": 1
+  },
+  {
+   "fieldname": "election_officials",
+   "fieldtype": "Table",
+   "label": "Election Officials",
+   "options": "Election Official",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Election",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Corresponds to the number of voters in the selected register.",
+   "fieldname": "eballots",
+   "fieldtype": "Int",
+   "label": "Number of e-Ballots to be generated",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "candidate_link",
+   "fieldtype": "Link",
+   "label": "Candidate Link",
+   "options": "Candidates",
+   "read_only": 1
+  },
+  {
+   "fieldname": "candidates",
+   "fieldtype": "Table",
+   "label": "Candidates",
+   "options": "Election Candidate"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2020-12-02 21:26:38.045792",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Election",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "institution",
+ "track_changes": 1
+}

@@ -1,0 +1,56 @@
+{
+ "actions": [],
+ "creation": "2020-12-02 19:21:25.934087",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "member",
+  "member_name",
+  "member_position",
+  "position"
+ ],
+ "fields": [
+  {
+   "fieldname": "member",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Member",
+   "options": "Institution Member"
+  },
+  {
+   "fetch_from": "member.full_name",
+   "fieldname": "member_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Member Name"
+  },
+  {
+   "fieldname": "position",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Election Position",
+   "options": "Institution Position"
+  },
+  {
+   "fetch_from": "member.current_position",
+   "fieldname": "member_position",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Member Position",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2020-12-02 19:56:00.126852",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Election Official",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
