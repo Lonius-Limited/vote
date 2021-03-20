@@ -29,7 +29,12 @@
   "email_address",
   "app_user_section",
   "user_id",
-  "create_application_user"
+  "create_application_user",
+  "electoral_district_settings_section",
+  "eligible_voter",
+  "eligible_candidate",
+  "electoral_district",
+  "applicable_voter_districts"
  ],
  "fields": [
   {
@@ -164,11 +169,45 @@
    "fieldtype": "Button",
    "label": "Create Application User",
    "options": "create_application_user"
+  },
+  {
+   "fieldname": "electoral_district_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Elections Settings"
+  },
+  {
+   "default": "1",
+   "description": "Terms and Conditions apply.",
+   "fieldname": "eligible_voter",
+   "fieldtype": "Check",
+   "label": "Eligible Voter"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.eligible_voter",
+   "fieldname": "eligible_candidate",
+   "fieldtype": "Check",
+   "label": "Eligible Candidate"
+  },
+  {
+   "description": "Region or branch one belongs to. Permissions apply upwards based on hierarchy of branches. e.g if one belongs to Branch A which is under Branch B and the Overall Branch is C, they will be restricted to vie and/or vote only those branches(A,B and C).",
+   "fieldname": "electoral_district",
+   "fieldtype": "Link",
+   "label": "Electoral District",
+   "mandatory_depends_on": "eval:doc.eligible_voter;",
+   "options": "Electoral District"
+  },
+  {
+   "fieldname": "applicable_voter_districts",
+   "fieldtype": "Table",
+   "label": "Applicable Voter Districts",
+   "options": "Institution Member Voter Districts",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2020-12-05 16:11:46.863824",
+ "modified": "2021-03-20 18:45:17.849707",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",

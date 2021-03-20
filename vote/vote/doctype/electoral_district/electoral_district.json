@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "autoname": "field:electoral_district_name",
+ "creation": "2021-03-20 17:28:23.585383",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "electoral_district_name",
+  "region_id",
+  "lft",
+  "rgt",
+  "is_group",
+  "old_parent",
+  "parent_electoral_district"
+ ],
+ "fields": [
+  {
+   "description": "Such as Licence Number or Registration Number granted by regulatory bodies.",
+   "fieldname": "region_id",
+   "fieldtype": "Data",
+   "label": "Region ID"
+  },
+  {
+   "fieldname": "lft",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Left",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "rgt",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Right",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_group",
+   "fieldtype": "Check",
+   "label": "Is Group"
+  },
+  {
+   "fieldname": "old_parent",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Old Parent",
+   "options": "Electoral District"
+  },
+  {
+   "fieldname": "parent_electoral_district",
+   "fieldtype": "Link",
+   "label": "Parent Electoral District",
+   "options": "Electoral District"
+  },
+  {
+   "description": "Region / Branch ",
+   "fieldname": "electoral_district_name",
+   "fieldtype": "Data",
+   "label": "Region",
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_tree": 1,
+ "links": [],
+ "modified": "2021-03-20 18:01:39.247372",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Electoral District",
+ "nsm_parent_field": "parent_electoral_district",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
