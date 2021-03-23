@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "institution",
   "electoral_district_name",
   "region_id",
   "lft",
@@ -62,12 +63,18 @@
    "fieldtype": "Data",
    "label": "Region",
    "unique": 1
+  },
+  {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "label": "Institution",
+   "options": "Institution"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2021-03-20 18:01:39.247372",
+ "modified": "2021-03-22 00:06:35.406623",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Electoral District",
