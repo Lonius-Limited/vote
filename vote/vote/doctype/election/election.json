@@ -1,6 +1,4 @@
 {
- "_comments": "[]",
- "_liked_by": "[]",
  "actions": [],
  "autoname": "format:EL-{institution}-{YYYY}-{####}",
  "creation": "2020-12-02 19:04:18.360590",
@@ -17,7 +15,8 @@
   "applicable_voter_register",
   "column_break_8",
   "eballots",
-  "sb10",
+  "sbten",
+  "retrieve_candidates",
   "candidate_link",
   "candidates",
   "section_break_10",
@@ -93,15 +92,10 @@
    "fieldname": "eballots",
    "fieldtype": "Int",
    "label": "Number of e-Ballots to be generated",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "section_break_10",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "sb10",
    "fieldtype": "Section Break"
   },
   {
@@ -115,13 +109,26 @@
    "fieldname": "candidates",
    "fieldtype": "Table",
    "label": "Candidates",
-   "options": "Election Candidate"
+   "options": "Election Candidate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sbten",
+   "fieldtype": "Section Break",
+   "label": "Candidates"
+  },
+  {
+   "collapsible_depends_on": "eval:doc.candidate_link;",
+   "fieldname": "retrieve_candidates",
+   "fieldtype": "Button",
+   "label": "Retrieve Candidates",
+   "options": "retrieve_candidates"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-12-02 21:26:38.045792",
+ "modified": "2021-03-22 14:48:26.931555",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Election",

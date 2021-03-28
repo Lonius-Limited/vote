@@ -13,7 +13,7 @@ class InstitutionMember(Document):
 		surname = self.surname
 		other_names = self.other_names
 		self.full_name = f"{surname}, {other_names}"
-		
+		self.generate_voter_domains()
 		return
 	def validate_member_id(self):
 		duplicate = frappe.db.get_value("Institution Member",\
@@ -21,6 +21,27 @@ class InstitutionMember(Document):
 		if duplicate:
 			member_id = self.member_id
 			frappe.throw(f"""Sorry, Member ID {member_id} is already taken by another member: {duplicate}""")
+	def generate_voter_domains(self):
+		electoral_district = self.electoral_district
+		frappe.msgprint(f"Generating active domains for {electoral_district}")
+		applicable_domains = self.member_applicable_domains(electoral_district)
+		self.set("applicable_voter_districts",[])
+		for j in applicable_domains:
+			row = self.append('applicable_voter_districts',{})
+			row.electoral_district = j
+		frappe.msgprint(f"Applicable Domains {applicable_domains}")
+	def member_applicable_domains(self,electoral_district):
+		domain = electoral_district
+		applicable_domains =[]
+		proceed = True
+		while proceed:
+			if frappe.get_value("Electoral District", domain,"parent_electoral_district"):	
+				applicable_domains.append(domain)
+				domain = frappe.get_value("Electoral District",domain,'parent_electoral_district')
+			else:
+				applicable_domains.append(domain)
+				proceed = False
+		return applicable_domains
 	def apply_permissions(self):
 		userid = self.create_user
 		self.set("user_id",userid)
