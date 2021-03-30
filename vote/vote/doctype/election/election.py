@@ -15,15 +15,23 @@ class Election(Document):
 		dname = self.name
 		#frappe.throw(f"{dname}")
 		if self.candidate_link:
-			self.retrieve_candidates(False)	
+			pass
+			# self.retrieve_candidates(False)	
 		self.validate_candidates()
+		self.generate_positions()
 	def after_insert(self):
 		self.make_candidature_document()
 		if self.candidate_link:
-			self.retrieve_candidates(save_doc=True)	
+			#self.retrieve_candidates(save_doc=True)	
 			self.validate_candidates()
-	def on_submit(self):
+		self.generate_positions(True)
+	def before_submit(self):
 		self.validate_candidates()
+		if frappe.get_doc("Candidates", self.candidate_link).get("docstatus") != 1 or frappe.get_doc("Voter Register", self.applicable_voter_register).get("docstatus") != 1:
+			frappe.throw("Cannot submit before verification/approval of the voter register and the candidates list")
+	def on_submit(self):
+		frappe.msgprint("Election setup and Voter IDs shipped successfully")
+		self.status ='Scheduled'
 	def validate_candidates(self):
 		officials = [x.get("member") for x in self.get("election_officials")]
 		for d in self.get("candidates"):
@@ -41,13 +49,9 @@ class Election(Document):
 			d.flags.ignore_user_permissions = True
 			d.insert()
 			self.set("candidate_link",d.name)
-			for post in frappe.get_all("Institution Position", filters ={"is_elective":1}):
-				position in post.get("name")
-				row = d.append("candidate_position_settings",{})
-				row.position = d.name
-				row.maximum_number_of_positions = 1
 			dname = d.name
 			frappe.msgprint(f"Success! A candidature document {dname} has been created.")
+		return self
 	def retrieve_candidates(self, save_doc = True):
 		self.set('candidates',[])
 		candidate_doc = frappe.get_doc("Candidates",{"election": self.name}) or frappe.get_doc("Candidates", self.get("candidate_link"))
@@ -64,3 +68,12 @@ class Election(Document):
 		# frappe.msgprint(save_doc)
 		if save_doc is not False: self.save(ignore_permissions=True)
 		self.notify_update()
+	def generate_positions(self,save_doc=False):
+		existing_positions =[x.get("position") for x in self.candidate_position_settings]
+		if existing_positions: return
+		for post in frappe.get_all("Institution Position", filters ={"institution":self.institution, "is_elective":1}):
+			if existing_positions.count(post.name) > 0 : continue  
+			row = self.append("candidate_position_settings",{})
+			row.position = post.name
+			row.maximum_number_of_positions = 1
+		if save_doc: doc.save(ignore_permissions = True)

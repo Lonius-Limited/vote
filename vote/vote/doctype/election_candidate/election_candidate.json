@@ -5,10 +5,14 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "branch",
   "candidate_id",
   "candidate_name",
   "contested_position",
-  "current_position"
+  "current_position",
+  "political_party",
+  "party_symbol",
+  "headshot"
  ],
  "fields": [
   {
@@ -39,12 +43,37 @@
    "in_list_view": 1,
    "label": "Contested Position",
    "options": "Institution Position"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Electoral District",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "political_party.party_symbol",
+   "fieldname": "party_symbol",
+   "fieldtype": "Attach Image",
+   "label": "Party Symbol"
+  },
+  {
+   "fetch_from": "candidate_id.image",
+   "fieldname": "headshot",
+   "fieldtype": "Attach Image",
+   "label": "Headshot"
+  },
+  {
+   "fieldname": "political_party",
+   "fieldtype": "Link",
+   "label": "Political Party",
+   "options": "Political Party"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-03-22 13:00:06.482630",
+ "modified": "2021-03-26 13:38:17.157107",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Election Candidate",

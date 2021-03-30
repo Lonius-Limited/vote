@@ -1,0 +1,57 @@
+{
+ "actions": [],
+ "autoname": "field:political_party_name",
+ "creation": "2021-03-26 13:33:11.401623",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "political_party_name",
+  "party_symbol",
+  "motto"
+ ],
+ "fields": [
+  {
+   "fieldname": "political_party_name",
+   "fieldtype": "Data",
+   "label": "Political Party Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "party_symbol",
+   "fieldtype": "Attach Image",
+   "label": "Party Symbol"
+  },
+  {
+   "default": "-",
+   "fieldname": "motto",
+   "fieldtype": "Text",
+   "label": "Motto"
+  }
+ ],
+ "image_field": "party_symbol",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-03-26 13:44:30.329429",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Political Party",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

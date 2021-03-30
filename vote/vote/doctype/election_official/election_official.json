@@ -7,8 +7,7 @@
  "field_order": [
   "member",
   "member_name",
-  "member_position",
-  "position"
+  "member_position"
  ],
  "fields": [
   {
@@ -26,13 +25,6 @@
    "label": "Member Name"
   },
   {
-   "fieldname": "position",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Election Position",
-   "options": "Institution Position"
-  },
-  {
    "fetch_from": "member.current_position",
    "fieldname": "member_position",
    "fieldtype": "Data",
@@ -44,7 +36,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2020-12-02 19:56:00.126852",
+ "modified": "2021-03-24 12:09:21.794334",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Election Official",

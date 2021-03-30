@@ -1,25 +1,33 @@
 {
  "actions": [],
- "autoname": "format:C-{election}",
- "creation": "2020-12-02 20:32:52.051498",
+ "creation": "2021-03-26 15:33:54.811571",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "election",
   "institution",
-  "candidates",
-  "amended_from"
+  "voter_id",
+  "election",
+  "ballot_entry_detail"
  ],
  "fields": [
   {
+   "fieldname": "voter_id",
+   "fieldtype": "Link",
+   "label": "Voter ID",
+   "options": "Institution Member"
+  },
+  {
+   "fieldname": "ballot_entry_detail",
+   "fieldtype": "Table",
+   "label": "Ballot Entry Detail",
+   "options": "Ballot Entry Detail"
+  },
+  {
    "fieldname": "election",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Election",
-   "options": "Election",
-   "reqd": 1,
-   "set_only_once": 1
+   "options": "Election"
   },
   {
    "fieldname": "institution",
@@ -27,32 +35,15 @@
    "in_list_view": 1,
    "label": "Institution",
    "options": "Institution",
-   "reqd": 1,
-   "set_only_once": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Candidates",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "candidates",
-   "fieldtype": "Table",
-   "label": "Candidates",
-   "options": "Candidates List"
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2021-03-24 11:47:10.119858",
+ "modified": "2021-03-30 17:21:39.753955",
  "modified_by": "Administrator",
  "module": "Vote",
- "name": "Candidates",
+ "name": "Ballot Entry",
  "owner": "Administrator",
  "permissions": [
   {
@@ -70,6 +61,5 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "title_field": "institution",
  "track_changes": 1
 }

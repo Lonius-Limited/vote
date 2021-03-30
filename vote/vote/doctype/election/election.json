@@ -1,4 +1,6 @@
 {
+ "_comments": "[]",
+ "_liked_by": "[]",
  "actions": [],
  "autoname": "format:EL-{institution}-{YYYY}-{####}",
  "creation": "2020-12-02 19:04:18.360590",
@@ -15,13 +17,15 @@
   "applicable_voter_register",
   "column_break_8",
   "eballots",
+  "sbeleven",
+  "candidate_position_settings",
   "sbten",
-  "retrieve_candidates",
   "candidate_link",
   "candidates",
   "section_break_10",
   "election_officials",
-  "amended_from"
+  "amended_from",
+  "status"
  ],
  "fields": [
   {
@@ -30,7 +34,8 @@
    "in_list_view": 1,
    "label": "Institution",
    "options": "Institution",
-   "reqd": 1
+   "reqd": 1,
+   "set_only_once": 1
   },
   {
    "fieldname": "valid_period_section",
@@ -113,22 +118,34 @@
    "read_only": 1
   },
   {
+   "collapsible": 1,
    "fieldname": "sbten",
    "fieldtype": "Section Break",
    "label": "Candidates"
   },
   {
-   "collapsible_depends_on": "eval:doc.candidate_link;",
-   "fieldname": "retrieve_candidates",
-   "fieldtype": "Button",
-   "label": "Retrieve Candidates",
-   "options": "retrieve_candidates"
+   "fieldname": "sbeleven",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "candidate_position_settings",
+   "fieldtype": "Table",
+   "label": "Open Vacancies Per Position",
+   "options": "Candidate Position Settings"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status",
+   "options": "Draft\nScheduled\nOpen\nClosed"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-03-22 14:48:26.931555",
+ "modified": "2021-03-25 10:11:01.754717",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Election",
