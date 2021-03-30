@@ -13,10 +13,9 @@ frappe.elections.ExportTool = class { // create a glue class, wich will manage y
 
         this.$body = this.$parent.find('.layout-main-section');
         this.$parent.find('.page-head').addClass('hidden');
-        this.$parent.find('.page-body').removeClass('container');
-        this.$parent.find('.content').removeClass('page-container');
-        this.$parent.find('.page-content').removeClass('page-content');
-        this.$body.removeClass('navbar');
+        // this.$parent.find('.page-body').removeClass('container');
+        // this.$parent.find('.content').removeClass('page-container');
+        // this.$parent.find('.page-content').removeClass('page-content');
         this.$parent.find('layout-main-section-wrapper').addClass('no-bottom-margin');
         this.$page_container = $('<div class="hub-page-container">').appendTo(this.$body);
 
