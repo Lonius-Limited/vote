@@ -7,13 +7,21 @@
         @login-succeeded="LoginSuccess" 
       />
       <list-elections 
-        v-if="!showLogin && !showBallot" 
-        v-on:voteElectionID="voteElectionID($event)" 
+        v-if="!showLogin && !showBallot && !resultsVisible" 
+        v-on:voteElectionID="voteElectionID($event, $canvote)"
+        v-on:showResults = "showResults($event)"
       />
       <ballot 
-        v-if="showBallot"
+        v-if="!showLogin && showBallot && !resultsVisible"
         :this-election-id = "activeBallotID"
+        :voting-enabled = "votingEnabled"
       />
+      <Results
+        v-if="!showLogin && !showBallot && resultsVisible"
+        :electionID="activeBallotID"
+      />
+
+
     </div>
   </div>
   </div>
@@ -23,17 +31,21 @@
 import Ballot from './container/Ballot.vue';
 import ListElections from './container/ListElections.vue';
 import Login from './container/Login.vue';
+import Results from './container/Results.vue';
 export default {
   components: {
     Login,
     ListElections,
-    Ballot
+    Ballot,
+    Results
   },
   data() {
     return {
       showLogin: false,
       showBallot: false,
-      activeBallotID: 0
+      activeBallotID: 0,
+      votingEnabled: false,
+      resultsVisible: false
     };
   },
   computed: {
@@ -45,8 +57,14 @@ export default {
       },
       voteElectionID: function($event){
         //GET THE ELECTION DETAILS BASED ON EVENT
-        this.activeBallotID = $event;
+        this.activeBallotID = $event.electionID;
+        this.votingEnabled = $event.canVote;
         this.showBallot = true;
+      },
+      showResults: function($event){
+        //GET THE ELECTION RESULTS BASED ON ELECTION ID PASSED IN EVENT ARGUMENT
+        this.resultsVisible = true;
+        this.activeBallotID = $event;
       }
   },
 };
