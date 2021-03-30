@@ -34,13 +34,14 @@
   "eligible_voter",
   "eligible_candidate",
   "electoral_district",
-  "applicable_voter_districts"
+  "applicable_voter_districts",
+  "image"
  ],
  "fields": [
   {
    "fieldname": "member_id",
    "fieldtype": "Data",
-   "label": "Institution ID"
+   "label": "Member ID"
   },
   {
    "fieldname": "surname",
@@ -80,7 +81,8 @@
    "fieldtype": "Link",
    "label": "Institution",
    "options": "Institution",
-   "reqd": 1
+   "reqd": 1,
+   "set_only_once": 1
   },
   {
    "fieldname": "section_break_3",
@@ -115,7 +117,8 @@
   },
   {
    "fieldname": "section_break_13",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "default": "0",
@@ -203,11 +206,18 @@
    "label": "Applicable Voter Districts",
    "options": "Institution Member Voter Districts",
    "read_only": 1
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "hidden": 1,
+   "label": "Image"
   }
  ],
+ "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-03-22 00:02:47.067713",
+ "modified": "2021-03-24 09:19:11.501303",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",
