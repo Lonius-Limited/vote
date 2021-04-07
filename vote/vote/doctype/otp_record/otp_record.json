@@ -1,0 +1,63 @@
+{
+ "actions": [],
+ "creation": "2021-04-07 12:18:27.768097",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "voter",
+  "key",
+  "expiry",
+  "valid"
+ ],
+ "fields": [
+  {
+   "fieldname": "voter",
+   "fieldtype": "Link",
+   "label": "Voter",
+   "options": "Institution Member",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "key",
+   "fieldtype": "Data",
+   "label": "Key",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "expiry",
+   "fieldtype": "Datetime",
+   "label": "Expiry"
+  },
+  {
+   "default": "0",
+   "fieldname": "valid",
+   "fieldtype": "Check",
+   "label": "Valid"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-04-07 15:13:42.096392",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "OTP Record",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

@@ -61,6 +61,7 @@ class Election(Document):
 		for d in candidate_doc.get("candidates"):
 			row = self.append("candidates",{})
 			if d.candidate_id not in existing_members:
+				row.branch = d.branch
 				row.candidate_id = d.candidate_id
 				row.candidate_name = d.candidate_name
 				row.contested_position = d.contested_position
