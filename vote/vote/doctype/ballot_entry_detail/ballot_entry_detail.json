@@ -31,11 +31,12 @@
   {
    "fieldname": "candidate_id",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Candidate ID",
-   "options": "Institution Member",
-   "read_only": 1
+   "options": "Institution Member"
   },
   {
+   "fetch_from": "candidate_id.full_name",
    "fieldname": "candidate_name",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -47,8 +48,7 @@
    "fieldname": "choice",
    "fieldtype": "Check",
    "in_list_view": 1,
-   "label": "Choice",
-   "read_only": 1
+   "label": "Choice"
   },
   {
    "fieldname": "political_party",
@@ -65,7 +65,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-03-30 16:48:27.105089",
+ "modified": "2021-04-08 16:01:58.703722",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Ballot Entry Detail",

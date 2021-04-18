@@ -2,6 +2,7 @@
  "actions": [],
  "autoname": "format: V{######}",
  "creation": "2020-12-02 14:34:49.612250",
+ "description": "-",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -30,6 +31,8 @@
   "app_user_section",
   "user_id",
   "create_application_user",
+  "private_key",
+  "public_key",
   "electoral_district_settings_section",
   "eligible_voter",
   "eligible_candidate",
@@ -212,12 +215,24 @@
    "fieldtype": "Attach Image",
    "hidden": 1,
    "label": "Image"
+  },
+  {
+   "fieldname": "private_key",
+   "fieldtype": "Data",
+   "label": "Private Key",
+   "read_only": 1
+  },
+  {
+   "fieldname": "public_key",
+   "fieldtype": "Data",
+   "label": "Public Key",
+   "read_only": 1
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-03-24 09:19:11.501303",
+ "modified": "2021-04-12 17:48:57.067258",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",

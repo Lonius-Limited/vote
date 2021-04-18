@@ -8,6 +8,7 @@
  "field_order": [
   "institution_name",
   "contact_and_address_section",
+  "phone",
   "contact_html",
   "address_html",
   "section_break_3"
@@ -37,11 +38,16 @@
    "fieldname": "address_html",
    "fieldtype": "HTML",
    "label": "Address HTML"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2020-12-02 14:24:48.229570",
+ "modified": "2021-04-16 22:42:47.556965",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution",

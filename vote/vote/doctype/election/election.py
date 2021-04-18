@@ -8,6 +8,7 @@ from frappe.model.document import Document
 #from frappe.utils import _
 class Election(Document):
 	def before_save(self):
+
 		voter_register = frappe.get_doc("Voter Register",self.applicable_voter_register)
 		voter_count = len(voter_register.get("active_members")) or 0
 		self.set("eballots", voter_count)
@@ -19,19 +20,25 @@ class Election(Document):
 			# self.retrieve_candidates(False)	
 		self.validate_candidates()
 		self.generate_positions()
+		
 	def after_insert(self):
 		self.make_candidature_document()
 		if self.candidate_link:
 			#self.retrieve_candidates(save_doc=True)	
 			self.validate_candidates()
 		self.generate_positions(True)
+		self.set("status", "Scheduled")
 	def before_submit(self):
 		self.validate_candidates()
+		self.status ='Scheduled'
+		IMMATURE_VALIDATION="Cannot submit before verification/approval of the voter register and the candidates list"
+		if not self.candidate_link:
+			frappe.throw(IMMATURE_VALIDATION)
 		if frappe.get_doc("Candidates", self.candidate_link).get("docstatus") != 1 or frappe.get_doc("Voter Register", self.applicable_voter_register).get("docstatus") != 1:
-			frappe.throw("Cannot submit before verification/approval of the voter register and the candidates list")
+			frappe.throw(IMMATURE_VALIDATION)
 	def on_submit(self):
 		frappe.msgprint("Election setup and Voter IDs shipped successfully")
-		self.status ='Scheduled'
+		
 	def validate_candidates(self):
 		officials = [x.get("member") for x in self.get("election_officials")]
 		for d in self.get("candidates"):
@@ -61,6 +68,7 @@ class Election(Document):
 		for d in candidate_doc.get("candidates"):
 			row = self.append("candidates",{})
 			if d.candidate_id not in existing_members:
+				row.branch = d.branch
 				row.candidate_id = d.candidate_id
 				row.candidate_name = d.candidate_name
 				row.contested_position = d.contested_position

@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "creation": "2021-04-07 14:38:48.580358",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "sender_name",
+  "sent_on",
+  "column_break_3",
+  "message",
+  "section_break_5",
+  "no_of_requested_sms",
+  "requested_numbers",
+  "column_break_8",
+  "no_of_sent_sms",
+  "sent_to"
+ ],
+ "fields": [
+  {
+   "fieldname": "sender_name",
+   "fieldtype": "Data",
+   "label": "Sender Name"
+  },
+  {
+   "fieldname": "sent_on",
+   "fieldtype": "Date",
+   "label": "Sent On"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "label": "Message"
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "no_of_requested_sms",
+   "fieldtype": "Int",
+   "label": "No of Requested SMS"
+  },
+  {
+   "fieldname": "requested_numbers",
+   "fieldtype": "Code",
+   "label": "Requested Numbers"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "no_of_sent_sms",
+   "fieldtype": "Int",
+   "label": "No of Sent SMS"
+  },
+  {
+   "fieldname": "sent_to",
+   "fieldtype": "Code",
+   "label": "Sent to"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-04-07 14:38:48.580358",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "SMS Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "sender_name",
+ "track_changes": 1
+}
