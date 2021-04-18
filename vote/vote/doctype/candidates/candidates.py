@@ -6,6 +6,12 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 
+
+@frappe.whitelist()
+def retrieve_election_domains(election):
+	position_args =dict(parent = election)
+	advertised_positions = frappe.get_all("Candidate Position Settings", filters= position_args, fields = ["branch","position"])
+	return advertised_positions
 class Candidates(Document):
 	def after_insert(self):
 		pass

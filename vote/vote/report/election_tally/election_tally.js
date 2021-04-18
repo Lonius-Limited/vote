@@ -5,14 +5,6 @@
 frappe.query_reports["Election Tally"] = {
 	"filters": [
 		{
-			"fieldname":"institution",
-			"label": __("Institution"),
-			"fieldtype": "Link",
-			"options": "Institution",
-			"reqd": 1,
-			
-		},
-		{
 			"fieldname":"election",
 			"label": __("Election"),
 			"fieldtype": "Link",
@@ -28,6 +20,14 @@ frappe.query_reports["Election Tally"] = {
 			"reqd": 0,
 			// Institution
 			
+		},
+		{
+			"fieldname":"position",
+			"label": __("Position"),
+			"fieldtype": "Link",
+			"options": "Institution Position",
+			"reqd": 0,
+			// Eligible voter Filter
 		},
 		{
 			"fieldname":"candidate",

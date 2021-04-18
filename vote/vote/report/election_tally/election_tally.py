@@ -5,20 +5,88 @@ from __future__ import unicode_literals
 import frappe
 
 def execute(filters=None):
-	institution, election, branch, candidate = filters.get("institution"), filters.get("election"), filters.get("branch"), filters.get("candidate")
-	columns, data = ["Position","Branch","Candidate","Votes"], get_data(institution, election,\
-		 branch=branch or '%', candidate=candidate or '%')
-	return columns, data
-def get_data(institution, election, branch='%', candidate='%'):
-	all_ballots = frappe.get_all("Ballot Entry",filters={"institution":institution,\
-		"election": election}, fields=["name"])
 	
-	ballot_list = [x.get("name") for x in all_ballots]
+	election, branch, candidate,position = filters.get("election"), filters.get("branch"), filters.get("candidate"),filters.get("position")
+	columns, data = ["Position","Branch","Candidate ID","Candidate","Votes"], get_results(election,\
+		 branch=branch ,position=position, candidate=candidate)
+	return columns, data
+def get_results(election=None, branch=None, candidate=None, position=None, maximum_candidates_per_post=None):
 
-	ballot_list_str = ''+', '.join("'{0}'".format(i) for i in ballot_list)+''
+	all_ballots = frappe.get_all("Ballot Entry",filters={"election": election}, fields="name")
 
-	branch_candidate_filter_cond =f"""branch LIKE '{branch}' and candidate_id LIKE '{candidate}'"""
+	
+	if not all_ballots: return [] #No results to announce !
 
-	data = frappe.db.sql(f"""SELECT DISTINCT position, branch, candidate, sum(choice) FROM `tabBallot Entry Detail` WHERE parent IN {ballot_list_str}  GROUP BY position,branch,candidate""")
+	ballot_ids = [x.get("name") for x in all_ballots]
+
+	args = search_params(branch=branch, candidate_id=candidate,position=position, page_length=maximum_candidates_per_post) 
+
+	args["parent"] = ["IN", ballot_ids]
+
+	data  = election_results(args)
 
 	return data
+	
+def election_results(args):
+	return frappe.db.get_all("Ballot Entry Detail", filters=args, \
+		fields=['position','branch','candidate_id','candidate_name as candidate','sum(choice) as votes'],\
+			group_by='candidate_id',\
+				order_by='position, votes desc')
+
+def get_branch_results(election, branch):
+	branch_voters = get_branch_voters(election,branch)
+
+	filtered_ballots = frappe.get_all("Ballot Entry",filters={"election": election, "voter_id":["IN", branch_voters]}, fields="name")
+
+	ballot_ids = [x.get("name") for x in filtered_ballots]
+
+	args = dict(parent = ["IN", ballot_ids])
+
+	return election_results(args)
+
+def get_branch_children(branch):
+	# implement recursion
+	children =[branch]
+	def handle_children(child):
+		children.append(child)
+	def get_children(branch = '', search_params = {}):	
+		children = frappe.get_all("Electoral District", filters = search_params, fields=["name"])
+		if children:
+			child_list = [x.get("name") for x in children]
+			list(map(lambda x: handle_children(x), child_list))
+			for x in child_list:
+				child_params = dict(parent_electoral_district = x)
+				get_children(branch=x, search_params=child_params)
+	args = dict(parent_electoral_district=branch)			
+	get_children(branch=branch,search_params=args)
+	return children
+
+def get_branch_voters(election, branch):
+	all_voters = frappe.db.get_all("Ballot Entry",filters={"election": election}, fields=["voter_id"])
+
+	voters =[x.get("voter_id") for x in all_voters]
+
+	institution= frappe.db.get_value("Election", election,'institution')
+
+	branch_children = get_branch_children(branch)
+
+	institution_args = dict(institution=institution, electoral_district=["IN", branch_children], name=["IN", voters])
+
+	filtered_voters_for_branch = frappe.db.get_all("Institution Member", filters=institution_args, fields=["name"])
+
+	return [x.get("name") for x in filtered_voters_for_branch]
+	
+def search_params(branch=None, candidate_id=None, parent = None, position=None, page_length=None):
+	params= dict(
+		branch = branch,
+		candidate_id = candidate_id,
+		choice = True,
+		position = position,
+		parent = parent,
+		page_length = page_length
+	)
+	to_pop =[x for x in list(params.keys()) if not params[x]]
+
+	list(map(lambda x : params.pop(x), to_pop))
+
+	return params

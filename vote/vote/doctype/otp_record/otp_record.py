@@ -12,13 +12,13 @@ from frappe import msgprint, _
 
 class OTPRecord(Document):
 	def after_insert(self):
-		self.send_otp
+		self.send_otp()
 	def send_otp(self):
 		voter_id = self.get("voter")
 		otp_code = self.get("key")
 		doc = frappe.get_doc("Institution Member", voter_id)
 		telephone, email = doc.get("cell_number"), doc.get("email_address")
-		message =  f"Your OTP Code is {otp_code}.\nNB: OTP is case sensitive."
+		message =  f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive."
 		send_sms([telephone], message)
 
 		email_args =dict(
