@@ -15,6 +15,7 @@
   "column_break_7",
   "other_names",
   "full_name",
+  "id_number",
   "section_break_4",
   "date_of_joining",
   "column_break_11",
@@ -227,12 +228,17 @@
    "fieldtype": "Data",
    "label": "Public Key",
    "read_only": 1
+  },
+  {
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-12 17:48:57.067258",
+ "modified": "2021-04-20 23:24:14.682614",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",

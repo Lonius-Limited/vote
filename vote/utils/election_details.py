@@ -16,7 +16,7 @@ MULTIPLE_BALLOT_ENTRIES ="Sorry, you cannot post a ballot twice"
 
 @frappe.whitelist(allow_guest=True)
 def authenticate_voter(voter_id = '', member_id = ''):
-	search_args = dict(name=voter_id, member_id=member_id)
+	search_args = dict(name=voter_id, id_number = member_id)
 	if not frappe.db.get_value("Institution Member", search_args,"name"):
 		frappe.local.response.update({'message': 'OTP Processing Failed', 'status':'error', 'error': str(ILLEGAL_LOGIN)})
 		return
