@@ -1,7 +1,7 @@
 {
  "actions": [],
- "autoname": "format: V{######}",
- "creation": "2020-12-02 14:34:49.612250",
+ "autoname": "format: SV{######}",
+ "creation": "2021-04-22 19:59:09.243119",
  "description": "-",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -38,15 +38,42 @@
   "electoral_district_settings_section",
   "eligible_voter",
   "eligible_candidate",
+  "electoral_district_text",
   "electoral_district",
   "applicable_voter_districts",
-  "image"
+  "image",
+  "amended_from"
  ],
  "fields": [
   {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "label": "Institution",
+   "options": "Institution",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "member_id",
    "fieldtype": "Data",
-   "label": "Member ID"
+   "label": "Member ID",
+   "reqd": 1
+  },
+  {
+   "description": "Such as licence, membership number issued by a professional body. Not to be confused with Member registration number",
+   "fieldname": "board_number",
+   "fieldtype": "Data",
+   "label": "Board Number",
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "surname",
@@ -56,11 +83,26 @@
    "reqd": 1
   },
   {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "other_names",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Other Names",
    "reqd": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number"
   },
   {
    "fieldname": "section_break_4",
@@ -72,44 +114,15 @@
    "label": "Date of Joining"
   },
   {
-   "fieldname": "contacts_and_address_section",
-   "fieldtype": "Section Break",
-   "label": "Physical Address"
-  },
-  {
-   "fieldname": "contact_and_address_information",
-   "fieldtype": "Text",
-   "label": "Physical Address Information"
-  },
-  {
-   "fieldname": "institution",
-   "fieldtype": "Link",
-   "label": "Institution",
-   "options": "Institution",
-   "reqd": 1,
-   "set_only_once": 1
-  },
-  {
-   "fieldname": "section_break_3",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_7",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "full_name",
-   "fieldtype": "Data",
-   "label": "Full Name",
-   "read_only": 1
-  },
-  {
    "fieldname": "column_break_11",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "Active",
+   "fieldname": "member_status",
+   "fieldtype": "Select",
+   "label": "Member Status",
+   "options": "Active\nLeft"
   },
   {
    "default": "Member",
@@ -134,11 +147,14 @@
    "read_only": 1
   },
   {
-   "default": "Active",
-   "fieldname": "member_status",
-   "fieldtype": "Select",
-   "label": "Member Status",
-   "options": "Active\nLeft"
+   "fieldname": "contacts_and_address_section",
+   "fieldtype": "Section Break",
+   "label": "Physical Address"
+  },
+  {
+   "fieldname": "contact_and_address_information",
+   "fieldtype": "Text",
+   "label": "Physical Address Information"
   },
   {
    "fieldname": "contact_information_section",
@@ -148,7 +164,8 @@
   {
    "fieldname": "cell_number",
    "fieldtype": "Data",
-   "label": "Cell Number"
+   "label": "Cell Number",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_20",
@@ -157,7 +174,8 @@
   {
    "fieldname": "email_address",
    "fieldtype": "Data",
-   "label": "Email Address"
+   "label": "Email Address",
+   "reqd": 1
   },
   {
    "collapsible": 1,
@@ -177,6 +195,16 @@
    "fieldtype": "Button",
    "label": "Create Application User",
    "options": "create_application_user"
+  },
+  {
+   "fieldname": "private_key",
+   "fieldtype": "Data",
+   "label": "Private Key"
+  },
+  {
+   "fieldname": "public_key",
+   "fieldtype": "Data",
+   "label": "Public Key"
   },
   {
    "fieldname": "electoral_district_settings_section",
@@ -219,35 +247,28 @@
    "label": "Image"
   },
   {
-   "fieldname": "private_key",
-   "fieldtype": "Data",
-   "label": "Private Key"
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Institution Member Sandbox",
+   "print_hide": 1,
+   "read_only": 1
   },
   {
-   "fieldname": "public_key",
+   "fieldname": "electoral_district_text",
    "fieldtype": "Data",
-   "label": "Public Key"
-  },
-  {
-   "fieldname": "id_number",
-   "fieldtype": "Data",
-   "label": "ID Number"
-  },
-  {
-   "description": "Such as licence, membership number issued by a professional body. Not to be confused with Member registration number",
-   "fieldname": "board_number",
-   "fieldtype": "Data",
-   "label": "Board Number",
-   "set_only_once": 1
+   "label": "Electoral District Text"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2021-04-22 19:47:29.429387",
+ "modified": "2021-04-22 20:26:00.608793",
  "modified_by": "Administrator",
  "module": "Vote",
- "name": "Institution Member",
+ "name": "Institution Member Sandbox",
  "owner": "Administrator",
  "permissions": [
   {

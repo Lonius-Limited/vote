@@ -1,0 +1,18 @@
+[
+ {
+  "create_log": 1,
+  "cron_format": "* * * * * *",
+  "docstatus": 0,
+  "doctype": "Scheduled Job Type",
+  "frequency": "Cron",
+  "last_execution": "2021-04-23 08:43:00.742533",
+  "method": "vote.utils.election_details.election_status_switch",
+  "modified": null,
+  "name": "election_switch",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "server_script": null,
+  "stopped": 0
+ }
+]

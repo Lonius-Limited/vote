@@ -1,0 +1,24 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Slack Webhook URL",
+  "modified": "2021-04-21 23:57:19.900367",
+  "name": "eVote Channel",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "webhook_name": "eVote Channel",
+  "webhook_url": "https://hooks.slack.com/services/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"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Slack Webhook URL",
+  "modified": "2021-04-22 00:19:47.250525",
+  "name": "KMPDU eVote #general",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "webhook_name": "KMPDU eVote #general",
+  "webhook_url": "https://hooks.slack.com/services/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"
+ }
+]

@@ -13,10 +13,12 @@ ILLEGAL_LOGIN = "Sorry, the Voter id or Member ID provided do not match our reco
 WRONG_OTP ="Sorry, the OTP code has either been used or is invalid"
 OTP_STAGED = "OTP message has been staged, click Retry if you need to resend the OTP"
 MULTIPLE_BALLOT_ENTRIES ="Sorry, you cannot post a ballot twice"
+PAYLOAD_NOT_PROVIDED ="Sorry, no data has been provided."
+SUCCESSFUL_POSTING = "Success! Your data has been posted successfully, it will be verified before being posted into the master list. As part of verification process you may receive a call from our agents to collect some more data from you."
 
 @frappe.whitelist(allow_guest=True)
 def authenticate_voter(voter_id = '', member_id = ''):
-	search_args = dict(name=voter_id, member_id=member_id)
+	search_args = dict(name=voter_id, id_number = member_id)
 	if not frappe.db.get_value("Institution Member", search_args,"name"):
 		frappe.local.response.update({'message': 'OTP Processing Failed', 'status':'error', 'error': str(ILLEGAL_LOGIN)})
 		return
@@ -39,6 +41,10 @@ def create_voter_wallet(member_doc):
 	return wallet
 @frappe.whitelist(allow_guest=True)
 def stage_otp(voter_id = ''):
+	valid_args = dict(voter=voter_id, valid=True)
+	if  frappe.db.get_value("OTP Record", valid_args): 
+		frappe.get_doc("OTP Record", valid_args).send_otp()
+		return
 	otp_code = str(frappe.generate_hash(length=8)).upper()
 	args = dict(
 		doctype = "OTP Record",
@@ -71,7 +77,34 @@ def authenticate_otp(voter_id, key, resend_otp=0):
 	ballot = get_e_ballot(election= valid_elections_for_voter[0].name, voter=voter_id)
 	handle_eth_wallet(voter_id)
 	return ballot
+@frappe.whitelist(allow_guest=True)
+def voter_details_sandbox(payload=None):
+	'''
+	Acceptable/Sample data payload
 
+	 {
+        "member_id":"8418748729",
+        "board_number":"97593592850",
+        "surname":"Kamuge",
+        "other_names":"Thuranira Paul",
+        "id_number":"6513561537",
+        "cell_number":"0772919939",
+        "email_address":"dsmwaura@gmail.com",
+        "electoral_district_text": "Moi Teaching and referral"
+
+    } 
+	'''
+	if not payload:
+		frappe.local.response.update({'message': 'Failed to post your data', 'status':'error', 'error': str(PAYLOAD_NOT_PROVIDED)})
+		return
+	try:
+		data = json.loads(payload)
+		data['doctype'] = "Institution Member Sandbox"
+		doc = frappe.get_doc(data).insert(ignore_permissions=True)
+		docname = doc.get("name")
+		frappe.local.response.update({'message': f'Successfully Posted. Tracking ID: {docname}', 'status':'success', 'response': str(SUCCESSFUL_POSTING)})
+	except Exception as e:
+		frappe.local.response.update({'message': 'Failed to post your data', 'status':'error', 'error': f"{e}"})
 def handle_eth_wallet(voter_id):
 	pass
 @frappe.whitelist(allow_guest=True)
@@ -143,14 +176,13 @@ def get_candidates_per_position(election, position=None, branch = None):
 	return result
 @frappe.whitelist(allow_guest=True)
 def post_e_ballot(voter, election, ballot_data): # Must include voter, election
-	'''posts a ballot to a Ballot Entry Doctype'''
-	#ballot = json.loads(ballot)
-	#return ballot
-	#voter, election, institution = ballot.get('voter'), ballot.get('election'),\
-	#	 get_voter_institution(ballot.get('voter'))
-	def get_unique_id(voter, election):
-		return ""
-	unique_id = get_unique_id(voter, election)
+	'''1. Posts a ballot to a Ballot Entry Doctype
+	   2. Creates a transaction in the blockchain
+	   3. Alerts Voter'''
+	def ballot_tally(election):
+		tally_args = dict(election=election)
+		ballots = frappe.get_list("Ballot Entry",filters=tally_args)
+		return len(ballots) + 1
 	def already_voted(voter, election):
 		return frappe.db.get_all("Ballot Entry", filters = dict(voter_id=voter, election=election), fields=['name'])
 	if already_voted(voter, election):
@@ -173,6 +205,7 @@ def post_e_ballot(voter, election, ballot_data): # Must include voter, election
 			row.political_party = candidate.get('political_party')
 			row.party_symbol = get_party_symbol(candidate.get('political_party')) if candidate.get('political_party') else None
 			row.headshot = get_headshot(candidate.get('candidate_id'))
+	ballot_document["current_tally"] = ballot_tally(election)
 	ballot_document.insert(ignore_permissions=True)
 
 	p_args = dict(name=voter, public_key=["!=",""], private_key =["!=",""])
@@ -181,19 +214,21 @@ def post_e_ballot(voter, election, ballot_data): # Must include voter, election
 
 	wallet = None
 	ballot_name =  ballot_document.get("name")
-	frappe.local.response.update({'message': f'Your vote has been posted successfully under a unique ID: {ballot_name}', 'status':'success'})
-	return
-
+	
+	#
 	if stored_wallet:
 		wallet = stored_wallet[0]
 	if not wallet:
 		wallet = create_voter_wallet(frappe.get_doc("Institution Member",voter))
 
 	chain_payload = dict(election=election,voter=voter,ballot_data=ballot_data)
-	tx_id = log_casted_vote(chain_payload, wallet.get("private_key"), wallet.get("public_key"))
 
-	
+	tx_id = log_casted_vote(json.dumps(chain_payload), wallet.get("private_key"), wallet.get("public_key"))
 
+	if tx_id:
+		ballot_document.send_ballot_receipt(tx_id)
+	frappe.local.response.update({'message': f'Your vote has been posted successfully under a unique ID: {ballot_name}', 'status':'success'})
+	return ballot_document
 def _return_branch_position_tally(election='', branch='', position='',pos_id=None):
 
 	position_branch_results = []

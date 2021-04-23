@@ -8,7 +8,11 @@
   "institution",
   "voter_id",
   "election",
-  "ballot_entry_detail"
+  "ballot_entry_detail",
+  "voter_name",
+  "tx_hash",
+  "current_tally",
+  "voter_email"
  ],
  "fields": [
   {
@@ -36,11 +40,39 @@
    "label": "Institution",
    "options": "Institution",
    "reqd": 1
+  },
+  {
+   "fetch_from": "voter_id.full_name",
+   "fieldname": "voter_name",
+   "fieldtype": "Data",
+   "label": "Voter Name",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "tx_hash",
+   "fieldtype": "Data",
+   "label": "Transaction Hash",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "Turnout so far",
+   "fieldname": "current_tally",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Current Tally"
+  },
+  {
+   "fetch_from": "voter_id.email_address",
+   "fieldname": "voter_email",
+   "fieldtype": "Small Text",
+   "label": "Voter Email",
+   "options": "Email"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-08 17:40:57.430542",
+ "modified": "2021-04-22 16:09:24.516120",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Ballot Entry",

@@ -9,12 +9,23 @@ from frappe.core.doctype.user_permission.user_permission import clear_user_permi
 
 class InstitutionMember(Document):
 	def before_save(self):
-		self.validate_member_id()
+		self = self.capitalize_essential_fields()
+		self.validate_member_id()	
 		surname = self.surname
-		other_names = self.other_names
+		other_names = self.other_names	 
 		self.full_name = f"{surname}, {other_names}"
 		self.generate_voter_domains()
 		return
+	def capitalize_essential_fields(self):
+		if self.surname:
+			self.set('surname',str(self.surname).upper().strip())
+		if self.other_names:
+			self.set('other_names',str(self.other_names).upper().strip())
+		if self.electoral_district:
+			self.set('electoral_district',str(self.electoral_district).upper().strip())
+		if self.email_address:
+			self.set('email_address',str(self.email_address).lower().strip())
+		return self
 	def validate_member_id(self):
 		duplicate = frappe.db.get_value("Institution Member",\
 			{"member_id": self.member_id,"institution": self.institution,"name":["!=",self.name]},"full_name")
