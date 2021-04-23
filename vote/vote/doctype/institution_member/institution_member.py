@@ -6,6 +6,10 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.core.doctype.user_permission.user_permission import clear_user_permissions
+from frappe.core.doctype.sms_settings.sms_settings import send_sms
+from frappe.utils.background_jobs import enqueue
+from frappe import _
+from vote.utils.election_details import stage_otp
 
 class InstitutionMember(Document):
 	def before_save(self):
@@ -99,3 +103,44 @@ class InstitutionMember(Document):
 		user.insert()
 		frappe.msgprint(f"{user}")
 		return user
+	def send_voter_card(self, election=None):
+
+		if not election: return #has to be the election document
+
+		voter_id = self.get("name")
+
+		doc = self
+
+		telephone, email = doc.get("cell_number"), doc.get("email_address")
+	
+		message =  self.get_voter_registration_message(election=election)
+
+
+		if telephone: send_sms([telephone], message)
+
+		email_args =dict(
+			recipients = [email],
+		    message = _(message),
+			subject = _("Voter Registration ID")
+		)
+		if email: enqueue(method=frappe.sendmail, queue='long', timeout=300, **email_args)
+
+		
+
+		return
+	def get_voter_registration_message(self, election = None):
+		if not election: return
+		institution = election.get("institution")
+		starts_from = election.get("election_start")
+		ends = election.get("election_ends")
+		voter_id = self.get("name")
+		voter_name = self.get("full_name")
+		otp = stage_otp(self.get("name"), instant_otp = 0)
+		details =f"Voter ID: {voter_id}\nElection Starts:{starts_from}\nElection Ends: {ends}"
+		return f"Dear {voter_name} your\
+			 voting details for the upcoming elections in {institution}\
+				 have been generated as below\n\n{details}\n\nPlease use this OTP to register for elections {otp}\n\n\nNB:\
+					  Please note that you have the sole responsibility to keep this\
+						   OTP code safe as you will need it to login to the system on election day, for only one session"
+
+		
