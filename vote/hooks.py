@@ -25,7 +25,7 @@ app_include_js = ["/assets/js/elections.min.js", "/assets/js/template.min.js"]
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "vote/public/scss/website"
 
-fixtures =["Institution","Electoral District", "Slack Webhook URL", "Notification", {"dt":"Scheduled Job Type", "filters":{"name":"election_switch"}},{"dt":"Workspace", "filters":{"name":"eVote"}}]
+fixtures =["Institution","Electoral District", "Slack Webhook URL", "Notification", {"dt":"Scheduled Job Type", "filters":{"name":"election_switch"}},{"dt":"Workspace", "filters":{"name":"eVote"}}, "SMS Settings"]
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}

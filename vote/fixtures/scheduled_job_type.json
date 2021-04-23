@@ -5,7 +5,7 @@
   "docstatus": 0,
   "doctype": "Scheduled Job Type",
   "frequency": "Cron",
-  "last_execution": "2021-04-23 08:43:00.742533",
+  "last_execution": "2021-04-23 09:19:18.662921",
   "method": "vote.utils.election_details.election_status_switch",
   "modified": null,
   "name": "election_switch",
