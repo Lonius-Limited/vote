@@ -12,7 +12,8 @@ from frappe import msgprint, _
 
 class OTPRecord(Document):
 	def after_insert(self):
-		self.send_otp()
+		if self.instant_otp:
+			self.send_otp()
 	def send_otp(self):
 		voter_id = self.get("voter")
 		otp_code = self.get("key")

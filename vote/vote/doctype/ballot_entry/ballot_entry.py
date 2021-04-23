@@ -7,6 +7,7 @@ import frappe
 from frappe.model.document import Document
 from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
+from frappe import _
 
 class BallotEntry(Document):
 	def get_ballot_receipt_message(self, tx_id=''):
@@ -17,7 +18,7 @@ class BallotEntry(Document):
 
 		time_of_voting = self.creation
 
-		return f"You Voted!\nYour ballot was posted under ID: {doc_id} and hash {doc_hash}.\nTime of voting {time_of_voting}"
+		return f"You Voted!\nYour ballot was posted under ID: {doc_id} and blockchain hash {doc_hash}.\nTime of voting {time_of_voting}"
 	
 	def send_ballot_receipt(self, tx_id =None):
 
