@@ -19,7 +19,7 @@ class InstitutionMemberSandbox(Document):
 	def move_to_master(self):
 		try:
 			args = None
-			args = frappe.get_all("Institution Member Sandbox",filters=dict(name=self.name),fields=[*])[0]
+			args = frappe.get_all("Institution Member Sandbox",filters=dict(name=self.name),fields=["*"])[0]
 			args.doctype = "Institution Member"
 			args.pop("electoral_district_text")
 			master_doc = frappe.new_doc(args).insert(ignore_permissions=True) 
