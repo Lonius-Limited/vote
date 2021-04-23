@@ -205,7 +205,7 @@ def post_e_ballot(voter, election, ballot_data): # Must include voter, election
 			row.political_party = candidate.get('political_party')
 			row.party_symbol = get_party_symbol(candidate.get('political_party')) if candidate.get('political_party') else None
 			row.headshot = get_headshot(candidate.get('candidate_id'))
-	ballot_document["current_tally"] = ballot_tally(election)
+	ballot_document.current_tally = ballot_tally(election)
 	ballot_document.insert(ignore_permissions=True)
 
 	p_args = dict(name=voter, public_key=["!=",""], private_key =["!=",""])
