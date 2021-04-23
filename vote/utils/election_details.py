@@ -361,16 +361,17 @@ def election_status_switch():
 	from datetime import datetime
 	scheduled_args =dict(docstatus=1, status="Scheduled", election_start = ["<=",datetime.now()])
 
+
 	scheduled_elections = frappe.get_all("Election",filters = scheduled_args, fields =["name"])
 
 	open_args =dict(docstatus=1, status="Open", election_ends = ["<=",datetime.now()])
 
 	open_elections = frappe.get_all("Election",filters = open_args, fields =["name"])
 
-	def handle_open_elections(election:str):
+	def handle_open_elections(election):
 		frappe.get_doc("Election", election).db_set("status", "Closed")
 		
-	def handle_scheduled_election(election:str):
+	def handle_scheduled_election(election):
 		frappe.get_doc("Election", election).db_set("status", "Open")
 		
 	
