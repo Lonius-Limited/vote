@@ -222,7 +222,14 @@ def post_e_ballot(voter, election, ballot_data): # Must include voter, election
 		wallet = create_voter_wallet(frappe.get_doc("Institution Member",voter))
 
 	chain_payload = dict(election=election,voter=voter,ballot_data=ballot_data)
+	################################################To be changed
+	privKey = '0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af'
+	pubKey = '0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e'
 
+	wallet = None
+	wallet = dict(private_key=privKey, public_key=pubKey)
+	
+	#############################################
 	tx_id = log_casted_vote(json.dumps(chain_payload), wallet.get("private_key"), wallet.get("public_key"))
 
 	if tx_id:
