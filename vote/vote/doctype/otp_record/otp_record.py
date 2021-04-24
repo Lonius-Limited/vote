@@ -28,7 +28,7 @@ class OTPRecord(Document):
 		# 	subject = _("OTP Code")
 		# )
 		email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"
-		vote.sendmail(recipients=[email], message=_(email_message), subject=_("Voter Registration ID"))
+		vote.sendmail(recipients=[email], message=_(email_message), subject=_("CryptoVote One Time Pin"))
 		# enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
 
 		return otp_code
