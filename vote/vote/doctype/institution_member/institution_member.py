@@ -136,12 +136,10 @@ class InstitutionMember(Document):
 		ends = election.get("election_ends")
 		voter_id = self.get("name")
 		voter_name = self.get("full_name")
-		otp = stage_otp(self.get("name"), instant_otp = 0)
+		# otp = stage_otp(self.get("name"), instant_otp = 0)
 		details =f"Voter ID: {voter_id}\nElection Starts:{starts_from}\nElection Ends: {ends}"
 		return f"Dear {voter_name} your\
 			 voting details for the upcoming {election_type} Elections in {institution}\
-				 have been generated as below\n\n{details}\n\nPlease use this OTP to register for elections {otp}\n\n\nNB:\
-					  Please note that you have the sole responsibility to keep this\
-						   OTP code safe as you will need it to login to the system on election day, for only one session"
+				 have been generated as below\n\n{details}\n\n"
 
 		
