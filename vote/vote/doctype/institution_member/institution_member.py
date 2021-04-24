@@ -140,9 +140,13 @@ class InstitutionMember(Document):
 		link1, link2 = "https://kmpdu.bizpok.com/", "https://vote-ui.netlify.app/#/"
 		links_text = f"{link1} or {link2}"
 		# otp = stage_otp(self.get("name"), instant_otp = 0)
-		details =f"Voter ID: {voter_id}\nElection Starts:{starts_from}\nElection Ends: {ends}\n\nPlease use {links_text} to access the system."
-		return f"Dear {voter_name} your\
+		# details =f"Voter ID: {voter_id}\nElection Starts:{starts_from}\nElection Ends: {ends}\n\nPlease use {links_text} to access the system."
+		details =f"Voter ID: {voter_id}\nLink: {links_text}."
+		
+		return f"KMPDU Elections Voter Instruction:\n{details}"
+
+		'''return f"Dear {voter_name} your\
 			 voting details for the upcoming {election_type} Elections in {institution}\
-				 have been generated as below\n\n{details}\n\n"
+				 have been generated as below\n\n{details}\n\n"'''
 
 		

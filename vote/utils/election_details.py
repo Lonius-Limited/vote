@@ -409,8 +409,13 @@ def ship_election_voter_cards(election):#string, election
 	register_list = frappe.get_doc("Voter Register", linked_voter_register).get("active_members")
 
 	for j in register_list:
-
 		recipient = j.get("system_id")
+
+		if j.get(f"{recipient} already_alerted"):
+			print("Already alerted")
+			continue
+
+		
 
 		print(f"Sending sms to {recipient}")
 
