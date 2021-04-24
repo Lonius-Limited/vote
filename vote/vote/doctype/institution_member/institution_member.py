@@ -118,15 +118,14 @@ class InstitutionMember(Document):
 
 		if telephone: send_sms([telephone], message)
 
-		email_args =dict(
-			recipients = [email],
-		    message = _(message),
-			subject = _("Voter Registration ID")
-		)
-		if email: enqueue(method=frappe.sendmail, queue='long', timeout=300, **email_args)
-
-		
-
+		email_message =f"<h3></h3><h6>{message}</h6>"
+		# email_args =dict(
+		# 	recipients = [email],
+		#     message = _(email_message),
+		# 	subject = _("Voter Registration ID")
+		# )
+		# if email: enqueue(method=vote.sendmail, queue='long', timeout=300, **email_args)
+		if email: vote.sendmail(recipients=[email], message=_(email_message), subject=_("Voter Registration ID"))
 		return
 	def get_voter_registration_message(self, election = None):
 		if not election: return
@@ -142,7 +141,7 @@ class InstitutionMember(Document):
 		# otp = stage_otp(self.get("name"), instant_otp = 0)
 		# details =f"Voter ID: {voter_id}\nElection Starts:{starts_from}\nElection Ends: {ends}\n\nPlease use {links_text} to access the system."
 		details =f"Voter ID: {voter_id}\nLink: {links_text}."
-		
+
 		return f"KMPDU Elections Voter Instruction:\n{details}"
 
 		'''return f"Dear {voter_name} your\
