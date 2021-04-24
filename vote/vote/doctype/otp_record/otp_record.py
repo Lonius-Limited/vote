@@ -22,13 +22,14 @@ class OTPRecord(Document):
 		message =  f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive."
 		send_sms([telephone], message)
 
-		email_args =dict(
-			recipients = [email],
-		    message = _(message),
-			subject = _("OTP Code")
-		)
-
-		enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
+		# email_args =dict(
+		# 	recipients = [email],
+		#     message = _(message),
+		# 	subject = _("OTP Code")
+		# )
+		email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"
+		vote.sendmail(recipients=[email], message=_(email_message), subject=_("CryptoVote One Time Pin"))
+		# enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
 
 		return otp_code
 	def invalidate(self):
