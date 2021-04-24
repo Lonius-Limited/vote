@@ -10,6 +10,8 @@ from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
 from frappe import _
 from vote.utils.election_details import stage_otp
+from vote import sendmail
+
 
 class InstitutionMember(Document):
 	def before_save(self):
@@ -125,7 +127,7 @@ class InstitutionMember(Document):
 		# 	subject = _("Voter Registration ID")
 		# )
 		# if email: enqueue(method=vote.sendmail, queue='long', timeout=300, **email_args)
-		if email: vote.sendmail(recipients=[email], message=_(email_message), subject=_("Voter Registration ID"))
+		if email: sendmail(recipients=[email], message=_(email_message), subject=_("Voter Registration ID"))
 		return
 	def get_voter_registration_message(self, election = None):
 		if not election: return

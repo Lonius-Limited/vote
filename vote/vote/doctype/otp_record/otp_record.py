@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
 from frappe import msgprint, _
+from vote import sendmail
 
 
 class OTPRecord(Document):
@@ -28,7 +29,7 @@ class OTPRecord(Document):
 		# 	subject = _("OTP Code")
 		# )
 		email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"
-		vote.sendmail(recipients=[email], message=_(email_message), subject=_("CryptoVote One Time Pin"))
+		sendmail(recipients=[email], message=_(email_message), subject=_("CryptoVote One Time Pin"))
 		# enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
 
 		return otp_code
