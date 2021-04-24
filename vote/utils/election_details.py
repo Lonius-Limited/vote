@@ -44,8 +44,8 @@ def stage_otp(voter_id = '', instant_otp = 1):
 	if not instant_otp: instant_otp = 1
 	valid_args = dict(voter=voter_id, valid=True)
 	if  frappe.db.get_value("OTP Record", valid_args): 
-		frappe.get_doc("OTP Record", valid_args).send_otp()
-		return
+		otp_code = frappe.get_doc("OTP Record", valid_args).send_otp()
+		return otp_code
 	otp_code = str(frappe.generate_hash(length=8)).upper()
 	args = dict(
 		doctype = "OTP Record",

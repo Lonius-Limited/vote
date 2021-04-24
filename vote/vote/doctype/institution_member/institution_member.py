@@ -130,6 +130,7 @@ class InstitutionMember(Document):
 		return
 	def get_voter_registration_message(self, election = None):
 		if not election: return
+		election_type = 'Mock' if election.is_mock_elections else ''
 		institution = election.get("institution")
 		starts_from = election.get("election_start")
 		ends = election.get("election_ends")
@@ -138,7 +139,7 @@ class InstitutionMember(Document):
 		otp = stage_otp(self.get("name"), instant_otp = 0)
 		details =f"Voter ID: {voter_id}\nElection Starts:{starts_from}\nElection Ends: {ends}"
 		return f"Dear {voter_name} your\
-			 voting details for the upcoming elections in {institution}\
+			 voting details for the upcoming {election_type} Elections in {institution}\
 				 have been generated as below\n\n{details}\n\nPlease use this OTP to register for elections {otp}\n\n\nNB:\
 					  Please note that you have the sole responsibility to keep this\
 						   OTP code safe as you will need it to login to the system on election day, for only one session"

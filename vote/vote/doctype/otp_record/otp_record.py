@@ -30,7 +30,7 @@ class OTPRecord(Document):
 
 		enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
 
-		return
+		return otp_code
 	def invalidate(self):
 		self.set("valid", False)
 		self.flags.ignore_permissions = True
