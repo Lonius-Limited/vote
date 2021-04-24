@@ -410,6 +410,10 @@ def ship_election_voter_cards(election):#string, election
 
 	for j in register_list:
 
+		recipient = j.get("system_id")
+
+		print(f"Sending sms to {recipient}")
+
 		voter_doc = frappe.get_doc("Institution Member" , j.get("system_id"))
 
 		voter_doc.send_voter_card(doc)
