@@ -3,7 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-import frappe
+import frappe, json
 from frappe.model.document import Document
 from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
