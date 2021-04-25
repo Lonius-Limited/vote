@@ -23,7 +23,7 @@ class InstitutionMemberSandbox(Document):
 			master_doc.set("cell_number",self.cell_number)
 			master_doc.set("email_address",self.email_address)
 			master_doc.save(ignore_permissions=True)	
-			master_doc.db_set("board_number",self.board_number)		
+			# master_doc.db_set("board_number",self.board_number)		
 			return master_doc.name
 		except Exception as e:
 			frappe.throw(f"{e}")
