@@ -13,6 +13,19 @@ from vote.utils.election_details import stage_otp
 from vote import sendmail
 
 
+template = """
+	<div>
+	<p><b>Dear {} </b></p> 
+	<p>You have been registered to participate in the KMPDU elections 2021. </p>
+	<p><b>VOTER ID:</b> {} </p>
+	<p>Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.</p>
+	<p><b>URL:</b> https://kmpdu.bizpok.com </p>
+	<br/>
+	<b>KMPDU IEC</b>
+	</div>
+"""
+
+
 class InstitutionMember(Document):
 	def before_save(self):
 		self = self.capitalize_essential_fields()
@@ -120,7 +133,8 @@ class InstitutionMember(Document):
 
 		if telephone: send_sms([telephone], message)
 
-		email_message =f"<h3></h3><h6>{message}</h6>"
+		# email_message =f"<h3></h3><h6>{message}</h6>"
+		email_message = template.format(self.full_name, voter_id )
 		# email_args =dict(
 		# 	recipients = [email],
 		#     message = _(email_message),
