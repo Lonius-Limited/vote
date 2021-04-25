@@ -24,6 +24,12 @@ template = """
 	<b>KMPDU IEC</b>
 	</div>
 """
+sms_template ="""
+	Dear {} , You have been registered to participate in the KMPDU elections 2021\n. 
+	VOTER ID: {}\n
+	Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.\n
+	URL: kmpdu.bizpok.com
+"""
 
 
 class InstitutionMember(Document):
@@ -128,10 +134,10 @@ class InstitutionMember(Document):
 
 		telephone, email = doc.get("cell_number"), doc.get("email_address")
 	
-		message =  self.get_voter_registration_message(election=election)
+		# message =  self.get_voter_registration_message(election=election)
+		sms_msg = sms_template.format(self.get("full_name"), self.get("name"))
 
-
-		if telephone: send_sms([telephone], message)
+		if telephone: send_sms([telephone], sms_msg)
 
 		# email_message =f"<h3></h3><h6>{message}</h6>"
 		email_message = template.format(self.full_name, voter_id )
