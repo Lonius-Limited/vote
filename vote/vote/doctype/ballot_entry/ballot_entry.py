@@ -9,6 +9,8 @@ from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
 from frappe import _
 from vote.utils.election_details import create_voter_wallet
+from vote.utils.ethereum import log_casted_vote, privKey, pubKey, get_votes_cast_bc, create_wallet
+
 
 class BallotEntry(Document):
 	def after_insert(self):
