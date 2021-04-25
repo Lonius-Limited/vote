@@ -115,7 +115,7 @@ def run():
     privKey = '0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af'
     pubKey = '0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e'
 
-    data = "{'data': [...some long transaction data], 'more': 'yes, more data'}"
+    data = "data: []"
     print(log_casted_vote(data, privKey, pubKey))
 
 # run()
