@@ -415,8 +415,6 @@ def ship_election_voter_cards(election):#string, election
 			print("Already alerted")
 			continue
 
-		
-
 		print(f"Sending sms to {recipient}")
 
 		voter_doc = frappe.get_doc("Institution Member" , j.get("system_id"))
