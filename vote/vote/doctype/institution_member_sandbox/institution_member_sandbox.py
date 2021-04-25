@@ -28,7 +28,8 @@ class InstitutionMemberSandbox(Document):
 			args.pop("institution")
 			args.pop("name")
 			master_doc = frappe.get_doc("Institution Member", self.link_with_document)
-			master_doc.update(args).save(ignore_permissions=True)			
+			master_doc = master_doc.update(args)
+			master_doc.save(ignore_permissions=True)			
 			return master_doc.name
 		except Exception as e:
 			frappe.throw(f"{e}")
