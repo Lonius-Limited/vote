@@ -132,9 +132,13 @@ def get_e_ballot(election, voter = None):
 	payload["institution_contact"] = institution_contact
 	payload["voter_name"]= voter_name
 	###
-	payload["voter_branch"]= voter_doc.get("electoral_district")
+	payload["county_facility"]= voter_doc.get("electoral_district")
+	payload["voter_branch"]= frappe.db.get_value("Electoral District",voter_doc.get("electoral_district"),"parent_electoral_district") or ''
 	payload["voter_phone"]= voter_doc.get("cell_number")
 	payload["voter_email"]= voter_doc.get("email_address")
+	payload["member_id"]= voter_doc.get("member_id")
+	payload["board_number"] =  voter_doc.get("board_number")
+	payload["id_number"] =  voter_doc.get("id_number")
 	###
 	payload["election"] = election_doc.name
 	payload["election_start"] = election_doc.election_start

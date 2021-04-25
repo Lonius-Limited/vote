@@ -25,9 +25,9 @@ template = """
 	</div>
 """
 sms_template ="""
-	Dear {} , You have been registered to participate in the KMPDU elections 2021\n. 
-	VOTER ID: {}\n
-	Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.\n
+	Dear {} , You have been registered to participate in the KMPDU elections 2021. 
+	VOTER ID: {}
+	Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.
 	URL: kmpdu.bizpok.com
 """
 

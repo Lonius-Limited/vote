@@ -18,11 +18,14 @@ class InstitutionMemberSandbox(Document):
 		return
 	def move_to_master(self):
 		try:
+			if self.create_a_new_record: frappe.throw("Not Implemented yet!")
 			args = None
 			args = frappe.get_all("Institution Member Sandbox",filters=dict(name=self.name),fields=["*"])[0]
 			args.doctype = "Institution Member"
 			args.pop("electoral_district_text")
-			master_doc = frappe.new_doc(args).insert(ignore_permissions=True) 
+			args.pop("link_with_document")
+			master_doc = frappe.get_doc("Institution Member", self.link_with_document)
+			master_doc.update(args).save(ignore_permissions=True)			
 			return master_doc.name
 		except Exception as e:
 			frappe.throw(f"{e}")
