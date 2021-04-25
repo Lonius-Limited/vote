@@ -183,8 +183,7 @@ def get_candidates_per_position(election, position=None, branch = None):
 @frappe.whitelist(allow_guest=True)
 def post_e_ballot(voter, election, ballot_data): # Must include voter, election
 	'''1. Posts a ballot to a Ballot Entry Doctype
-	   2. Creates a transaction in the blockchain
-	   3. Alerts Voter'''
+	   '''
 	try:
 		def ballot_tally(election):
 			tally_args = dict(election=election)
@@ -214,36 +213,10 @@ def post_e_ballot(voter, election, ballot_data): # Must include voter, election
 				row.headshot = get_headshot(candidate.get('candidate_id'))
 		ballot_document.current_tally = ballot_tally(election)
 		ballot_document.insert(ignore_permissions=True)
-
-		p_args = dict(name=voter, public_key=["!=",""], private_key =["!=",""])
-		
-		stored_wallet = frappe.get_all("Institution Member", filters = p_args, fields =["private_key","public_key"])
-
-		wallet = None
-		ballot_name =  ballot_document.get("name")
-		
-		#
-		if stored_wallet:
-			wallet = stored_wallet[0]
-		if not wallet:
-			wallet = create_voter_wallet(frappe.get_doc("Institution Member",voter))
-
-		chain_payload = dict(election=election,voter=voter,ballot_data=ballot_data)
-		################################################To be changed
-		privKey = '0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af'
-		pubKey = '0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e'
-
-		wallet = None
-		wallet = dict(private_key=privKey, public_key=pubKey)
-		
-		#############################################
-		tx_id = log_casted_vote(json.dumps(chain_payload), wallet.get("private_key"), wallet.get("public_key"))
-
-		if tx_id:
-			ballot_document.send_ballot_receipt(tx_id)
+		ballot_name = ballot_document.get("name")
 		frappe.local.response.update({'message': f'Your vote has been posted successfully under a unique ID: {ballot_name}', 'status':'success'})
 	except Exception as e:
-		frappe.local.response.update({'message': f'Your vote has NOT been posted', 'status':'error','error':"Internal Server error"})
+		frappe.local.response.update({'message': f'Your vote has NOT been posted', 'status':'error','error':f"{e}"})
 		return
 	return ballot_document
 def _return_branch_position_tally(election='', branch='', position='',pos_id=None):
