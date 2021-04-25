@@ -24,6 +24,7 @@ class InstitutionMemberSandbox(Document):
 			args.doctype = "Institution Member"
 			args.pop("electoral_district_text")
 			args.pop("link_with_document")
+			args.pop("create_a_new_record")
 			master_doc = frappe.get_doc("Institution Member", self.link_with_document)
 			master_doc.update(args).save(ignore_permissions=True)			
 			return master_doc.name
