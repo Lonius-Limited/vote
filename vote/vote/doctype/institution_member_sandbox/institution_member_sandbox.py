@@ -19,7 +19,7 @@ class InstitutionMemberSandbox(Document):
 	def move_to_master(self):
 		try:
 			if self.create_a_new_record: frappe.throw("Not Implemented yet!")
-			# master_doc = master_doc.update(args)
+			master_doc = frappe.get_doc("Institution Member", self.link_with_document)
 			master_doc.set("member_id",self.member_id)
 			master_doc.set("id_number",self.id_number)
 			master_doc.set("board_number",self.board_number)
