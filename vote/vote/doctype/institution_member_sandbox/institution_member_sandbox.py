@@ -6,6 +6,9 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 
+verification_confirmation_template ="""Verification Alert,\n Your verification request ID {} has been {}."""
+
+
 class InstitutionMemberSandbox(Document):
 	def before_submit(self):
 		self.validate_institution_and_branch()
@@ -27,4 +30,15 @@ class InstitutionMemberSandbox(Document):
 			return master_doc.name
 		except Exception as e:
 			frappe.throw(f"{e}")
+	def on_submit(self):
+
+		telephone, email = self.cell_number, self.email_address
+
+		status = "Rejected" if self.rejected else "Approved"
+
+		sms_msg = verification_confirmation_template.format(self.name, status)
+
+		if telephone: send_sms([telephone], sms_msg)
+
+		return
 
