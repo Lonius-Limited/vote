@@ -143,7 +143,8 @@ class BallotEntry(Document):
                 branch=choice.get("branch"),
                 position=choice.get("position"),
                 candidate=choice.get("candidate_id"),
-                vote_count=1
+                vote_count=1,
+                ballot = choice.get("parent")
             )
 
             frappe.get_doc(insert_args).insert(ignore_permissions=True)
