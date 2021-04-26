@@ -216,6 +216,7 @@ def post_e_ballot(voter, election, ballot_data): # Must include voter, election
 		ballot_name = ballot_document.get("name")
 		frappe.local.response.update({'message': f'Your vote has been posted successfully under a unique ID: {ballot_name}', 'status':'success'})
 	except Exception as e:
+		# frappe.local.response.update({'message': f'Your vote has been posted successfully under a unique ID: {ballot_name}', 'status':'success'})
 		frappe.local.response.update({'message': f'Your vote has NOT been posted', 'status':'error','error':f"{e}"})
 		return
 	return ballot_document
@@ -399,7 +400,14 @@ def ship_election_voter_cards(election):#string, election
 		voter_doc.send_voter_card(doc)
 	return
 
+def handle_unposted_ballots():
+	unposted = frappe.get_all("Ballot Entry", filters = dict(posted_to_blockchain=False), fields=["name"])
+	if not unposted : return
+	docs = [frappe.get_doc("Ballot Entry",x.get("name")) for x in unposted]
 
+	list(map(lambda x: x.process_blockchain(), docs))
+
+	return
 
 
 

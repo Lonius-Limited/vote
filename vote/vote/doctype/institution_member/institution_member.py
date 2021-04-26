@@ -31,7 +31,6 @@ sms_template ="""
 	URL: kmpdu.bizpok.com
 """
 
-verification_confirmation_template ="""Verification Alert. Your verification request ID {} has been {}."""
 
 class InstitutionMember(Document):
 	def before_save(self):

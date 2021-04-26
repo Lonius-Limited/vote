@@ -5,6 +5,12 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from frappe.core.doctype.user_permission.user_permission import clear_user_permissions
+from frappe.core.doctype.sms_settings.sms_settings import send_sms
+from frappe.utils.background_jobs import enqueue
+from frappe import _
+from vote.utils.election_details import stage_otp
+from vote import sendmail
 
 verification_confirmation_template ="""Verification Alert,\n Your verification request ID {} has been {}."""
 
@@ -37,6 +43,7 @@ class InstitutionMemberSandbox(Document):
 		status = "Rejected" if self.rejected else "Approved"
 
 		sms_msg = verification_confirmation_template.format(self.name, status)
+
 
 		if telephone: send_sms([telephone], sms_msg)
 
