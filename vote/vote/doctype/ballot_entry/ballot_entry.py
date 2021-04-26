@@ -14,7 +14,8 @@ from vote.utils.ethereum import log_casted_vote, privKey, pubKey, get_votes_cast
 
 class BallotEntry(Document):
 	def after_insert(self):
-		self.process_blockchain()
+		return
+		# self.process_blockchain()
 	def process_blockchain(self):
 
 		voter = self.get("voter_id")
@@ -47,6 +48,8 @@ class BallotEntry(Document):
 
 		if tx_id:
 			self.send_ballot_receipt(tx_id)
+			self.db_set("posted_to_blockchain", 1)
+		return
 	def get_ballot_receipt_message(self, tx_id=''):
 
 		doc_hash = tx_id
