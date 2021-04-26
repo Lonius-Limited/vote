@@ -296,6 +296,9 @@ def election_results_v2(election):
 
 			def get_branch_position_tally(position_context=position_context):
 				context_tally = None
+
+				context_tally =[]
+				
 				for j in position_context:
 					row = {}
 					row = dict(candidate_id=j.get("candidate"), candidate =  j.get("candidate_name"), votes = j.get("vote_count"))
