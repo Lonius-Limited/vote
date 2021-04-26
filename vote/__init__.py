@@ -43,5 +43,5 @@ def sendgrid_email(recepients, message, subject):
         print(response.headers)
         return {"success": "email sent successfully"}
     except Exception as e:
-        print(e.message)
-        return {"error": "failed to send email. Error={}".format(e.message)}
+        print(f"{e}")
+        return {"error": "failed to send email. Error={}".format(f"{e}")}
