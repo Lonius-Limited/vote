@@ -252,7 +252,7 @@ def election_results_v2(election):
 
 	payload ={}
 
-	results_repository = frappe.db.get_all("Vote Repository", filters = dict(election=election), fields=["*"], order_by=idx)
+	results_repository = frappe.db.get_all("Vote Repository", filters = dict(election=election), fields=["*"], order_by="idx")
 
 	if not results_repository: return {}
 
