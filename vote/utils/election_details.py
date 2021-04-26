@@ -228,7 +228,7 @@ def _return_branch_position_tally(election='', branch='', position='',pos_id=Non
 
 	tally = []
 
-	# position_branch_results = get_results(election, branch=branch, position=position)
+	position_branch_results = get_results(election, branch=branch, position=position)
 
 	eligible_voters  = get_available_e_ballots(election, branch = branch)
 
@@ -247,11 +247,90 @@ def _return_branch_position_tally(election='', branch='', position='',pos_id=Non
 	results["tally"] = tally
 
 	return results
+@frappe.whitelist()
+def election_results_v2(election):
 
+	payload ={}
+
+	results_repository = frappe.db.get_all("Vote Repository", filters = dict(election=election), fields=["*"], order_by=idx)
+
+	if not results_repository: return {}
+
+	distinct_branches = list(dict.fromkeys([x.get("branch") for x in results_repository]))
+
+	all_results = None
+
+	all_results = []
+
+	k = 0
+
+	for branch in distinct_branches:
+
+		branch_name =None
+
+		branch_context = None
+
+		distinct_branch_positions =None
+
+		branch_name = branch
+
+		branch_context = list(filter(lambda x: x.get("branch") == branch_name , results_repository))
+
+		distinct_branch_positions = list(dict.fromkeys([x.get("position") for x in branch_context]))
+
+		branch_results = None
+
+		for position in distinct_branch_positions:
+
+			k += 1
+
+			position_context = None
+
+			position_name = None
+
+			position_name = position
+
+			position_context = list(filter(lambda x: x.get("position") == position_name , branch_context))
+
+			def get_branch_position_tally(position_context=position_context):
+				context_tally = None
+				for j in context:
+					row = {}
+					row = dict(candidate_id=j.get("candidate"), candidate =  j.get("candidate_name"), votes = j.get("vote_count"))
+					context_tally.append(row)
+				return context_tally
+			#######
+			eligible_voters = position_context[0].get("registered_voters") or 1
+			turnout = len(branch_context) or 0
+			turnout_percent = turnout*100/eligible_voters
+			# position =  position_name
+			###########	
+			branch_results["id"] = k
+			branch_results["branch"] = branch_name
+			branch_results["position"] = position_name
+			branch_results["eligible_voters"] = eligible_voters
+			branch_results["turnout"] = turnout
+			branch_results["turnout_percent"]= turnout_percent
+			branch_results["tally"] = get_branch_position_tally(position_context=position_context)
+		all_results.append(branch_results)
+	return all_results
+def post_ballot_entries():
+	election_list = frappe.db.get_all("Election", filters=dict(status="Open"), fields=["name"])
+	if not election_list: return
+	open_elections = [x.get("name") for x in election_list]
+	list(map(lambda x: post_ballot_entries(x), open_elections))
+def post_election_ballot_entries(election=election):
+	if not election: return
+	ballot_entries = frappe.db.get_all("Ballot Entry", filters=dict(election=election, tallied=0), fields["name"], order_by="creation asc", page_length=100)
+	if not ballot_entries: return
+	documents = [frappe.get_doc("Ballot Entry", x.get("name")) for x in ballot_entries]
+	list(map(lambda x: x.add_to_tally(),documents))
+	return
 @frappe.whitelist(allow_guest=True)
 def get_election_results(election):
 	election_args = dict(name=election)
 	institution = frappe.get_value("Election", election_args, "institution")
+	# return election_results_v2(election)
 	all_results ={}	
 	k = 0
 	position_args =dict(parent = election)
@@ -283,11 +362,11 @@ def get_election_results(election):
 
 		# print(results)
 		
-		# if results.get("tally"):
-		# 	contested_branch_results.append(results)
-		# else:
-		# 	k -= 1
-		contested_branch_results.append(results)
+		if results.get("tally"):
+			contested_branch_results.append(results)
+		else:
+			k -= 1
+		# contested_branch_results.append(results)
 	all_results["institution"] = institution
 	all_results["all_results"] = contested_branch_results
 

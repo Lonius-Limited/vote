@@ -30,3 +30,12 @@ class Candidates(Document):
 					idx = all_candidates.index(all_candidates[i])
 					frappe.throw(f" Sorry, candidate: {candidate} entered severally in row {idx} and {i}")
 		_check_duplicate(all_candidates)
+	def prepare_election_tally(self):
+		for d in self.get("candidates"):
+			search_args= dict(election=election, candidate=d.get("candidate_id"))
+			if d.candidate_id not in existing_members:
+				row.branch = d.branch
+				row.candidate_id = d.candidate_id
+				row.candidate_name = d.candidate_name
+				row.contested_position = d.contested_position
+				row.current_position = d.current_position

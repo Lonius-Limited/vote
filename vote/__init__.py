@@ -14,8 +14,8 @@ MAIL_FROM ="IEC KMPDU <mailgun@email.dalasystems.com>"
 
 def sendmail(recipients=[], message="Test Message", subject ="Test Subject", args=None):
    if recipients:
-    #  return send_simple_mailgun_message(recipients, message, subject)
-    return sendgrid_email(recipients, message, subject)
+       return send_simple_mailgun_message(recipients, message, subject)
+    # return sendgrid_email(recipients, message, subject)
 def send_simple_mailgun_message(recipients, message, subject):
 	return requests.post(
 		MAILGUN_BASE_URL,
