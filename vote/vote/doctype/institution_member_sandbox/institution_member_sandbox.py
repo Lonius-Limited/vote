@@ -40,7 +40,7 @@ class InstitutionMemberSandbox(Document):
 
 		telephone, email = self.cell_number, self.email_address
 
-		status = "Rejected" if self.rejected else "Approved"
+		status = "Rejected" if self.get("rejected") else "Approved"
 
 		sms_msg = verification_confirmation_template.format(self.name, status)
 
