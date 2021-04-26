@@ -149,16 +149,16 @@ class BallotEntry(Document):
 
             frappe.get_doc(insert_args).insert(ignore_permissions=True)
 
-            return
+        else:
 
-		tally_doc = frappe.get_doc("Vote Repository", tally_document[0].get("name"))
+            tally_doc = frappe.get_doc("Vote Repository", tally_document[0].get("name"))
 
-		vote_count_before = tally_doc.get("vote_count")
+            vote_count_before = tally_doc.get("vote_count")
 
-		updated_tally = vote_count_before + 1
+            updated_tally = vote_count_before + 1
 
-		tally_doc.set("vote_count", updated_tally)
+            tally_doc.set("vote_count", updated_tally)
 
-		tally_doc.save(ignore_permissions=True)
+            tally_doc.save(ignore_permissions=True)
 
-		return
+        return

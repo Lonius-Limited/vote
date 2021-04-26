@@ -319,9 +319,9 @@ def post_ballot_entries():
 	if not election_list: return
 	open_elections = [x.get("name") for x in election_list]
 	list(map(lambda x: post_ballot_entries(x), open_elections))
-def post_election_ballot_entries(election=election):
+def post_election_ballot_entries(election=None):
 	if not election: return
-	ballot_entries = frappe.db.get_all("Ballot Entry", filters=dict(election=election, tallied=0), fields["name"], order_by="creation asc", page_length=100)
+	ballot_entries = frappe.db.get_all("Ballot Entry", filters=dict(election=election, tallied=0), fields=["name"], order_by="creation asc", page_length=100)
 	if not ballot_entries: return
 	documents = [frappe.get_doc("Ballot Entry", x.get("name")) for x in ballot_entries]
 	list(map(lambda x: x.add_to_tally(),documents))
