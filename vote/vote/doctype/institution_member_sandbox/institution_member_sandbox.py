@@ -12,7 +12,7 @@ from frappe import _
 from vote.utils.election_details import stage_otp
 from vote import sendmail
 
-verification_confirmation_template ="""Verification Alert,\n Your verification request ID {} has been {}."""
+verification_confirmation_template ="""Dear Dr. {},\n Your request for change of details has been {}. Your Voter ID is {}\n The voting_link is https://kmpdu.bizpok.com"""
 
 
 class InstitutionMemberSandbox(Document):
@@ -38,11 +38,15 @@ class InstitutionMemberSandbox(Document):
 			frappe.throw(f"{e}")
 	def on_submit(self):
 
+		master_doc = frappe.get_doc("Institution Member", self.link_with_document)
+
+		surname = master_doc.get("surname")
+
 		telephone, email = self.cell_number, self.email_address
 
 		status = "Rejected" if self.get("rejected") else "Approved"
 
-		sms_msg = verification_confirmation_template.format(self.name, status)
+		sms_msg = verification_confirmation_template.format(surname, status, self.link_with_document)
 
 
 		if telephone: send_sms([telephone], sms_msg)
