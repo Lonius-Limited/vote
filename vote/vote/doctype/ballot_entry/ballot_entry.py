@@ -9,88 +9,155 @@ from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
 from frappe import _
 from vote.utils.election_details import create_voter_wallet
-from vote.utils.ethereum import log_casted_vote, privKey, pubKey, get_votes_cast_bc, create_wallet
+from vote.utils.ethereum import (
+    log_casted_vote,
+    privKey,
+    pubKey,
+    get_votes_cast_bc,
+    create_wallet,
+)
 
 
 class BallotEntry(Document):
-	def after_insert(self):
-		return
-		# self.process_blockchain()
-	def process_blockchain(self):
+    def after_insert(self):
+        return
+        # self.process_blockchain()
 
-		voter = self.get("voter_id")
-		
-		election = self.get("election")
+    def process_blockchain(self):
 
-		# ballot_entry = frappe.get_all("Ballot Entry", filters=dict(name=self.name), fields=["*"])[0]
+        voter = self.get("voter_id")
 
-		def _get_ballot_data(self):
-			voter = self.voter_id
-			choice=[]
-			for j in self.ballot_entry_detail:
-				row = None
-				row = dict(position=j.position, branch=j.branch,candidate_id=j.candidate_id,candidate_name=j.candidate_name, choice=j.choice)
-				choice.append(row)
-			return dict(voter= voter, choice=choice)	
-	
-		ballot_data = _get_ballot_data(self)
+        election = self.get("election")
 
-		p_args = dict(name=voter, public_key=["!=",""], private_key =["!=",""])
-		
-		stored_wallet = frappe.get_all("Institution Member", filters = p_args, fields =["private_key","public_key"])
+        # ballot_entry = frappe.get_all("Ballot Entry", filters=dict(name=self.name), fields=["*"])[0]
 
-		wallet = None
+        def _get_ballot_data(self):
+            voter = self.voter_id
+            choice = []
+            for j in self.ballot_entry_detail:
+                row = None
+                row = dict(
+                    position=j.position,
+                    branch=j.branch,
+                    candidate_id=j.candidate_id,
+                    candidate_name=j.candidate_name,
+                    choice=j.choice,
+                )
+                choice.append(row)
+            return dict(voter=voter, choice=choice)
 
-		if stored_wallet:
-			wallet = stored_wallet[0]
-		if not wallet:
-			wallet = create_voter_wallet(frappe.get_doc("Institution Member",voter))
+        ballot_data = _get_ballot_data(self)
 
-		chain_payload = dict(election=election,voter=voter,ballot_data=ballot_data)
-		################################################To be changed
-		privKey = '0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af'
-		pubKey = '0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e'
+        p_args = dict(name=voter, public_key=["!=", ""], private_key=["!=", ""])
 
-		wallet = None
-		wallet = dict(private_key=privKey, public_key=pubKey)
-		
-		#############################################
-		tx_id = log_casted_vote(json.dumps(chain_payload, default=str), wallet.get("private_key"), wallet.get("public_key"))
+        stored_wallet = frappe.get_all(
+            "Institution Member", filters=p_args, fields=["private_key", "public_key"]
+        )
 
-		if tx_id:
-			self.send_ballot_receipt(tx_id)
-			self.db_set("posted_to_blockchain", 1)
-		return
-	def get_ballot_receipt_message(self, tx_id=''):
+        wallet = None
 
-		doc_hash = tx_id
+        if stored_wallet:
+            wallet = stored_wallet[0]
+        if not wallet:
+            wallet = create_voter_wallet(frappe.get_doc("Institution Member", voter))
 
-		doc_id = self.get("name")
+        chain_payload = dict(election=election, voter=voter, ballot_data=ballot_data)
+        ################################################To be changed
+        privKey = "0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af"
+        pubKey = "0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e"
 
-		time_of_voting = self.creation
+        wallet = None
+        wallet = dict(private_key=privKey, public_key=pubKey)
 
-		return f"You Voted!\nYour ballot was posted under ID: {doc_id} and blockchain hash {doc_hash}.\nTime of voting {time_of_voting}"
-	
-	def send_ballot_receipt(self, tx_id =None):
+        #############################################
+        tx_id = log_casted_vote(
+            json.dumps(chain_payload, default=str),
+            wallet.get("private_key"),
+            wallet.get("public_key"),
+        )
 
-		voter_id = self.get("voter_id")
+        if tx_id:
+            self.send_ballot_receipt(tx_id)
+            self.db_set("posted_to_blockchain", 1)
+        return
 
-		doc = frappe.get_doc("Institution Member", voter_id)
+    def get_ballot_receipt_message(self, tx_id=""):
 
-		telephone, email = doc.get("cell_number"), doc.get("email_address")
-	
-		message =  self.get_ballot_receipt_message(tx_id)
+        doc_hash = tx_id
 
+        doc_id = self.get("name")
 
-		if telephone: send_sms([telephone], message)
+        time_of_voting = self.creation
 
-		email_args =dict(
-			recipients = [email],
-		    message = _(message),
-			subject = _("Vote Receipt")
-		)
-		if email: enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
+        return f"You Voted!\nYour ballot was posted under ID: {doc_id} and blockchain hash {doc_hash}.\nTime of voting {time_of_voting}"
 
-		self.save(ignore_permissions=True)
+    def send_ballot_receipt(self, tx_id=None):
+
+        voter_id = self.get("voter_id")
+
+        doc = frappe.get_doc("Institution Member", voter_id)
+
+        telephone, email = doc.get("cell_number"), doc.get("email_address")
+
+        message = self.get_ballot_receipt_message(tx_id)
+
+        if telephone:
+            send_sms([telephone], message)
+
+        email_args = dict(
+            recipients=[email], message=_(message), subject=_("Vote Receipt")
+        )
+        if email:
+            enqueue(method=frappe.sendmail, queue="short", timeout=300, **email_args)
+
+        self.save(ignore_permissions=True)
+
+        return
+
+    def add_to_tally(self):
+        ballot = self.get("ballot_entry_detail")
+
+        choices = list(filter(lambda x: x.choice == 1, ballot))
+
+        for choice in choices:
+
+            update_tally(choice, self.get("election"))
+
+        self.db_set("tallied", 1)
+
+        return
+
+    def update_tally(choice={}, election=""):
+
+        args = dict(election=election, candidate=choice.get("candidate_id"))
+
+        tally_document = frappe.get_all(
+            "Vote Repository", filters=args, fields=["name"]
+        )
+
+        if not tally_document:
+
+            insert_args = dict(
+                doctype="Vote Repository",
+                election=election,
+                branch=choice.get("branch"),
+                position=choice.get("position"),
+                candidate=choice.get("candidate_id"),
+                vote_count=1
+            )
+
+            frappe.get_doc(insert_args).insert(ignore_permissions=True)
+
+            return
+
+		tally_doc = frappe.get_doc("Vote Repository", tally_document[0].get("name"))
+
+		vote_count_before = tally_doc.get("vote_count")
+
+		updated_tally = vote_count_before + 1
+
+		tally_doc.set("vote_count", updated_tally)
+
+		tally_doc.save(ignore_permissions=True)
 
 		return
