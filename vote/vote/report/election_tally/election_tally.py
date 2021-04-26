@@ -64,9 +64,9 @@ def get_branch_children(branch):
 def get_branch_voters(election, branch):
 	all_voters = frappe.db.get_all("Ballot Entry",filters={"election": election}, fields=["voter_id"])
 
-	voters =[x.get("voter_id") for x in all_voters]
+	voters = [x.get("voter_id") for x in all_voters]
 
-	institution= frappe.db.get_value("Election", election,'institution')
+	institution = frappe.db.get_value("Election", election,'institution')
 
 	branch_children = get_branch_children(branch)
 

@@ -228,7 +228,7 @@ def _return_branch_position_tally(election='', branch='', position='',pos_id=Non
 
 	tally = []
 
-	position_branch_results = get_results(election, branch=branch, position=position)
+	# position_branch_results = get_results(election, branch=branch, position=position)
 
 	eligible_voters  = get_available_e_ballots(election, branch = branch)
 
@@ -283,10 +283,11 @@ def get_election_results(election):
 
 		# print(results)
 		
-		if results.get("tally"):
-			contested_branch_results.append(results)
-		else:
-			k -= 1
+		# if results.get("tally"):
+		# 	contested_branch_results.append(results)
+		# else:
+		# 	k -= 1
+		contested_branch_results.append(results)
 	all_results["institution"] = institution
 	all_results["all_results"] = contested_branch_results
 
