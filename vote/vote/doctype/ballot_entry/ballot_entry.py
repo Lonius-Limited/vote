@@ -43,7 +43,7 @@ class BallotEntry(Document):
 		wallet = dict(private_key=privKey, public_key=pubKey)
 		
 		#############################################
-		tx_id = log_casted_vote(json.dumps(chain_payload), wallet.get("private_key"), wallet.get("public_key"))
+		tx_id = log_casted_vote(json.dumps(chain_payload, default=str), wallet.get("private_key"), wallet.get("public_key"))
 
 		if tx_id:
 			self.send_ballot_receipt(tx_id)
