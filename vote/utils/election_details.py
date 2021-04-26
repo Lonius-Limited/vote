@@ -280,6 +280,8 @@ def election_results_v2(election):
 
 		branch_results = None
 
+		branch_results = {}
+
 		for position in distinct_branch_positions:
 
 			k += 1
