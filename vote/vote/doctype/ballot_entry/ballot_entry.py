@@ -22,7 +22,18 @@ class BallotEntry(Document):
 		
 		election = self.get("election")
 
-		ballot_data = frappe.get_all("Ballot Entry", filters=dict(name=self.name), fields=["*"])[0]
+		# ballot_entry = frappe.get_all("Ballot Entry", filters=dict(name=self.name), fields=["*"])[0]
+
+		def _get_ballot_data(self):
+			voter = self.voter_id
+			choice=[]
+			for j in self.ballot_entry_detail:
+				row = None
+				row = dict(position=j.position, branch=j.branch,candidate_id=j.candidate_id,candidate_name=j.candidate_name, choice=j.choice)
+				choice.append(row)
+			return dict(voter= voter, choice=choice)	
+	
+		ballot_data = _get_ballot_data(self)
 
 		p_args = dict(name=voter, public_key=["!=",""], private_key =["!=",""])
 		
