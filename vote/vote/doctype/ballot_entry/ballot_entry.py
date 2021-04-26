@@ -121,13 +121,13 @@ class BallotEntry(Document):
 
         for choice in choices:
 
-            update_tally(choice, self.get("election"))
+            self.update_tally(choice, self.get("election"))
 
         self.db_set("tallied", 1)
 
         return
 
-    def update_tally(choice={}, election=""):
+    def update_tally(self,choice={}, election=""):
 
         args = dict(election=election, candidate=choice.get("candidate_id"))
 
