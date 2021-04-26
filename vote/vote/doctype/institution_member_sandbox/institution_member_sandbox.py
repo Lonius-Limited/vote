@@ -12,7 +12,7 @@ from frappe import _
 from vote.utils.election_details import stage_otp
 from vote import sendmail
 
-verification_confirmation_template ="""Dear Dr. {},\n Your request for change of details has been {}. Your Voter ID is {}\n The voting_link is https://kmpdu.bizpok.com"""
+verification_confirmation_template ="""Dear Dr. {},\nYour request for change of details has been {}.\nYour Voter ID is {}\nThe voting_link is https://kmpdu.bizpok.com"""
 
 
 class InstitutionMemberSandbox(Document):
