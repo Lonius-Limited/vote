@@ -272,9 +272,13 @@ def election_results_v2(election):
 
 		distinct_branch_positions =None
 
+		branch_turnout = None
+
 		branch_name = branch
 
 		branch_context = list(filter(lambda x: x.get("branch") == branch_name , results_repository))
+
+		branch_turnout = len(get_branch_voters(election, branch_name)) or 0
 
 		distinct_branch_positions = list(dict.fromkeys([x.get("position") for x in branch_context]))
 
@@ -298,7 +302,7 @@ def election_results_v2(election):
 				context_tally = None
 
 				context_tally =[]
-				
+
 				for j in position_context:
 					row = {}
 					row = dict(candidate_id=j.get("candidate"), candidate =  j.get("candidate_name"), votes = j.get("vote_count"))
@@ -306,7 +310,7 @@ def election_results_v2(election):
 				return context_tally
 			#######
 			eligible_voters = position_context[0].get("registered_voters") or 1
-			turnout = len(branch_context) or 0
+			turnout = branch_turnout
 			turnout_percent = turnout*100/eligible_voters
 			# position =  position_name
 			###########	
@@ -493,6 +497,7 @@ def handle_unposted_ballots():
 	list(map(lambda x: x.process_blockchain(), docs))
 
 	return
+# def send_bulk_s
 
 
 

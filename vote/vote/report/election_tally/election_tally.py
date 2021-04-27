@@ -61,21 +61,12 @@ def get_branch_children(branch):
 	get_children(branch=branch,search_params=args)
 	return children
 
-def get_branch_voters(election, branch):
-	all_voters = frappe.db.get_all("Ballot Entry",filters={"election": election}, fields=["voter_id"])
+def get_branch_voters(election, branch):#Those who voted
 
-	voters = [x.get("voter_id") for x in all_voters]
+	args = dict(election=election, branch=branch)
 
-	institution = frappe.db.get_value("Election", election,'institution')
+	return frappe.get_all("Ballot Entry", filters=args)	
 
-	branch_children = get_branch_children(branch)
-
-	institution_args = dict(institution=institution, electoral_district=["IN", branch_children], name=["IN", voters])
-
-	filtered_voters_for_branch = frappe.db.get_all("Institution Member", filters=institution_args, fields=["name"])
-
-	return [x.get("name") for x in filtered_voters_for_branch]
-	
 def search_params(branch=None, candidate_id=None, parent = None, position=None, page_length=None):
 	params= dict(
 		branch = branch,
