@@ -3,7 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-import frappe, json
+import frappe, json, hashlib
 from frappe.model.document import Document
 from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
@@ -15,6 +15,7 @@ from vote.utils.ethereum import (
     pubKey,
     get_votes_cast_bc,
     create_wallet,
+    w3
 )
 
 
@@ -62,6 +63,7 @@ class BallotEntry(Document):
             wallet = create_voter_wallet(frappe.get_doc("Institution Member", voter))
 
         chain_payload = dict(election=election, voter=voter, ballot_data=ballot_data)
+        payload_hash = hashlib.sha256((json.dumps(chain_payload, default=str)).encode('utf-8')).hexdigest()
         ################################################To be changed
         privKey = "0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af"
         pubKey = "0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e"
@@ -71,14 +73,22 @@ class BallotEntry(Document):
 
         #############################################
         tx_id = log_casted_vote(
-            json.dumps(chain_payload, default=str),
+            json.dumps({
+                "voter": voter,
+                "election": election,
+                "ballot": self.name,
+                "ballot_hash": str(payload_hash)}
+            ),
             wallet.get("private_key"),
             wallet.get("public_key"),
+            nonce=frappe.get_doc("Nonce").value
         )
+        frappe.get_doc("Nonce").db_set("value", (frappe.get_doc("Nonce").value + 1), commit=True)
 
         if tx_id:
             self.send_ballot_receipt(tx_id)
             self.db_set("posted_to_blockchain", 1)
+            
         return
 
     def get_ballot_receipt_message(self, tx_id=""):

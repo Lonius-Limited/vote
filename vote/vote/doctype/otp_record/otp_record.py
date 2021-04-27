@@ -12,30 +12,29 @@ from vote import sendmail
 
 
 class OTPRecord(Document):
-	def after_insert(self):
-		if self.instant_otp:
-			self.send_otp()
-	def send_otp(self):
-		voter_id = self.get("voter")
-		otp_code = self.get("key")
-		doc = frappe.get_doc("Institution Member", voter_id)
-		telephone, email = doc.get("cell_number"), doc.get("email_address")
-		message =  f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive."
-		send_sms([telephone], message)
-		docid = self.name
-		# email_args =dict(
-		# 	recipients = [email],
-		#     message = _(message),
-		# 	subject = _("OTP Code")
-		# )
-		email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"
-		sendmail(recipients=[email], message=_(email_message), subject=_(f"CryptoVote One Time Pin - {docid}"))
-		# enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
+    def after_insert(self):
+        if self.instant_otp:
+            self.send_otp()
 
-		return otp_code
-	def invalidate(self):
-		self.set("valid", False)
-		self.flags.ignore_permissions = True
-		self.save()
+    def send_otp(self):
+        voter_id = self.get("voter")
+        otp_code = self.get("key")
+        doc = frappe.get_doc("Institution Member", voter_id)
+        telephone, email = doc.get("cell_number"), doc.get("email_address")
+        message = f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive."
+        send_sms([telephone], message)
+        docid = self.name
+        email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"
+        sendmail(
+            recipients=[email],
+            message=_(email_message),
+            subject=_(f"CryptoVote One Time Pin - {docid}"),
+        )
+        # enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
 
+        return otp_code
 
+    def invalidate(self):
+        self.set("valid", False)
+        self.flags.ignore_permissions = True
+        self.save()

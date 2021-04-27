@@ -20,5 +20,16 @@
   "parenttype": null,
   "webhook_name": "KMPDU eVote #general",
   "webhook_url": "https://hooks.slack.com/services/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"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Slack Webhook URL",
+  "modified": "2021-04-26 08:26:38.672832",
+  "name": "KMPDU Dry Dun",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "webhook_name": "KMPDU Dry Dun ",
+  "webhook_url": "https://hooks.slack.com/services/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"
  }
 ]

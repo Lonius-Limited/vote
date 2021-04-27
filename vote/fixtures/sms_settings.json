@@ -3,7 +3,7 @@
   "docstatus": 0,
   "doctype": "SMS Settings",
   "message_parameter": "message",
-  "modified": "2021-04-21 13:12:31.200021",
+  "modified": "2021-04-25 10:32:25.179804",
   "name": "SMS Settings",
   "parameters": [
    {
@@ -12,7 +12,7 @@
     "parent": "SMS Settings",
     "parentfield": "parameters",
     "parenttype": "SMS Settings",
-    "value": "605c332cd412a"
+    "value": "60811df5a7488"
    },
    {
     "header": 0,
@@ -20,7 +20,7 @@
     "parent": "SMS Settings",
     "parentfield": "parameters",
     "parenttype": "SMS Settings",
-    "value": "bizpok"
+    "value": "velocity"
    },
    {
     "header": 0,
@@ -28,7 +28,7 @@
     "parent": "SMS Settings",
     "parentfield": "parameters",
     "parenttype": "SMS Settings",
-    "value": "22136"
+    "value": "KMPDU"
    }
   ],
   "parent": null,
