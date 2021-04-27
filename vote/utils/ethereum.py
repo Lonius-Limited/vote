@@ -82,16 +82,16 @@ def create_wallet():
 	# return {'private_key': acc.privateKey.hex(), 'public_key':acc.address}
 	# sorry guy
 
-def log_casted_vote(data, privKey, pubKey):
+def log_casted_vote(data, privKey, pubKey, nonce):
     _w3 = w3
-    nonce = w3.eth.get_transaction_count(pubKey)
+    
     _w3.eth.account.from_key(privKey)
     
     tx = contract.functions.castVote(data
             ).buildTransaction({
                 'gas': contract.functions.castVote(data).estimateGas(),
                 'gasPrice': w3.toWei('1', 'gwei'),
-                'nonce': nonce,
+                'nonce': nonce
     })
 
     signed_tx = _w3.eth.account.sign_transaction(tx, private_key=privKey)

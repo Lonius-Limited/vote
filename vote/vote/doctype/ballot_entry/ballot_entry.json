@@ -12,12 +12,16 @@
   "voter_name",
   "tx_hash",
   "current_tally",
-  "voter_email"
+  "voter_email",
+  "posted_to_blockchain",
+  "tallied",
+  "branch"
  ],
  "fields": [
   {
    "fieldname": "voter_id",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Voter ID",
    "options": "Institution Member"
   },
@@ -45,6 +49,7 @@
    "fetch_from": "voter_id.full_name",
    "fieldname": "voter_name",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Voter Name",
    "set_only_once": 1
   },
@@ -66,13 +71,36 @@
    "fetch_from": "voter_id.email_address",
    "fieldname": "voter_email",
    "fieldtype": "Small Text",
+   "hidden": 1,
    "label": "Voter Email",
    "options": "Email"
+  },
+  {
+   "default": "0",
+   "fieldname": "posted_to_blockchain",
+   "fieldtype": "Check",
+   "label": "Posted To Blockchain",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "tallied",
+   "fieldtype": "Check",
+   "label": "Tallied",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "voter_id.electoral_district",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Branch",
+   "options": "Electoral District"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-22 16:09:24.516120",
+ "modified": "2021-04-27 03:36:51.644533",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Ballot Entry",
