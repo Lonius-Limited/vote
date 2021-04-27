@@ -62,8 +62,12 @@ def get_branch_children(branch):
 	return children
 
 def get_branch_voters(election, branch):#Those who voted
+	
+	branch_children = []
 
-	args = dict(election=election, branch=branch)
+	branch_children = get_branch_children(branch)
+
+	args = dict(election=election, branch=["IN", branch_children])
 
 	return frappe.get_all("Ballot Entry", filters=args)	
 
