@@ -419,10 +419,12 @@ def get_election_results_v3(election=None):
     )
 
     all_results = []
-
+    
+	k = 0
+ 
     for j in advertised_positions:
 
-        k = 0
+        k += 1
 
         branch_results = {}
 
