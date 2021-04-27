@@ -465,10 +465,11 @@ def get_election_results_v3(election=None):
                     candidate=j.get("candidate_name"),
                     votes=j.get("vote_count"),
                 )
-                votes_cast += j.get("votes_cast")
+                votes_cast += j.get("vote_count")
                 context_tally.append(row)
             if votes_cast < branch_turnout:
                 context_tally.append[{"absconded": branch_turnout-votes_cast}]
+            votes_cast=0
             return context_tally
         
         tally = _get_branch_position_tally(context=context, branch_turnout= branch_turnout)
