@@ -433,6 +433,8 @@ def get_election_results_v3(election=None):
         position = None
 
         context = None
+        
+        tally = None
 
         branch_name = j.get("branch")
 
@@ -463,7 +465,7 @@ def get_election_results_v3(election=None):
                 )
                 context_tally.append(row)
             return context_tally
-
+		tally = _get_branch_position_tally(context=context)
         eligible_voters = (
             context[0].get("registered_voters")
             or len(get_branch_registered_voters(election=election, branch=branch_name))
@@ -482,7 +484,7 @@ def get_election_results_v3(election=None):
         branch_results["eligible_voters"] = eligible_voters
         branch_results["turnout"] = turnout
         branch_results["turnout_percent"] = turnout_percent
-        branch_results["tally"] = _get_branch_position_tally(context=context)
+        branch_results["tally"] = tally
         all_results.append(branch_results)
     return all_results
 
