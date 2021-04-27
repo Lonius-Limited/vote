@@ -468,7 +468,7 @@ def get_election_results_v3(election=None):
                 votes_cast += j.get("vote_count")
                 context_tally.append(row)
             if votes_cast < branch_turnout:
-                context_tally.append[{"absconded": branch_turnout-votes_cast}]
+                context_tally.append({"absconded": branch_turnout-votes_cast})
             votes_cast=0
             return context_tally
         
