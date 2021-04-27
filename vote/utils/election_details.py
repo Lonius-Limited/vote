@@ -466,7 +466,7 @@ def get_election_results_v3(election=None):
 
         eligible_voters = (
             context[0].get("registered_voters")
-            or get_branch_registered_voters(election=election, branch=branch_name)
+            or len(get_branch_registered_voters(election=election, branch=branch_name))
             or 1
         )
 
