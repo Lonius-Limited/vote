@@ -465,6 +465,7 @@ def get_election_results_v3(election=None):
                 )
                 context_tally.append(row)
             return context_tally
+        
 		tally = _get_branch_position_tally(context=context)
         eligible_voters = (
             context[0].get("registered_voters")
