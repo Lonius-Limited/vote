@@ -284,11 +284,11 @@ def election_results_v2(election):
 
 		branch_results = None
 
-		branch_results = {}
-
 		for position in distinct_branch_positions:
 
 			k += 1
+			
+			branch_results = {}
 
 			position_context = None
 
@@ -298,7 +298,7 @@ def election_results_v2(election):
 
 			position_context = list(filter(lambda x: x.get("position") == position_name , branch_context))
 
-			def get_branch_position_tally(position_context=position_context):
+			def _get_branch_position_tally(position_context=position_context):
 				context_tally = None
 
 				context_tally =[]
@@ -320,8 +320,8 @@ def election_results_v2(election):
 			branch_results["eligible_voters"] = eligible_voters
 			branch_results["turnout"] = turnout
 			branch_results["turnout_percent"]= turnout_percent
-			branch_results["tally"] = get_branch_position_tally(position_context=position_context)
-		all_results.append(branch_results)
+			branch_results["tally"] = _get_branch_position_tally(position_context=position_context)
+			all_results.append(branch_results)
 	return all_results
 def post_ballot_entries():
 	election_list = frappe.db.get_all("Election", filters=dict(status="Open"), fields=["name"])
@@ -496,8 +496,7 @@ def handle_unposted_ballots():
 
 	list(map(lambda x: x.process_blockchain(), docs))
 
-	return
-# def send_bulk_s
+	return	
 
 
 
