@@ -445,7 +445,7 @@ def get_election_results_v3(election=None):
         context = list(
             filter(
                 lambda x: (
-                    x.get("position") == position or x.get("branch") == branch_name
+                    x.get("position") == position and x.get("branch") == branch_name
                 ),
                 results_repository,
             )
