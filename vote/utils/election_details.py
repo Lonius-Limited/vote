@@ -429,6 +429,8 @@ def get_election_results_v3(election=None):
         branch_name = None
 
         position = None
+        
+        
 
         context = None
 
@@ -476,7 +478,7 @@ def get_election_results_v3(election=None):
         ###########
         branch_results["id"] = k
         branch_results["branch"] = branch_name
-        branch_results["position"] = position_name
+        branch_results["position"] = position
         branch_results["eligible_voters"] = eligible_voters
         branch_results["turnout"] = turnout
         branch_results["turnout_percent"] = turnout_percent
