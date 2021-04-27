@@ -451,10 +451,12 @@ def get_election_results_v3(election=None):
             )
         )
 
-        def _get_branch_position_tally(context=[]):
+        def _get_branch_position_tally(context=[], branch_turnout=0):
             context_tally = None
 
             context_tally = []
+            
+            votes_cast = 0
 
             for j in context:
                 row = {}
@@ -463,10 +465,13 @@ def get_election_results_v3(election=None):
                     candidate=j.get("candidate_name"),
                     votes=j.get("vote_count"),
                 )
+                votes_cast += j.get("votes_cast")
                 context_tally.append(row)
+            if votes_cast < branch_turnout:
+                context_tally.append[{"absconded": branch_turnout-votes_cast}]
             return context_tally
         
-        tally = _get_branch_position_tally(context=context)
+        tally = _get_branch_position_tally(context=context, branch_turnout= branch_turnout)
         eligible_voters = (
             context[0].get("registered_voters")
             or len(get_branch_registered_voters(election=election, branch=branch_name))
