@@ -405,6 +405,14 @@ def _return_branch_position_tally(election="", branch="", position="", pos_id=No
 @frappe.whitelist()
 def get_election_results_v3(election=None):
 
+    institution = frappe.get_value("Election", election, "institution")
+    
+    payload ={}
+
+    payload["institution"]=institution
+
+    
+    
     position_args = dict(parent=election)
 
     advertised_positions = frappe.get_all(
@@ -493,6 +501,8 @@ def get_election_results_v3(election=None):
         branch_results["turnout_percent"] = turnout_percent
         branch_results["tally"] = tally
         all_results.append(branch_results)
+        
+        payload["all_results"] = all_results
     return all_results
 
 
