@@ -14,7 +14,8 @@ MAIL_FROM ="IEC KMPDU <mailgun@email.dalasystems.com>"
 
 def sendmail(recipients=[], message="Test Message", subject ="Test Subject", args=None):
     voter = None
-    arg_keys = [x for x in list(args.keys())] if args else []
+    arg_keys = []
+    if args: args = [x for x in list(args.keys())]
     if recipients:
        if "voter" in arg_keys:
            voter = args.get("voter")              
@@ -24,9 +25,9 @@ def sendmail(recipients=[], message="Test Message", subject ="Test Subject", arg
        
        for recipient in recipients:
            
-           log_args = dict(doctype="Voter Mail Log", voter=voter, email_address=recipient, message=message, subject=subject, response=f"""{response.json()}""")
+           log_args = dict(doctype="Voter Mail Log", voter=voter, email_address=recipient, message=message, subject=subject, response_text=f"""{response.json()}""")
            
-           frappe.get_doc(log_args).insert(ignore_permissions=True)
+        #    frappe.get_doc(log_args).insert(ignore_permissions=True)
 
            print(log_args)
        

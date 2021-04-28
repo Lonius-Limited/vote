@@ -16,7 +16,7 @@ from vote.vote.report.election_tally.election_tally import get_results
 from vote.img_utils import get_headshot, get_party_symbol
 from vote.vote.report.election_tally.election_tally import get_branch_voters
 
-ILLEGAL_LOGIN = "Sorry, the Voter id or Member ID provided do not match our records"
+ILLEGAL_LOGIN = "Sorry, the Voter ID or National ID provided do not match our records"
 WRONG_OTP = "Sorry, the OTP code has either been used or is invalid"
 OTP_STAGED = "OTP message has been staged, click Retry if you need to resend the OTP"
 MULTIPLE_BALLOT_ENTRIES = "Sorry, you cannot post a ballot twice"

@@ -7,8 +7,10 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "institution",
+  "reject_this_application",
+  "create_a_new_record",
   "link_with_document",
+  "institution",
   "column_break_3",
   "member_id",
   "board_number",
@@ -268,13 +270,25 @@
    "label": "Link With Document",
    "options": "Institution Member",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "create_a_new_record",
+   "fieldtype": "Check",
+   "label": "Create a New Record"
+  },
+  {
+   "default": "0",
+   "fieldname": "reject_this_application",
+   "fieldtype": "Check",
+   "label": "Reject This Application"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-04-28 13:48:01.156354",
+ "modified": "2021-04-28 14:00:45.561745",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member Sandbox",

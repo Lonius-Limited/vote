@@ -9,7 +9,9 @@
   "email_address",
   "subject",
   "message",
-  "response"
+  "response",
+  "response_html",
+  "response_text"
  ],
  "fields": [
   {
@@ -31,7 +33,7 @@
   },
   {
    "fieldname": "response",
-   "fieldtype": "Text",
+   "fieldtype": "HTML Editor",
    "label": "Response",
    "read_only": 1
   },
@@ -40,11 +42,23 @@
    "fieldtype": "Data",
    "label": "Subject",
    "read_only": 1
+  },
+  {
+   "fieldname": "response_html",
+   "fieldtype": "HTML Editor",
+   "label": "Response HTML",
+   "read_only": 1
+  },
+  {
+   "fieldname": "response_text",
+   "fieldtype": "Text Editor",
+   "label": "Response Text",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-28 11:57:40.830325",
+ "modified": "2021-04-28 14:24:29.818804",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Voter Mail Log",
