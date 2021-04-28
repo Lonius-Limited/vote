@@ -84,4 +84,9 @@ class Election(Document):
 			row = self.append("candidate_position_settings",{})
 			row.position = post.name
 			row.maximum_number_of_positions = 1
-		if save_doc: doc.save(ignore_permissions = True)
+		if save_doc: doc.save(ignore_permissions = True)	
+	def persist_voter_stats_per_district(self):
+		doc = frappe.get_doc("Voter Register",self.get("applicable_voter_register"))
+		doc.persist_voter_stats()
+
+  

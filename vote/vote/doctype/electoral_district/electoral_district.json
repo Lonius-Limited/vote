@@ -10,6 +10,9 @@
   "institution",
   "electoral_district_name",
   "region_id",
+  "reference_election",
+  "registered_voters",
+  "active_register",
   "lft",
   "rgt",
   "is_group",
@@ -72,12 +75,33 @@
    "fieldtype": "Link",
    "label": "Institution",
    "options": "Institution"
+  },
+  {
+   "fieldname": "reference_election",
+   "fieldtype": "Link",
+   "label": "Reference Election",
+   "options": "Election",
+   "read_only": 1
+  },
+  {
+   "fieldname": "registered_voters",
+   "fieldtype": "Int",
+   "label": "Registered Voters",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "description": "The active voter register.",
+   "fieldname": "active_register",
+   "fieldtype": "Link",
+   "label": "Active Register",
+   "options": "Voter Register"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2021-04-16 18:19:31.626471",
+ "modified": "2021-04-28 19:14:08.111680",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Electoral District",
