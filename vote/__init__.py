@@ -13,8 +13,19 @@ API = "4021f0585c350e90ff563fce35e29f3d-71b35d7e-e9e3edbd"
 MAIL_FROM ="IEC KMPDU <mailgun@email.dalasystems.com>"
 
 def sendmail(recipients=[], message="Test Message", subject ="Test Subject", args=None):
+    voter = None
+    arg_keys = [x for x in list(args.keys())]
    if recipients:
-       return send_simple_mailgun_message(recipients, message, subject)
+       if "voter" in arg_keys:
+           voter = args.get("voter")     
+             
+       response = send_simple_mailgun_message(recipients, message, subject)
+       
+       log_args = dict(doctype="Voter Mail Log", voter=voter, email_address=recipients[0], message=message, subject=subject, response=response)
+       
+       frappe.new_doc(log_args).insert(ignore_permissions=True)
+       
+       return log_args
     # return sendgrid_email(recipients, message, subject)
 def send_simple_mailgun_message(recipients, message, subject):
 	return requests.post(

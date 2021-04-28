@@ -25,8 +25,8 @@ class BulkMessaging(Document):
 		self.queue_action('submit')
 		frappe.msgprint("Transaction has begun in the background")
 	def on_submit(self):
-		# sms_context = frappe.get_all("Institution Member", filters=dict(cell_number=["!=", ""]), fields=["surname","other_names","cell_number","name","email_address"])
-		sms_context = frappe.get_all("Institution Member", filters=dict(cell_number =["IN", ["0722810063","0722256327"]]), fields=["surname","other_names","cell_number","name","email_address"])
+		sms_context = frappe.get_all("Institution Member", filters=dict(cell_number=["!=", ""]), fields=["surname","other_names","cell_number","name","email_address"])
+		# sms_context = frappe.get_all("Institution Member", filters=dict(cell_number =["IN", ["0722810063","0722256327"]]), fields=["surname","other_names","cell_number","name","email_address"])
 		subject = self.get("subject")
 
 		for j in sms_context:
