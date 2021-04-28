@@ -9,6 +9,18 @@ from frappe import enqueue
 from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from vote import sendmail
 
+template = """
+	<div>
+	<p><b>Dear {} </b></p> 
+	<p>You have been registered to participate in the KMPDU elections 2021. </p>
+	<p><b>VOTER ID:</b> {} </p>
+	<p>Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.</p>
+	<p><b>URL:</b> https://kmpdu.bizpok.com </p>
+	<br/>
+	<b>KMPDU IEC</b>
+	</div>
+"""
+
 
 
 class BulkMessaging(Document):
@@ -28,5 +40,7 @@ class BulkMessaging(Document):
 			email =j.get("email_address").replace("+","")
 			msg = eval(f"""f'''{template}'''""")
 			send_sms([telephone], msg)
-			sendmail(recipients=[email], message=msg, subject = subject)
+			#################
+
+			sendmail(recipients=[email], message = msg, subject = f"{subject}")
 		return
