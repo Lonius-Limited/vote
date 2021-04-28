@@ -493,11 +493,8 @@ def get_election_results_v3(election=None):
         tally = _get_branch_position_tally(
             context=context, branch_turnout=branch_turnout
         )
-        eligible_voters = (
-            context[0].get("registered_voters")
-            or len(get_branch_registered_voters(election=election, branch=branch_name))
-            or 1
-        )
+        
+        eligible_voters = context[0].get("registered_voters") or len(get_branch_registered_voters(election=election, branch=branch_name)) or 1
 
         turnout = branch_turnout
 
@@ -532,7 +529,20 @@ def get_branch_registered_voters(election=None, branch=None):
         filters=dict(parent=linked_voter_register, branch=branch),
         fields=["*"],
     )
+##############
 
+def get_branch_eligible_voters(linked_voter_register=None, branch=None):
+    
+    if not linked_voter_register:
+        return []
+
+    linked_branches = get_branch_children(branch)
+
+    return frappe.get_all(
+        "Voter Register Member",
+        filters=dict(parent=linked_voter_register, branch=["IN", linked_branches]),
+        fields=["*"],
+    )
 
 @frappe.whitelist()
 def election_results_v2(election):

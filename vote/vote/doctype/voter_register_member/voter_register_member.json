@@ -8,7 +8,8 @@
   "member_id",
   "member_name",
   "position",
-  "system_id"
+  "system_id",
+  "branch"
  ],
  "fields": [
   {
@@ -35,12 +36,19 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Member ID"
+  },
+  {
+   "fetch_from": "system_id.electoral_district",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Electoral District"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-04-12 20:28:33.149085",
+ "modified": "2021-04-28 18:31:58.943450",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Voter Register Member",
