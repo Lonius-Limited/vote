@@ -22,7 +22,8 @@ OTP_STAGED = "OTP message has been staged, click Retry if you need to resend the
 MULTIPLE_BALLOT_ENTRIES = "Sorry, you cannot post a ballot twice"
 PAYLOAD_NOT_PROVIDED = "Sorry, no data has been provided."
 SUCCESSFUL_POSTING = "Success! Your data has been posted successfully, it will be verified before being posted into the master list. As part of verification process you may receive a call from our agents to collect some more data from you."
-PAYLOAD_DUPLICATED_REQUEST ="Sorry, an existing verification record is in the system already. We did not post this"
+PAYLOAD_DUPLICATED_REQUEST = "Sorry, an existing verification record is in the system already. We did not post this"
+
 
 @frappe.whitelist(allow_guest=True)
 def authenticate_voter(voter_id="", member_id=""):
@@ -149,9 +150,7 @@ def voter_details_sandbox(payload=None):
         data = json.loads(payload)
         data["doctype"] = "Institution Member Sandbox"
 
-        verification_args = dict(
-            doctype=data.get("doctype"), board_number=data.get("board_number")
-        )
+        verification_args = dict(board_number=data.get("board_number"))
         if frappe.get_all("Institution Member Sandbox", filters=verification_args):
             frappe.local.response.update(
                 {

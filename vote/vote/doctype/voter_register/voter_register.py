@@ -27,5 +27,4 @@ class VoterRegister(Document):
 				})
 	def onsubmit():
 		self.alert_voters()
-	def alert_voters():
-		pass
+	def sync_
