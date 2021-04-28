@@ -44,7 +44,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-28 11:10:11.043563",
+ "modified": "2021-04-28 11:57:40.830325",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Voter Mail Log",
@@ -65,5 +65,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

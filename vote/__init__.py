@@ -15,17 +15,22 @@ MAIL_FROM ="IEC KMPDU <mailgun@email.dalasystems.com>"
 def sendmail(recipients=[], message="Test Message", subject ="Test Subject", args=None):
     voter = None
     arg_keys = [x for x in list(args.keys())]
-   if recipients:
+    if recipients:
        if "voter" in arg_keys:
-           voter = args.get("voter")     
-             
-       response = send_simple_mailgun_message(recipients, message, subject)
+           voter = args.get("voter")              
+       response = send_simple_mailgun_message(recipients, message, subject)#Brayo hapa ndo you need to switch, or we make this dynamic
        
-       log_args = dict(doctype="Voter Mail Log", voter=voter, email_address=recipients[0], message=message, subject=subject, response=response)
+       log_args = None
        
-       frappe.new_doc(log_args).insert(ignore_permissions=True)
+       for recipient in recipients:
+           
+           log_args = dict(doctype="Voter Mail Log", voter=voter, email_address=recipient, message=message, subject=subject, response=f"""{response.json()}""")
+           
+           frappe.get_doc(log_args).insert(ignore_permissions=True)
+
+           print(log_args)
        
-       return log_args
+       return response
     # return sendgrid_email(recipients, message, subject)
 def send_simple_mailgun_message(recipients, message, subject):
 	return requests.post(
@@ -35,10 +40,6 @@ def send_simple_mailgun_message(recipients, message, subject):
 			"to": recipients,
 			"subject": subject,
 			"html": message})
-
-
-
-
 def sendgrid_email(recepients, message, subject):
     email = Mail(
         from_email='IEC KMPDU <elections@kmpdu.org>',
