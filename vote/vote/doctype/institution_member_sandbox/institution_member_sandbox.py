@@ -10,10 +10,16 @@ from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
 from frappe import _
 from vote.utils.election_details import stage_otp
-from vote import sendmail
+import vote
 
 verification_confirmation_template ="""Dear Dr. {},\nYour request for change of details has been {}.\nYour Voter ID is {}\nThe voting_link is https://kmpdu.bizpok.com"""
 
+email_msg_template = """
+	<div>
+ 		<h6>Dear Dr. {},</h6> <p>Your request for change of details has been <b>{}</b>. 
+ 		Your Voter ID is <b>{}</b>.The voting_link is https://kmpdu.bizpok.com</p>
+	</div>
+  	"""
 
 class InstitutionMemberSandbox(Document):
 	def before_submit(self):
@@ -49,8 +55,12 @@ class InstitutionMemberSandbox(Document):
 
 		sms_msg = verification_confirmation_template.format(surname, status, self.link_with_document)
 
-
+		email_msg = email_msg_template.format(surname, status, self.link_with_document)
+  
 		if telephone: send_sms([telephone], sms_msg)
+  
+		if email:  vote.sendmail(recipients=[email], message = email_msg, subject = _("Voter Verification Alert"))
+  
 
 		return
 
