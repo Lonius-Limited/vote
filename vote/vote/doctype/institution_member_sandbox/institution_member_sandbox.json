@@ -7,6 +7,9 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "reject_this_application",
+  "create_a_new_record",
+  "link_with_document",
   "institution",
   "column_break_3",
   "member_id",
@@ -50,7 +53,7 @@
    "fieldtype": "Link",
    "label": "Institution",
    "options": "Institution",
-   "set_only_once": 1
+   "reqd": 1
   },
   {
    "fieldname": "column_break_3",
@@ -227,6 +230,7 @@
   },
   {
    "description": "Region or branch one belongs to. Permissions apply upwards based on hierarchy of branches. e.g if one belongs to Branch A which is under Branch B and the Overall Branch is C, they will be restricted to vie and/or vote only those branches(A,B and C).",
+   "fetch_from": "link_with_document.electoral_district",
    "fieldname": "electoral_district",
    "fieldtype": "Link",
    "label": "Electoral District",
@@ -259,13 +263,32 @@
    "fieldname": "electoral_district_text",
    "fieldtype": "Data",
    "label": "Electoral District Text"
+  },
+  {
+   "fieldname": "link_with_document",
+   "fieldtype": "Link",
+   "label": "Link With Document",
+   "options": "Institution Member",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "create_a_new_record",
+   "fieldtype": "Check",
+   "label": "Create a New Record"
+  },
+  {
+   "default": "0",
+   "fieldname": "reject_this_application",
+   "fieldtype": "Check",
+   "label": "Reject This Application"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-04-22 20:26:00.608793",
+ "modified": "2021-04-28 14:00:45.561745",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member Sandbox",
