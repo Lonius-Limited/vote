@@ -417,7 +417,13 @@ def _return_branch_position_tally(election="", branch="", position="", pos_id=No
 @frappe.whitelist()
 def get_election_results_v3(election=None):
 
-    institution = frappe.get_value("Election", election, "institution")
+    data = frappe.get_value("Election", election, ["institution","applicable_voter_register"],as_dict=1)
+                            
+    institution = data.get("institution")
+
+    linked_voter_register = data.get("applicable_voter_register")
+
+    applicable_voter_register = frappe.get_value("Election", election, "applicable") #get_branch_eligible_voters(linked_voter_register=None, branch=None)
 
     payload = {}
 
@@ -494,7 +500,7 @@ def get_election_results_v3(election=None):
             context=context, branch_turnout=branch_turnout
         )
         
-        eligible_voters = context[0].get("registered_voters") or len(get_branch_registered_voters(election=election, branch=branch_name)) or 1
+        eligible_voters = context[0].get("registered_voters") or len(get_branch_eligible_voters(linked_voter_register=linked_voter_register, branch=branch_name)) or 1
 
         turnout = branch_turnout
 
