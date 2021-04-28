@@ -503,7 +503,7 @@ def get_election_results_v3(election=None):
         all_results.append(branch_results)
         
         payload["all_results"] = all_results
-    return all_results
+    return payload
 
 
 def get_branch_registered_voters(election=None, branch=None):
