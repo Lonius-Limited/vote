@@ -15,11 +15,7 @@ import vote
 verification_confirmation_template ="""Dear Dr. {},\nYour request for change of details has been {}.\nYour Voter ID is {}\nThe voting_link is https://kmpdu.bizpok.com"""
 
 email_msg_template = """
-	<div>
- 		<h6>Dear Dr. {},</h6> <p>Your request for change of details has been <b>{}</b>. 
- 		Your Voter ID is <b>{}</b>.The voting_link is https://kmpdu.bizpok.com</p>
-	</div>
-  	"""
+	<div><h6>Dear Dr. {},</h6> <p>Your request for change of details has been <b>{}</b>.Your Voter ID is <b>{}</b>.The voting_link is https://kmpdu.bizpok.com</p></div>"""
 
 class InstitutionMemberSandbox(Document):
 	def before_submit(self):
@@ -37,7 +33,7 @@ class InstitutionMemberSandbox(Document):
 			master_doc = frappe.get_doc("Institution Member", self.link_with_document)
 			master_doc.set("cell_number",self.get("cell_number"))
 			master_doc.set("email_address",self.get("email_address"))
-   			master_doc.set("id_number",self.get("id_number"))
+			master_doc.set("id_number",self.get("id_number"))
 			master_doc.save(ignore_permissions=True)	
 			# master_doc.db_set("board_number",self.board_number)		
 			return master_doc.name
@@ -59,7 +55,7 @@ class InstitutionMemberSandbox(Document):
   
 		if telephone: send_sms([telephone], sms_msg)
   
-		if email:  vote.sendmail(recipients=[email], message = email_msg, subject = _("Voter Verification Alert"))
+		if email: vote.sendmail(recipients=[email], message = email_msg, subject = _("Voter Verification Alert"))
   
 
 		return
