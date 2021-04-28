@@ -22,7 +22,7 @@ OTP_STAGED = "OTP message has been staged, click Retry if you need to resend the
 MULTIPLE_BALLOT_ENTRIES = "Sorry, you cannot post a ballot twice"
 PAYLOAD_NOT_PROVIDED = "Sorry, no data has been provided."
 SUCCESSFUL_POSTING = "Success! Your data has been posted successfully, it will be verified before being posted into the master list. As part of verification process you may receive a call from our agents to collect some more data from you."
-
+PAYLOAD_DUPLICATED_REQUEST ="Sorry, an existing verification record is in the system already. We did not post this"
 
 @frappe.whitelist(allow_guest=True)
 def authenticate_voter(voter_id="", member_id=""):
@@ -148,6 +148,19 @@ def voter_details_sandbox(payload=None):
     try:
         data = json.loads(payload)
         data["doctype"] = "Institution Member Sandbox"
+
+        verification_args = dict(
+            doctype=data.get("doctype"), board_number=data.get("board_number")
+        )
+        if frappe.get_all("Institution Member Sandbox", filters=verification_args):
+            frappe.local.response.update(
+                {
+                    "message": "Failed to post your data",
+                    "status": "error",
+                    "error": str(PAYLOAD_DUPLICATED_REQUEST),
+                }
+            )
+            return
         doc = frappe.get_doc(data).insert(ignore_permissions=True)
         docname = doc.get("name")
         frappe.local.response.update(
@@ -406,13 +419,11 @@ def _return_branch_position_tally(election="", branch="", position="", pos_id=No
 def get_election_results_v3(election=None):
 
     institution = frappe.get_value("Election", election, "institution")
-    
-    payload ={}
 
-    payload["institution"]=institution
+    payload = {}
 
-    
-    
+    payload["institution"] = institution
+
     position_args = dict(parent=election)
 
     advertised_positions = frappe.get_all(
@@ -441,7 +452,7 @@ def get_election_results_v3(election=None):
         position = None
 
         context = None
-        
+
         tally = None
 
         branch_name = j.get("branch")
@@ -463,7 +474,7 @@ def get_election_results_v3(election=None):
             context_tally = None
 
             context_tally = []
-            
+
             votes_cast = 0
 
             for j in context:
@@ -476,11 +487,13 @@ def get_election_results_v3(election=None):
                 votes_cast += j.get("vote_count")
                 context_tally.append(row)
             if votes_cast < branch_turnout:
-                context_tally.append({"absconded": branch_turnout-votes_cast})
-            votes_cast=0
+                context_tally.append({"absconded": branch_turnout - votes_cast})
+            votes_cast = 0
             return context_tally
-        
-        tally = _get_branch_position_tally(context=context, branch_turnout= branch_turnout)
+
+        tally = _get_branch_position_tally(
+            context=context, branch_turnout=branch_turnout
+        )
         eligible_voters = (
             context[0].get("registered_voters")
             or len(get_branch_registered_voters(election=election, branch=branch_name))
@@ -501,7 +514,7 @@ def get_election_results_v3(election=None):
         branch_results["turnout_percent"] = turnout_percent
         branch_results["tally"] = tally
         all_results.append(branch_results)
-        
+
         payload["all_results"] = all_results
     return payload
 
