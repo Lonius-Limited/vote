@@ -9,6 +9,7 @@ from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
 from frappe import _
 from vote.utils.election_details import create_voter_wallet
+import vote
 from vote.utils.ethereum import (
     log_casted_vote,
     privKey,
@@ -118,7 +119,8 @@ class BallotEntry(Document):
             recipients=[email], message=_(message), subject=_("Vote Receipt")
         )
         if email:
-            enqueue(method=frappe.sendmail, queue="short", timeout=300, **email_args)
+            vote.sendmail(recipients=[email], message=_(message),subject=_("Vote Receipt"))
+            # enqueue(method=frappe.sendmail, queue="short", timeout=300, **email_args)
 
         self.save(ignore_permissions=True)
 
