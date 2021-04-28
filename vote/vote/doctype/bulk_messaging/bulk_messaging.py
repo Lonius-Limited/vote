@@ -7,7 +7,7 @@ import frappe
 from frappe.model.document import Document
 from frappe import enqueue
 from frappe.core.doctype.sms_settings.sms_settings import send_sms
-from vote import sendmail
+import vote
 
 template = """
 	<div>
@@ -48,5 +48,5 @@ class BulkMessaging(Document):
 			send_sms([telephone], msg)
 			#################
 
-			sendmail(recipients=[email_address], message = email_msg, subject = f"{subject}")
+			vote.sendmail(recipients=[email_address], message = email_msg, subject = f"{subject}")
 		return

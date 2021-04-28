@@ -14,7 +14,7 @@ import vote
 
 verification_confirmation_template ="""Dear Dr. {},\nYour request for change of details has been {}.\nYour Voter ID is {}\nThe voting_link is https://kmpdu.bizpok.com"""
 
-email_msg_template = ="""
+email_msg_template = """
 	<div>
  		<h6>Dear Dr. {},</h6> <p>Your request for change of details has been <b>{}</b>. 
  		Your Voter ID is <b>{}</b>.The voting_link is https://kmpdu.bizpok.com</p>
@@ -55,11 +55,11 @@ class InstitutionMemberSandbox(Document):
 
 		sms_msg = verification_confirmation_template.format(surname, status, self.link_with_document)
 
-		email_msg = email_msg_template..format(surname, status, self.link_with_document)
+		email_msg = email_msg_template.format(surname, status, self.link_with_document)
   
 		if telephone: send_sms([telephone], sms_msg)
   
-		if email:  sendmail(recipients=[email], message = msg, subject = f"{subject}")
+		if email:  vote.sendmail(recipients=[email], message = email_msg, subject = _("Voter Verification Alert"))
   
 
 		return
