@@ -33,7 +33,9 @@ class VoterRegister(Document):
 		sum_total = 0
 		for j in all_branches:
 			voters = len(get_branch_eligible_voters(linked_voter_register=self.name, branch=j))
-			frappe.get_doc("Electoral District", j).db_set("registered_voters", voters)
+			doc = frappe.get_doc("Electoral District", j)
+			doc.db_set("registered_voters", voters)
+			doc.db_set("active_register",self.name)
 		return
    
 		
