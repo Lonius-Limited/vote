@@ -423,8 +423,6 @@ def get_election_results_v3(election=None):
 
     linked_voter_register = data.get("applicable_voter_register")
 
-    applicable_voter_register = frappe.get_value("Election", election, "applicable") #get_branch_eligible_voters(linked_voter_register=None, branch=None)
-
     payload = {}
 
     payload["institution"] = institution
