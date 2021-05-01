@@ -3,7 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-import frappe, json
+import frappe, json, regex, re
 from frappe.model.document import Document
 from vote.utils.ethereum import (
     log_casted_vote,
@@ -23,6 +23,7 @@ MULTIPLE_BALLOT_ENTRIES = "Sorry, you cannot post a ballot twice"
 PAYLOAD_NOT_PROVIDED = "Sorry, no data has been provided."
 SUCCESSFUL_POSTING = "Success! Your data has been posted successfully, it will be verified before being posted into the master list. As part of verification process you may receive a call from our agents to collect some more data from you."
 PAYLOAD_DUPLICATED_REQUEST = "Sorry, an existing verification record is in the system already. We did not post this"
+ELECTION_EXPIRED = "Sorry,election has already expired"
 
 
 @frappe.whitelist(allow_guest=True)
@@ -304,6 +305,13 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
     """1. Posts a ballot to a Ballot Entry Doctype"""
     try:
 
+        def election_is_expired(election):
+            from datetime import datetime
+
+            return datetime.now() > frappe.db.get_value(
+                "Election", election, "election_ends"
+            )
+
         def ballot_tally(election):
             tally_args = dict(election=election)
             ballots = frappe.get_list("Ballot Entry", filters=tally_args)
@@ -316,12 +324,84 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
                 fields=["name"],
             )
 
+        def validate_ballot(election=None, ballot=None, voter=None):
+            response = dict(is_valid=True, message="Ok")
+            from datetime import datetime, timedelta
+
+            recent_otp = frappe.get_all(
+                "OTP Record",
+                filters=dict(voter=voter),
+                fields=["creation"],
+                order_by="creation desc",
+                page_length=1,
+            )
+            if not recent_otp:
+                response.is_valid = False
+                response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
+                return response
+            if datetime.now() > recent_otp[0].get("creation") + timedelta(
+                minutes=30
+            ):
+                response.is_valid = False
+                response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
+                return response
+
+            position_args = dict(parent=election)
+
+            advertised_positions = frappe.get_all(
+                "Candidate Position Settings",
+                filters=position_args,
+                fields=["branch", "position", "maximum_number_of_positions"],
+                order_by="idx asc",
+            )
+            illegal_ballot=""
+            for branch_position in advertised_positions:
+                context = []
+                maximum_posts = branch_position.get("maximum_number_of_positions")
+                context = list(
+                    filter(
+                        lambda x: x.get(
+                            "branch" == branch_position.get("branch")
+                            and x.get("position" == branch_position.get("position")), ballot_data
+                        )
+                    )
+                )
+                if len(context) > maximum_posts:
+                    illegal_ballot += f"{branch_position.get("branch")} {branch_position.get("position")}"
+                if len(illegal_ballot >0):
+                    response.is_valid = False
+                    response.message = f"Sorry, your ballot entries for {illegal_ballot} are invalid because you selected more candidates than the acceptable limit"
+            return response
+
         if already_voted(voter, election):
             frappe.local.response.update(
                 {
                     "message": "Failed to post your ballot",
                     "status": "error",
                     "error": str(MULTIPLE_BALLOT_ENTRIES),
+                }
+            )
+            return
+        if election_is_expired(election):
+            frappe.local.response.update(
+                {
+                    "message": "Failed to post your ballot",
+                    "status": "error",
+                    "error": str(ELECTION_EXPIRED),
+                }
+            )
+            return
+        ballot_data = json.loads(ballot_data)
+
+        validity_status = validate_ballot(election=election, ballot=ballot_data)
+
+        if not validity_status.get("is_valid"):
+
+            frappe.local.response.update(
+                {
+                    "message": "Failed to post your ballot",
+                    "status": "error",
+                    "error": str(validity_status.get("message")),
                 }
             )
             return
@@ -334,7 +414,7 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
                 "election": election,
             }
         )
-        ballot_data = json.loads(ballot_data)
+
         for theposition in ballot_data:
             position = theposition.get("position")
             branch = theposition.get("branch")
@@ -417,8 +497,10 @@ def _return_branch_position_tally(election="", branch="", position="", pos_id=No
 @frappe.whitelist()
 def get_election_results_v3(election=None):
 
-    data = frappe.get_value("Election", election, ["institution","applicable_voter_register"],as_dict=1)
-                            
+    data = frappe.get_value(
+        "Election", election, ["institution", "applicable_voter_register"], as_dict=1
+    )
+
     institution = data.get("institution")
 
     linked_voter_register = data.get("applicable_voter_register")
@@ -497,8 +579,19 @@ def get_election_results_v3(election=None):
         tally = _get_branch_position_tally(
             context=context, branch_turnout=branch_turnout
         )
-        
-        eligible_voters = context[0].get("registered_voters") or len(get_branch_eligible_voters(linked_voter_register=linked_voter_register, branch=branch_name)) or 1
+        absconded = []
+        absconded = [x for x in tally if "absconded" in x.keys()]
+        if absconded:
+            branch_results["absconded"] = tally.pop().get("absconded")
+        eligible_voters = (
+            context[0].get("registered_voters")
+            or len(
+                get_branch_eligible_voters(
+                    linked_voter_register=linked_voter_register, branch=branch_name
+                )
+            )
+            or 1
+        )
 
         turnout = branch_turnout
 
@@ -516,7 +609,8 @@ def get_election_results_v3(election=None):
         all_results.append(branch_results)
 
         payload["all_results"] = all_results
-    return payload
+
+    return to_return
 
 
 def get_branch_registered_voters(election=None, branch=None):
@@ -533,10 +627,13 @@ def get_branch_registered_voters(election=None, branch=None):
         filters=dict(parent=linked_voter_register, branch=branch),
         fields=["*"],
     )
+
+
 ##############
 
+
 def get_branch_eligible_voters(linked_voter_register=None, branch=None):
-    
+
     if not linked_voter_register:
         return []
 
@@ -547,6 +644,7 @@ def get_branch_eligible_voters(linked_voter_register=None, branch=None):
         filters=dict(parent=linked_voter_register, branch=["IN", linked_branches]),
         fields=["*"],
     )
+
 
 @frappe.whitelist()
 def election_results_v2(election):
@@ -619,7 +717,7 @@ def election_results_v2(election):
                     row = {}
                     row = dict(
                         candidate_id=j.get("candidate"),
-                        candidate=j.get("candidate_name"),
+                        candidate=j.get("candidate_name") or "-",
                         votes=j.get("vote_count"),
                     )
                     context_tally.append(row)
@@ -652,6 +750,7 @@ def post_ballot_entries():
         return
     open_elections = [x.get("name") for x in election_list]
     list(map(lambda x: post_election_ballot_entries(x), open_elections))
+    return
 
 
 def post_election_ballot_entries(election=None):
@@ -877,6 +976,9 @@ def handle_unposted_ballots():
         return
     docs = [frappe.get_doc("Ballot Entry", x.get("name")) for x in unposted]
 
+    list(map(lambda x: x.send_ballot_receipt(), docs))
     list(map(lambda x: x.process_blockchain(), docs))
+
+    # send_ballot_receipt
 
     return

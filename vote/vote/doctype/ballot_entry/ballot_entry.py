@@ -81,29 +81,30 @@ class BallotEntry(Document):
                 "ballot_hash": str(payload_hash)}
             ),
             wallet.get("private_key"),
-            wallet.get("public_key"),
-            nonce=frappe.get_doc("Nonce").value
+            wallet.get("public_key")
         )
-        frappe.get_doc("Nonce").db_set("value", (frappe.get_doc("Nonce").value + 1), commit=True)
+        
 
         if tx_id:
-            self.send_ballot_receipt(tx_id)
+            self.db_set("tx_hash", tx_id)
+            self.send_ballot_receipt(tx_id=tx_id)
             self.db_set("posted_to_blockchain", 1)
-            
         return
 
-    def get_ballot_receipt_message(self, tx_id=""):
+    def get_ballot_receipt_message(self, tx_id=None):
 
         doc_hash = tx_id
 
         doc_id = self.get("name")
 
+        voter_id = self.get("voter_id")
+
         time_of_voting = self.creation
-
-        return f"You Voted!\nYour ballot was posted under ID: {doc_id} and blockchain hash {doc_hash}.\nTime of voting {time_of_voting}"
-
+        if doc_hash:
+            return f"Dear voter {voter_id}! Your ballot was posted under ID: {doc_id} and blockchain hash {doc_hash}.Time of voting {time_of_voting}"
+        return f"You Voted! Your ballot was posted under ID: {doc_id}.Time of voting {time_of_voting}"
     def send_ballot_receipt(self, tx_id=None):
-
+        
         voter_id = self.get("voter_id")
 
         doc = frappe.get_doc("Institution Member", voter_id)
