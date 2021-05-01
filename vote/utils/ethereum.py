@@ -1,6 +1,8 @@
 from web3 import Web3
 import uuid
 w3 = Web3(Web3.HTTPProvider('https://ropsten.infura.io/v3/32ed9238d7784cd2a1d35e5bda567a37'))
+import frappe
+
 
 abi = """[
 	{
@@ -82,7 +84,7 @@ def create_wallet():
 	# return {'private_key': acc.privateKey.hex(), 'public_key':acc.address}
 	# sorry guy
 
-def log_casted_vote(data, privKey, pubKey, nonce):
+def log_casted_vote(data, privKey, pubKey):
     _w3 = w3
     
     _w3.eth.account.from_key(privKey)
@@ -91,21 +93,22 @@ def log_casted_vote(data, privKey, pubKey, nonce):
             ).buildTransaction({
                 'gas': contract.functions.castVote(data).estimateGas(),
                 'gasPrice': w3.toWei('1', 'gwei'),
-                'nonce': nonce
+                'nonce': frappe.get_doc("Nonce").value
     })
 
     signed_tx = _w3.eth.account.sign_transaction(tx, private_key=privKey)
 
     tx_id = _w3.toHex(w3.keccak(signed_tx.rawTransaction))
     print("tx_id: ", tx_id)
-    print("previous_state: - votes cast: ", (contract.functions.getVotesCast().call()))
+    # print("previous_state: - votes cast: ", (contract.functions.getVotesCast().call()))
     print("previous_state: - vote count: ", contract.functions.getCount().call())
     res = _w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    frappe.get_doc("Nonce").db_set("value", (frappe.get_doc("Nonce").value + 1), commit=True)
     
     return tx_id
 
-privKey = '0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af'
-pubKey = '0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e'
+privKey = '0x351c55e9ef64c2f5796f722c09c8168b5dd16b52d59eaf4d96390f4e9039a6ef'
+pubKey = '0x30A3d349b62caeE1824C08c23DcD1F0b20eBb5Fc'
 
 def get_votes_cast_bc():
 	return contract.functions.getVotesCast().call()
