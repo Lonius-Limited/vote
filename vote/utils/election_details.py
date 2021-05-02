@@ -367,7 +367,7 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
                     )
                 )
                 if len(context) > maximum_posts:
-                    illegal_ballot += f"{branch_position.get("branch")} {branch_position.get("position")}"
+                    illegal_ballot += f"{branch_position.get('branch')} {branch_position.get('position')}"
                 if len(illegal_ballot >0):
                     response.is_valid = False
                     response.message = f"Sorry, your ballot entries for {illegal_ballot} are invalid because you selected more candidates than the acceptable limit"
