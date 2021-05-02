@@ -69,8 +69,8 @@ class BallotEntry(Document):
         privKey = "0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af"
         pubKey = "0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e"
 
-        wallet = None
-        wallet = dict(private_key=privKey, public_key=pubKey)
+        # wallet = None
+        wallet = dict(private_key=wallet.private_key, public_key=wallet.public_key)
 
         #############################################
         tx_id = log_casted_vote(
