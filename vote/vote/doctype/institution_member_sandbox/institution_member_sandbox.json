@@ -69,8 +69,7 @@
    "fieldname": "board_number",
    "fieldtype": "Data",
    "label": "Board Number",
-   "set_only_once": 1,
-   "unique": 1
+   "set_only_once": 1
   },
   {
    "fieldname": "section_break_3",
@@ -285,7 +284,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-05-03 21:26:32.783393",
+ "modified": "2021-05-03 21:28:43.658748",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member Sandbox",
