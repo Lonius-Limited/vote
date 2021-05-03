@@ -567,6 +567,7 @@ def get_election_results_v3(election=None):
                     candidate_id=j.get("candidate"),
                     candidate=j.get("candidate_name"),
                     votes=j.get("vote_count"),
+                    headshot=get_headshot(j.get("candidate"))
                 )
                 votes_cast += j.get("vote_count")
                 context_tally.append(row)
