@@ -52,8 +52,7 @@
    "fieldname": "institution",
    "fieldtype": "Link",
    "label": "Institution",
-   "options": "Institution",
-   "reqd": 1
+   "options": "Institution"
   },
   {
    "fieldname": "column_break_3",
@@ -70,7 +69,6 @@
    "fieldname": "board_number",
    "fieldtype": "Data",
    "label": "Board Number",
-   "reqd": 1,
    "set_only_once": 1,
    "unique": 1
   },
@@ -268,8 +266,7 @@
    "fieldname": "link_with_document",
    "fieldtype": "Link",
    "label": "Link With Document",
-   "options": "Institution Member",
-   "reqd": 1
+   "options": "Institution Member"
   },
   {
    "default": "0",
@@ -288,7 +285,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-04-28 14:00:45.561745",
+ "modified": "2021-05-03 21:26:32.783393",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member Sandbox",
