@@ -588,7 +588,6 @@ def get_election_results_v3(election=None):
                     linked_voter_register=linked_voter_register, branch=branch_name
                 )
             )
-            or 1
         )
 
         turnout = branch_turnout
