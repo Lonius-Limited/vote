@@ -583,8 +583,7 @@ def get_election_results_v3(election=None):
         if absconded:
             branch_results["absconded"] = tally.pop().get("absconded")
         eligible_voters = (
-            context[0].get("registered_voters")
-            or len(
+            len(
                 get_branch_eligible_voters(
                     linked_voter_register=linked_voter_register, branch=branch_name
                 )
@@ -594,7 +593,7 @@ def get_election_results_v3(election=None):
 
         turnout = branch_turnout
 
-        turnout_percent = turnout * 100 / eligible_voters
+        turnout_percent = turnout * 100 / (eligible_voters or 1)
 
         # position =  position_name
         ###########
