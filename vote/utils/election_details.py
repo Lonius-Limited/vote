@@ -124,17 +124,17 @@ def authenticate_otp(voter_id, key, resend_otp=0):
 @frappe.whitelist(allow_guest=True)
 def voter_details_sandbox(payload=None):
     """
-                    Acceptable/Sample data payload
+                                    Acceptable/Sample data payload
 
-                     {
-                    "member_id":"8418748729",
-                    "board_number":"97593592850",
-                    "surname":"Kamuge",
-                    "other_names":"Thuranira Paul",
-                    "id_number":"6513561537",
-                    "cell_number":"0772919939",
-                    "email_address":"dsmwaura@gmail.com",
-                    "electoral_district_text": "Moi Teaching and referral"
+                                     {
+                                    "member_id":"8418748729",
+                                    "board_number":"97593592850",
+                                    "surname":"Kamuge",
+                                    "other_names":"Thuranira Paul",
+                                    "id_number":"6513561537",
+                                    "cell_number":"0772919939",
+                                    "email_address":"dsmwaura@gmail.com",
+                                    "electoral_district_text": "Moi Teaching and referral"
 
     }
     """
@@ -339,9 +339,7 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
                 response.is_valid = False
                 response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
                 return response
-            if datetime.now() > recent_otp[0].get("creation") + timedelta(
-                minutes=30
-            ):
+            if datetime.now() > recent_otp[0].get("creation") + timedelta(minutes=30):
                 response.is_valid = False
                 response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
                 return response
@@ -354,7 +352,7 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
                 fields=["branch", "position", "maximum_number_of_positions"],
                 order_by="idx asc",
             )
-            illegal_ballot=""
+            illegal_ballot = ""
             for branch_position in advertised_positions:
                 context = []
                 maximum_posts = branch_position.get("maximum_number_of_positions")
@@ -362,13 +360,14 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
                     filter(
                         lambda x: x.get(
                             "branch" == branch_position.get("branch")
-                            and x.get("position" == branch_position.get("position")), ballot_data
+                            and x.get("position" == branch_position.get("position")),
+                            ballot_data,
                         )
                     )
                 )
                 if len(context) > maximum_posts:
                     illegal_ballot += f"{branch_position.get('branch')} {branch_position.get('position')}"
-                if len(illegal_ballot >0):
+                if len(illegal_ballot > 0):
                     response.is_valid = False
                     response.message = f"Sorry, your ballot entries for {illegal_ballot} are invalid because you selected more candidates than the acceptable limit"
             return response
@@ -976,8 +975,24 @@ def handle_unposted_ballots():
         return
     docs = [frappe.get_doc("Ballot Entry", x.get("name")) for x in unposted]
 
-    list(map(lambda x: x.send_ballot_receipt(), docs))
+    # list(map(lambda x: x.send_ballot_receipt(), docs))
     list(map(lambda x: x.process_blockchain(), docs))
+
+    # send_ballot_receipt
+
+    return
+
+
+def handle_unreceipted_ballots():
+    unposted = frappe.get_all(
+        "Ballot Entry", filters=dict(receipted=False), fields=["name"]
+    )
+    if not unposted:
+        return
+    docs = [frappe.get_doc("Ballot Entry", x.get("name")) for x in unposted]
+
+    list(map(lambda x: x.send_ballot_receipt(), docs))
+    # list(map(lambda x: x.process_blockchain(), docs))
 
     # send_ballot_receipt
 

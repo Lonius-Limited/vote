@@ -14,6 +14,7 @@
   "current_tally",
   "voter_email",
   "posted_to_blockchain",
+  "receipted",
   "tallied",
   "branch"
  ],
@@ -96,11 +97,18 @@
    "hidden": 1,
    "label": "Branch",
    "options": "Electoral District"
+  },
+  {
+   "default": "0",
+   "fieldname": "receipted",
+   "fieldtype": "Check",
+   "label": "Receipted",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-27 03:36:51.644533",
+ "modified": "2021-05-03 20:36:20.478096",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Ballot Entry",
