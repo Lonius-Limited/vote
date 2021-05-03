@@ -124,17 +124,17 @@ def authenticate_otp(voter_id, key, resend_otp=0):
 @frappe.whitelist(allow_guest=True)
 def voter_details_sandbox(payload=None):
     """
-                                    Acceptable/Sample data payload
+                                                                    Acceptable/Sample data payload
 
-                                     {
-                                    "member_id":"8418748729",
-                                    "board_number":"97593592850",
-                                    "surname":"Kamuge",
-                                    "other_names":"Thuranira Paul",
-                                    "id_number":"6513561537",
-                                    "cell_number":"0772919939",
-                                    "email_address":"dsmwaura@gmail.com",
-                                    "electoral_district_text": "Moi Teaching and referral"
+                                                                     {
+                                                                    "member_id":"8418748729",
+                                                                    "board_number":"97593592850",
+                                                                    "surname":"Kamuge",
+                                                                    "other_names":"Thuranira Paul",
+                                                                    "id_number":"6513561537",
+                                                                    "cell_number":"0772919939",
+                                                                    "email_address":"dsmwaura@gmail.com",
+                                                                    "electoral_district_text": "Moi Teaching and referral"
 
     }
     """
@@ -583,7 +583,8 @@ def get_election_results_v3(election=None):
         if absconded:
             branch_results["absconded"] = tally.pop().get("absconded")
         eligible_voters = (
-            len(
+            context[0].get("registered_voters")
+            or len(
                 get_branch_eligible_voters(
                     linked_voter_register=linked_voter_register, branch=branch_name
                 )
