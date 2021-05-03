@@ -609,7 +609,7 @@ def get_election_results_v3(election=None):
 
         payload["all_results"] = all_results
 
-    return to_return
+    return payload
 
 
 def get_branch_registered_voters(election=None, branch=None):
