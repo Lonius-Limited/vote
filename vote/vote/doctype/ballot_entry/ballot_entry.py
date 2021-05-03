@@ -16,7 +16,7 @@ from vote.utils.ethereum import (
     pubKey,
     get_votes_cast_bc,
     create_wallet,
-    w3
+    w3,
 )
 
 
@@ -64,7 +64,9 @@ class BallotEntry(Document):
             wallet = create_voter_wallet(frappe.get_doc("Institution Member", voter))
 
         chain_payload = dict(election=election, voter=voter, ballot_data=ballot_data)
-        payload_hash = hashlib.sha256((json.dumps(chain_payload, default=str)).encode('utf-8')).hexdigest()
+        payload_hash = hashlib.sha256(
+            (json.dumps(chain_payload, default=str)).encode("utf-8")
+        ).hexdigest()
         ################################################To be changed
         privKey = "0x88493446687bb3ec38cd62ea85f46ea4a36e77e61bd41d1caff3bb58c5d2e1af"
         pubKey = "0x8f7B5cE33bef6ddf5cCF7ad9FcE4F7E1bfBb8E9e"
@@ -74,16 +76,17 @@ class BallotEntry(Document):
 
         #############################################
         tx_id = log_casted_vote(
-            json.dumps({
-                "voter": voter,
-                "election": election,
-                "ballot": self.name,
-                "ballot_hash": str(payload_hash)}
+            json.dumps(
+                {
+                    "voter": voter,
+                    "election": election,
+                    "ballot": self.name,
+                    "ballot_hash": str(payload_hash),
+                }
             ),
             wallet.get("private_key"),
-            wallet.get("public_key")
+            wallet.get("public_key"),
         )
-        
 
         if tx_id:
             self.db_set("tx_hash", tx_id)
@@ -103,8 +106,9 @@ class BallotEntry(Document):
         if doc_hash:
             return f"Dear voter {voter_id}! Your ballot was posted under ID: {doc_id} and blockchain hash {doc_hash}.Time of voting {time_of_voting}"
         return f"You Voted! Your ballot was posted under ID: {doc_id}.Time of voting {time_of_voting}"
+
     def send_ballot_receipt(self, tx_id=None):
-        
+
         voter_id = self.get("voter_id")
 
         doc = frappe.get_doc("Institution Member", voter_id)
@@ -120,7 +124,9 @@ class BallotEntry(Document):
             recipients=[email], message=_(message), subject=_("Vote Receipt")
         )
         if email:
-            vote.sendmail(recipients=[email], message=_(message),subject=_("Vote Receipt"))
+            vote.sendmail(
+                recipients=[email], message=_(message), subject=_("Vote Receipt")
+            )
             # enqueue(method=frappe.sendmail, queue="short", timeout=300, **email_args)
 
         self.save(ignore_permissions=True)
@@ -140,7 +146,7 @@ class BallotEntry(Document):
 
         return
 
-    def update_tally(self,choice={}, election=""):
+    def update_tally(self, choice={}, election=""):
 
         args = dict(election=election, candidate=choice.get("candidate_id"))
 
@@ -157,7 +163,7 @@ class BallotEntry(Document):
                 position=choice.get("position"),
                 candidate=choice.get("candidate_id"),
                 vote_count=1,
-                ballot = choice.get("parent")
+                ballot=choice.get("parent"),
             )
 
             frappe.get_doc(insert_args).insert(ignore_permissions=True)
