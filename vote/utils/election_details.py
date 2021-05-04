@@ -297,6 +297,8 @@ def get_candidates_per_position(election, position=None, branch=None):
     )  # ..Party, Symbol, Image,
     for j in result:
         j["choice"] = 0
+        candidate_id = j.get("candidate_id")
+        j.headshot = get_headshot(id = candidate_id)
     return result
 
 
@@ -567,7 +569,7 @@ def get_election_results_v3(election=None):
                     candidate_id=j.get("candidate"),
                     candidate=j.get("candidate_name"),
                     votes=j.get("vote_count"),
-                    headshot=get_headshot(j.get("candidate"))
+                    headshot=get_headshot(j.get("candidate")),
                 )
                 votes_cast += j.get("vote_count")
                 context_tally.append(row)
@@ -583,11 +585,9 @@ def get_election_results_v3(election=None):
         absconded = [x for x in tally if "absconded" in x.keys()]
         if absconded:
             branch_results["absconded"] = tally.pop().get("absconded")
-        eligible_voters = (
-            len(
-                get_branch_eligible_voters(
-                    linked_voter_register=linked_voter_register, branch=branch_name
-                )
+        eligible_voters = len(
+            get_branch_eligible_voters(
+                linked_voter_register=linked_voter_register, branch=branch_name
             )
         )
 
