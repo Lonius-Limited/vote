@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "format:V-REG-{#####}",
  "creation": "2020-12-02 16:46:35.047158",
  "doctype": "DocType",
@@ -37,6 +38,7 @@
    "options": "populate_active_members"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "active_members",
    "fieldtype": "Table",
    "label": "Active Members",
@@ -46,7 +48,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-04-28 18:19:31.060231",
+ "modified": "2021-05-05 23:50:26.253644",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Voter Register",

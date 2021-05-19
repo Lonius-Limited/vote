@@ -21,7 +21,7 @@ class OTPRecord(Document):
         otp_code = self.get("key")
         doc = frappe.get_doc("Institution Member", voter_id)
         telephone, email = doc.get("cell_number"), doc.get("email_address")
-        message = f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive."
+        message = f"Your OTP Code is {otp_code}."
         send_sms([telephone], message)
         docid = self.name
         email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"

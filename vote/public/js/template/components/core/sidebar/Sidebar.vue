@@ -34,7 +34,7 @@ export default {
   created() {
     frappe.call({
       method:
-        "clinical.clinical.page.nurses_portal.nurses_portal.get_appointments",
+        "clinical.api.nurses_portal.get_appointments",
       args: {
         start: 0,
         page_length: 20,
@@ -51,7 +51,7 @@ export default {
   mounted() {
     frappe.call({
       method:
-        "clinical.clinical.page.nurses_portal.nurses_portal.get_appointments",
+        "clinical.api.nurses_portal.get_appointments",
       args: {
         start: 0,
         page_length: 20,

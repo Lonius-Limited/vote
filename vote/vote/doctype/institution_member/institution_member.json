@@ -237,14 +237,13 @@
    "description": "Such as licence, membership number issued by a professional body. Not to be confused with Member registration number",
    "fieldname": "board_number",
    "fieldtype": "Data",
-   "label": "Board Number",
-   "set_only_once": 1
+   "label": "Board Number"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-22 19:47:29.429387",
+ "modified": "2021-05-05 09:31:39.414436",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",
