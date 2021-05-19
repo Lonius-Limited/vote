@@ -27,6 +27,10 @@ class BallotEntry(Document):
 
     def process_blockchain(self):
 
+        if self.tx_hash:
+            self.db_set("posted_to_blockchain", 1)
+            return
+
         voter = self.get("voter_id")
 
         election = self.get("election")
@@ -60,8 +64,11 @@ class BallotEntry(Document):
 
         if stored_wallet:
             wallet = stored_wallet[0]
+        print(f"{voter}")
         if not wallet:
-            wallet = create_voter_wallet(frappe.get_doc("Institution Member", voter))
+            self.db_set("no_wallet", 1)
+            return
+            # wallet = create_voter_wallet(frappe.get_doc("Institution Member", voter))
 
         chain_payload = dict(election=election, voter=voter, ballot_data=ballot_data)
         payload_hash = hashlib.sha256(
@@ -73,6 +80,9 @@ class BallotEntry(Document):
 
         # wallet = None
         wallet = dict(private_key=wallet.private_key, public_key=wallet.public_key)
+
+        if not wallet:
+            return
 
         #############################################
         tx_id = log_casted_vote(
@@ -89,8 +99,9 @@ class BallotEntry(Document):
         )
 
         if tx_id:
+            print(f"Hash {tx_id}")
             self.db_set("tx_hash", tx_id)
-            self.send_ballot_receipt(tx_id=tx_id)
+            # self.send_ballot_receipt(tx_id=tx_id)
             self.db_set("posted_to_blockchain", 1)
         return
 
@@ -131,6 +142,8 @@ class BallotEntry(Document):
 
         self.save(ignore_permissions=True)
 
+        self.db_set("receipted", 1)
+
         return
 
     def add_to_tally(self):
@@ -143,6 +156,8 @@ class BallotEntry(Document):
             self.update_tally(choice, self.get("election"))
 
         self.db_set("tallied", 1)
+
+        self.flatten_ballot_by_voter_branch()
 
         return
 
@@ -181,3 +196,13 @@ class BallotEntry(Document):
             tally_doc.save(ignore_permissions=True)
 
         return
+
+    def flatten_ballot_by_voter_branch(self):
+        ballot_id = self.name
+        print(f"Working on {ballot_id}")
+        ballot = self.get("ballot_entry_detail")
+        voter_branch = self.branch
+        for choice in ballot:
+            choice.set("voter_branch", voter_branch)
+            break
+        self.save(ignore_permissions=True)

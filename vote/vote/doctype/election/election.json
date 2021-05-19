@@ -1,7 +1,6 @@
 {
- "_comments": "[]",
- "_liked_by": "[]",
  "actions": [],
+ "allow_rename": 1,
  "autoname": "format:EL-{institution}-{YYYY}-{####}",
  "creation": "2020-12-02 19:04:18.360590",
  "doctype": "DocType",
@@ -43,6 +42,7 @@
    "label": "Valid Period"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "election_start",
    "fieldtype": "Datetime",
    "in_list_view": 1,
@@ -50,6 +50,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "election_ends",
    "fieldtype": "Datetime",
    "in_list_view": 1,
@@ -111,6 +112,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "candidates",
    "fieldtype": "Table",
    "label": "Candidates",
@@ -128,6 +130,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "candidate_position_settings",
    "fieldtype": "Table",
    "label": "Open Vacancies Per Position",
@@ -145,7 +148,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-04-07 23:49:01.372816",
+ "modified": "2021-05-05 23:01:34.683380",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Election",

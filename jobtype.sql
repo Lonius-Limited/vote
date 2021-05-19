@@ -1,4 +1,4 @@
-DELETE FROM  `tabScheduled Job Type` WHERE name ='bulk_sms_switch';
+DELETE FROM  `tabScheduled Job Type` WHERE name ='post_to_blockchainv2';
 
 INSERT INTO `tabScheduled Job Type` (`name`,method,frequency,cron_format,create_log)
-VALUES('bulk_sms_switch','vote.vote.doctype.bulk_messaging.handler.handle_sms_cron','Cron','* * * * * *',1);
+VALUES('post_to_blockchainv3','vote.utils.election_details.handle_unposted_ballots','Cron','*/15 * * * *',1);

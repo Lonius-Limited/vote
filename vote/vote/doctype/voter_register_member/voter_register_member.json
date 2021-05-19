@@ -25,6 +25,7 @@
    "label": "Position"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "system_id",
    "fieldtype": "Link",
    "label": "System ID",
@@ -38,6 +39,7 @@
    "label": "Member ID"
   },
   {
+   "allow_on_submit": 1,
    "fetch_from": "system_id.electoral_district",
    "fieldname": "branch",
    "fieldtype": "Link",
@@ -48,7 +50,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-04-28 18:31:58.943450",
+ "modified": "2021-05-05 23:51:18.546855",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Voter Register Member",

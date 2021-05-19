@@ -14,6 +14,7 @@
   "ballot",
   "vote_count",
   "registered_voters",
+  "remarks",
   "amended_from"
  ],
  "fields": [
@@ -77,13 +78,19 @@
   {
    "fieldname": "vote_count",
    "fieldtype": "Int",
-   "label": "Vote Count"
+   "label": "Vote Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-04-27 01:34:11.872105",
+ "modified": "2021-05-09 09:30:17.445217",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Vote Repository",

@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "MSG.#####",
  "creation": "2021-04-27 02:19:53.768180",
  "doctype": "DocType",
@@ -13,6 +14,7 @@
   "section_break_5",
   "message",
   "email",
+  "initiated",
   "sent",
   "html_3",
   "amended_from"
@@ -78,12 +80,20 @@
    "fieldtype": "Check",
    "label": "Sent",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "initiated",
+   "fieldtype": "Check",
+   "label": "Initiated",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-05-03 16:15:21.426886",
+ "modified": "2021-05-09 20:44:54.574364",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Bulk Messaging",
