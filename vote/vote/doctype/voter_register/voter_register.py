@@ -9,6 +9,7 @@ from vote.utils.election_details import get_branch_eligible_voters
 class VoterRegister(Document):
 	def before_save(self):
 		self.populate_active_members()
+	@frappe.whitelist()
 	def populate_active_members(self):
 		if not self.institution:
 			frappe.throw("Please select the institution")

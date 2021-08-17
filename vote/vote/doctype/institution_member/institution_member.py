@@ -99,7 +99,14 @@ class InstitutionMember(Document):
 		frappe.msgprint("User {0} - {1} has been assigned to {2}".format(userid, fullname, institution))
 		#self.flags.ignore_user_permissions=True
 		self.save()'''
-	def create_application_user(self):
+	def create_application_user(self, preferred_role_profile = None):
+		existing_user =	frappe.get_all("User", filters = dict(email=self.email_address), fields =["*"])
+		if existing_user:
+			if existing_user[0].get("role_profile_name") =='KMPDU Audit': return
+			doc = frappe.get_doc("User", self.email_address)
+			doc.db_set("role_profile_name", preferred_role_profile)
+			# doc.save(ignore_permissions = True)
+			return
 		position = self.current_position
 		
 		position_settings = frappe.db.get_value("Institution Position",position,
@@ -111,14 +118,15 @@ class InstitutionMember(Document):
 		if not position_settings.requires_application_user_account:
 			frappe.throw(f"{position} not permitted to have a user account. Please update Institution Position")
 			return
-		role_profile = "Institution Manager"
+		role_profile = preferred_role_profile or "Institution Manager"
+		frappe.flags.in_import = True
 		user = frappe.get_doc({
 							'doctype': 'User',
-							'send_welcome_email': 1,
+							'send_welcome_email': 0,
 							'email': self.email_address,
 							'first_name': self.full_name,
-							'role_profile': role_profile
-							#'user_type': 'Website User'
+							'role_profile_name': role_profile,
+							'user_type': 'System User'
 							#'redirect_url': link
 							})
 		user.insert()
