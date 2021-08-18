@@ -40,7 +40,8 @@
   "eligible_candidate",
   "electoral_district",
   "applicable_voter_districts",
-  "image"
+  "image",
+  "alerted"
  ],
  "fields": [
   {
@@ -237,14 +238,19 @@
    "description": "Such as licence, membership number issued by a professional body. Not to be confused with Member registration number",
    "fieldname": "board_number",
    "fieldtype": "Data",
-   "label": "Board Number",
-   "set_only_once": 1
+   "label": "Board Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "alerted",
+   "fieldtype": "Check",
+   "label": "Alerted"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-22 19:47:29.429387",
+ "modified": "2021-08-17 23:08:20.024675",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",

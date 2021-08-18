@@ -1,11 +1,13 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "MSG.#####",
  "creation": "2021-04-27 02:19:53.768180",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "send_messages",
   "subject",
   "custom_recipients_section",
   "send_to_custom_recipients",
@@ -13,6 +15,7 @@
   "section_break_5",
   "message",
   "email",
+  "initiated",
   "sent",
   "html_3",
   "amended_from"
@@ -78,12 +81,26 @@
    "fieldtype": "Check",
    "label": "Sent",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.docstatus==1",
+   "fieldname": "send_messages",
+   "fieldtype": "Button",
+   "label": "Send Messages"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "initiated",
+   "fieldtype": "Check",
+   "label": "Initiated",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-05-03 16:15:21.426886",
+ "modified": "2021-08-17 19:26:36.046062",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Bulk Messaging",

@@ -298,7 +298,7 @@ def get_candidates_per_position(election, position=None, branch=None):
     for j in result:
         j["choice"] = 0
         candidate_id = j.get("candidate_id")
-        j.headshot = get_headshot(id = candidate_id)
+        j.headshot = get_headshot(id=candidate_id)
     return result
 
 
@@ -326,53 +326,53 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
                 fields=["name"],
             )
 
-        def validate_ballot(election=None, ballot=None, voter=None):
-            response = dict(is_valid=True, message="Ok")
-            from datetime import datetime, timedelta
+        # def validate_ballot(election=None, ballot=None, voter=None):
+        #     response = dict(is_valid=True, message="Ok")
+        #     from datetime import datetime, timedelta
 
-            recent_otp = frappe.get_all(
-                "OTP Record",
-                filters=dict(voter=voter),
-                fields=["creation"],
-                order_by="creation desc",
-                page_length=1,
-            )
-            if not recent_otp:
-                response.is_valid = False
-                response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
-                return response
-            if datetime.now() > recent_otp[0].get("creation") + timedelta(minutes=30):
-                response.is_valid = False
-                response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
-                return response
+        #     recent_otp = frappe.get_all(
+        #         "OTP Record",
+        #         filters=dict(voter=voter),
+        #         fields=["creation"],
+        #         order_by="creation desc",
+        #         page_length=1,
+        #     )
+        #     if not recent_otp:
+        #         response.is_valid = False
+        #         response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
+        #         return response
+        #     if datetime.now() > recent_otp[0].get("creation") + timedelta(minutes=30):
+        #         response.is_valid = False
+        #         response.message = "There is no record of a VALID OTP entered in the past 30 minutes. Please Logout and request for a new OTP"
+        #         return response
 
-            position_args = dict(parent=election)
+        #     position_args = dict(parent=election)
 
-            advertised_positions = frappe.get_all(
-                "Candidate Position Settings",
-                filters=position_args,
-                fields=["branch", "position", "maximum_number_of_positions"],
-                order_by="idx asc",
-            )
-            illegal_ballot = ""
-            for branch_position in advertised_positions:
-                context = []
-                maximum_posts = branch_position.get("maximum_number_of_positions")
-                context = list(
-                    filter(
-                        lambda x: x.get(
-                            "branch" == branch_position.get("branch")
-                            and x.get("position" == branch_position.get("position")),
-                            ballot_data,
-                        )
-                    )
-                )
-                if len(context) > maximum_posts:
-                    illegal_ballot += f"{branch_position.get('branch')} {branch_position.get('position')}"
-                if len(illegal_ballot > 0):
-                    response.is_valid = False
-                    response.message = f"Sorry, your ballot entries for {illegal_ballot} are invalid because you selected more candidates than the acceptable limit"
-            return response
+        #     advertised_positions = frappe.get_all(
+        #         "Candidate Position Settings",
+        #         filters=position_args,
+        #         fields=["branch", "position", "maximum_number_of_positions"],
+        #         order_by="idx asc",
+        #     )
+        #     illegal_ballot = ""
+        #     for branch_position in advertised_positions:
+        #         context = []
+        #         maximum_posts = branch_position.get("maximum_number_of_positions")
+        #         context = list(
+        #             filter(
+        #                 lambda x: x.get(
+        #                     "branch" == branch_position.get("branch")
+        #                     and x.get("position" == branch_position.get("position")),
+        #                     ballot_data,
+        #                 )
+        #             )
+        #         )
+        #         if len(context) > maximum_posts:
+        #             illegal_ballot += f"{branch_position.get('branch')} {branch_position.get('position')}"
+        #         if len(illegal_ballot > 0):
+        #             response.is_valid = False
+        #             response.message = f"Sorry, your ballot entries for {illegal_ballot} are invalid because you selected more candidates than the acceptable limit"
+        #     return response
 
         if already_voted(voter, election):
             frappe.local.response.update(
@@ -394,18 +394,18 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
             return
         ballot_data = json.loads(ballot_data)
 
-        validity_status = validate_ballot(election=election, ballot=ballot_data)
+        # validity_status = validate_ballot(election=election, ballot=ballot_data)
 
-        if not validity_status.get("is_valid"):
+        # if not validity_status.get("is_valid"):
 
-            frappe.local.response.update(
-                {
-                    "message": "Failed to post your ballot",
-                    "status": "error",
-                    "error": str(validity_status.get("message")),
-                }
-            )
-            return
+        #     frappe.local.response.update(
+        #         {
+        #             "message": "Failed to post your ballot",
+        #             "status": "error",
+        #             "error": str(validity_status.get("message")),
+        #         }
+        #     )
+        #     return
         institution = get_voter_institution(voter)
         ballot_document = frappe.get_doc(
             {
@@ -911,6 +911,7 @@ def get_votes_from_blockchain():
 def election_status_switch():
     from datetime import datetime
 
+    print(datetime.now())
     scheduled_args = dict(
         docstatus=1, status="Scheduled", election_start=["<=", datetime.now()]
     )
@@ -922,6 +923,8 @@ def election_status_switch():
     open_args = dict(docstatus=1, status="Open", election_ends=["<=", datetime.now()])
 
     open_elections = frappe.get_all("Election", filters=open_args, fields=["name"])
+
+    print(open_elections)
 
     def handle_open_elections(election):
         frappe.get_doc("Election", election).db_set("status", "Closed")
@@ -941,18 +944,42 @@ def election_status_switch():
     return
 
 
+def dispatch_election_cards():
+    # voter_doc = frappe.get_doc("Institution Member", "V007694")
+    # doc = frappe.get_doc("Election", "NNAK - Mock Elections")
+    # voter_doc.send_voter_card(doc)
+    election = "NNAK - Main Election"
+    ship_election_voter_cards(election)
+    return
+
+
 @frappe.whitelist()
 def ship_election_voter_cards(election):  # string, election
+
     doc = frappe.get_doc("Election", election)
 
     linked_voter_register = doc.get("applicable_voter_register")
 
+    unalerted_members = [
+        x.get("name")
+        for x in frappe.get_all(
+            "Institution Member",
+            filters=dict(
+                alerted=0, institution=doc.get("institution")), fields=["name"]
+            ,
+        )
+    ]
+
     register_list = frappe.get_doc("Voter Register", linked_voter_register).get(
         "active_members"
     )
-
+    count = 0
     for j in register_list:
         recipient = j.get("system_id")
+        if recipient not in unalerted_members: continue
+        count += 1
+        if count > 20:
+            return
 
         if j.get(f"{recipient} already_alerted"):
             print("Already alerted")
