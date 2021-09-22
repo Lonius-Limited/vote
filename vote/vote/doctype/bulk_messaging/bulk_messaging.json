@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "send_messages",
   "subject",
   "custom_recipients_section",
   "send_to_custom_recipients",
@@ -82,6 +83,15 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+   "depends_on": "eval:doc.docstatus==1",
+   "fieldname": "send_messages",
+   "fieldtype": "Button",
+   "label": "Send Messages"
+  },
+  {
+=======
+>>>>>>> develop
    "allow_on_submit": 1,
    "default": "0",
    "fieldname": "initiated",
@@ -93,7 +103,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
+ "modified": "2021-08-17 19:26:36.046062",
+=======
  "modified": "2021-05-09 20:44:54.574364",
+>>>>>>> develop
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Bulk Messaging",

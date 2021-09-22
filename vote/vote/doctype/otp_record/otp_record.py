@@ -19,17 +19,26 @@ class OTPRecord(Document):
     def send_otp(self):
         voter_id = self.get("voter")
         otp_code = self.get("key")
+<<<<<<< HEAD
+        message = f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive."
+        if(self.get("registration")):
+            telephone = self.get("phone")
+        else:   
+            doc = frappe.get_doc("Institution Member", voter_id)
+            telephone, email = doc.get("cell_number"), doc.get("email_address")
+            docid = self.name
+            email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"
+            sendmail(
+                recipients=[email],
+                message=_(email_message),
+                subject=_(f"CryptoVote One Time Pin - {docid}"),
+            )
+=======
         doc = frappe.get_doc("Institution Member", voter_id)
         telephone, email = doc.get("cell_number"), doc.get("email_address")
         message = f"Your OTP Code is {otp_code}."
+>>>>>>> develop
         send_sms([telephone], message)
-        docid = self.name
-        email_message = f"<p>Your OTP Code is <b>{otp_code}</b>.\nNB: This code expires after use.</p>"
-        sendmail(
-            recipients=[email],
-            message=_(email_message),
-            subject=_(f"CryptoVote One Time Pin - {docid}"),
-        )
         # enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
 
         return otp_code

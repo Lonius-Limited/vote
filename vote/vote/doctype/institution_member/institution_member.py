@@ -30,7 +30,11 @@ sms_template ="""
 	Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.
 	URL: kmpdu.bizpok.com
 """
-
+universal_sms_template = """
+	Dear {} , You have been registered to participate in the {}. VOTER ID: {}
+	Use the Voter ID and your PF Number to log into the portal provided below to verify or edit your details.
+	URL: nnak.bizpok.com
+"""
 
 class InstitutionMember(Document):
 	def before_save(self):
@@ -99,7 +103,14 @@ class InstitutionMember(Document):
 		frappe.msgprint("User {0} - {1} has been assigned to {2}".format(userid, fullname, institution))
 		#self.flags.ignore_user_permissions=True
 		self.save()'''
-	def create_application_user(self):
+	def create_application_user(self, preferred_role_profile = None):
+		existing_user =	frappe.get_all("User", filters = dict(email=self.email_address), fields =["*"])
+		if existing_user:
+			if existing_user[0].get("role_profile_name") =='KMPDU Audit': return
+			doc = frappe.get_doc("User", self.email_address)
+			doc.db_set("role_profile_name", preferred_role_profile)
+			# doc.save(ignore_permissions = True)
+			return
 		position = self.current_position
 		
 		position_settings = frappe.db.get_value("Institution Position",position,
@@ -111,14 +122,15 @@ class InstitutionMember(Document):
 		if not position_settings.requires_application_user_account:
 			frappe.throw(f"{position} not permitted to have a user account. Please update Institution Position")
 			return
-		role_profile = "Institution Manager"
+		role_profile = preferred_role_profile or "Institution Manager"
+		frappe.flags.in_import = True
 		user = frappe.get_doc({
 							'doctype': 'User',
-							'send_welcome_email': 1,
+							'send_welcome_email': 0,
 							'email': self.email_address,
 							'first_name': self.full_name,
-							'role_profile': role_profile
-							#'user_type': 'Website User'
+							'role_profile_name': role_profile,
+							'user_type': 'System User'
 							#'redirect_url': link
 							})
 		user.insert()
@@ -135,9 +147,14 @@ class InstitutionMember(Document):
 		telephone, email = doc.get("cell_number"), doc.get("email_address")
 	
 		# message =  self.get_voter_registration_message(election=election)
-		sms_msg = sms_template.format(self.get("full_name"), self.get("name"))
+		# sms_msg = sms_template.format(self.get("full_name"), self.get("name"))
+
+		sms_msg = universal_sms_template.format(self.get("full_name"), election, self.get("name"))
 
 		if telephone: send_sms([telephone], sms_msg)
+
+		self.db_set("alerted", True)
+		print(" Set as alerted")
 
 		# email_message =f"<h3></h3><h6>{message}</h6>"
 		email_message = template.format(self.full_name, voter_id )
@@ -147,7 +164,7 @@ class InstitutionMember(Document):
 		# 	subject = _("Voter Registration ID")
 		# )
 		# if email: enqueue(method=vote.sendmail, queue='long', timeout=300, **email_args)
-		if email: sendmail(recipients=[email], message=_(email_message), subject=_("Voter Registration ID"))
+		# if email: sendmail(recipients=[email], message=_(email_message), subject=_("Voter Registration ID"))
 		return
 	def get_voter_registration_message(self, election = None):
 		if not election: return

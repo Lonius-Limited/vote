@@ -62,8 +62,9 @@ class BulkMessaging(Document):
         # self.queue_action("submit")
         frappe.msgprint("Transaction has begun in the background")
         # self.submit()
-
+    @frappe.whitelist()
     def send_messages(self):
+        frappe.msgprint("Starting business")
         try:
             sms_context = []
 

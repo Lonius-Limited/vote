@@ -11,7 +11,9 @@
   "phone",
   "contact_html",
   "address_html",
-  "section_break_3"
+  "section_break_3",
+  "website",
+  "vote_link"
  ],
  "fields": [
   {
@@ -27,7 +29,8 @@
   },
   {
    "fieldname": "section_break_3",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Web"
   },
   {
    "fieldname": "contact_html",
@@ -43,11 +46,21 @@
    "fieldname": "phone",
    "fieldtype": "Data",
    "label": "Phone"
+  },
+  {
+   "fieldname": "website",
+   "fieldtype": "Data",
+   "label": "Website"
+  },
+  {
+   "fieldname": "vote_link",
+   "fieldtype": "Data",
+   "label": "Vote Link"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-16 22:42:47.556965",
+ "modified": "2021-09-21 22:54:37.276640",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution",
