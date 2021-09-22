@@ -10,6 +10,7 @@
   "institution",
   "electoral_district_name",
   "region_id",
+  "is_polling_station",
   "reference_election",
   "registered_voters",
   "active_register",
@@ -96,12 +97,18 @@
    "fieldtype": "Link",
    "label": "Active Register",
    "options": "Voter Register"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_polling_station",
+   "fieldtype": "Check",
+   "label": "is Polling Station"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2021-04-28 19:14:08.111680",
+ "modified": "2021-09-21 22:02:57.317467",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Electoral District",

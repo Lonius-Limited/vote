@@ -8,7 +8,9 @@
   "voter",
   "key",
   "expiry",
-  "valid"
+  "valid",
+  "phone",
+  "registration"
  ],
  "fields": [
   {
@@ -34,11 +36,22 @@
    "fieldname": "valid",
    "fieldtype": "Check",
    "label": "Valid"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "default": "0",
+   "fieldname": "registration",
+   "fieldtype": "Check",
+   "label": "Registration"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-07 15:13:42.096392",
+ "modified": "2021-09-21 22:10:23.426886",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "OTP Record",

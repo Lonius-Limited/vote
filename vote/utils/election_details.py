@@ -68,10 +68,10 @@ def create_voter_wallet(member_doc):
 
 
 @frappe.whitelist(allow_guest=True)
-def stage_otp(voter_id="", instant_otp=1):
+def stage_otp(voter_id="", instant_otp=1, registration = 0, phone=""):
     if not instant_otp:
         instant_otp = 1
-    valid_args = dict(voter=voter_id, valid=True)
+    valid_args = dict(voter=voter_id, valid=True, registration=registration,phone=phone)
     if frappe.db.get_value("OTP Record", valid_args):
         otp_code = frappe.get_doc("OTP Record", valid_args).send_otp()
         return otp_code
@@ -82,6 +82,8 @@ def stage_otp(voter_id="", instant_otp=1):
         key=otp_code,
         valid=1,
         instant_otp=instant_otp,
+        registration=registration,
+        phone=phone
     )
     frappe.get_doc(args).insert(ignore_permissions=True)
     return otp_code
@@ -626,7 +628,45 @@ def get_branch_registered_voters(election=None, branch=None):
         fields=["*"],
     )
 
+@frappe.whitelist()
+def member_login(domain, phone, id_number, otp=''):
+    if not phone or not id_number:
+        frappe.local.response.update(
+            {
+                "message": f"You need to provide both the Phone Number and the ID Number",
+                "status": "error",
+            }
+        )
+        return
+    institution = get_institution_for_domain(domain)
+    if not institution:
+        frappe.local.response.update(
+            {
+                "message": f"The domain {domain} is not registered in this server.",
+                "status": "error",
+            }
+        )
+        return
+    stored_otp = stage_otp(registration = 1, phone = phone)
+    if(otp and otp == stored_otp):
+        frappe.local.response.update(
+            {
+                "message": f"Member verified",
+                "status": "success",
+            }
+        )
+        #RETURN MEMBER DETAILS
 
+    else:
+        frappe.local.response.update(
+            {
+                "message": f"The OTP has been sent",
+                "status": "success",
+            }
+        )
+        #REGISTER MEMBER AND RETURN DETAILS
+        
+    return
 ##############
 
 
@@ -837,6 +877,8 @@ def get_branch_position_limits(election, branch, position=None):
 def get_voter_institution(voter):
     return frappe.db.get_value("Institution Member", voter, "institution")
 
+def get_institution_for_domain(domain):
+    return frappe.db.get_value('Institution', {'website': domain}, 'institution_name')
 
 def get_votes_cast(election, branch=None):
     pass
@@ -890,7 +932,6 @@ def get_branch_children(branch):
 
 def get_voter_fullname(voter):
     return frappe.db.get_value("Institution Member", voter, "full_name")
-
 
 def get_maximum_posts_per_position(election, position, branch=None):
     # Return integer

@@ -16,7 +16,9 @@
   "posted_to_blockchain",
   "receipted",
   "tallied",
-  "branch"
+  "branch",
+  "no_wallet",
+  "vote_hash"
  ],
  "fields": [
   {
@@ -65,8 +67,8 @@
    "description": "Turnout so far",
    "fieldname": "current_tally",
    "fieldtype": "Int",
-   "hidden": 1,
-   "label": "Current Tally"
+   "label": "Current Tally",
+   "read_only": 1
   },
   {
    "fetch_from": "voter_id.email_address",
@@ -94,7 +96,6 @@
    "fetch_from": "voter_id.electoral_district",
    "fieldname": "branch",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Branch",
    "options": "Electoral District"
   },
@@ -104,11 +105,23 @@
    "fieldtype": "Check",
    "label": "Receipted",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "no_wallet",
+   "fieldtype": "Check",
+   "label": "No Wallet",
+   "read_only": 1
+  },
+  {
+   "fieldname": "vote_hash",
+   "fieldtype": "Data",
+   "label": "Vote Hash"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-05-03 20:36:20.478096",
+ "modified": "2021-08-18 12:07:24.360661",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Ballot Entry",

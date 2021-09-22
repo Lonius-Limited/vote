@@ -8,15 +8,18 @@
  "engine": "InnoDB",
  "field_order": [
   "institution",
+  "id_number",
   "column_break_3",
   "member_id",
   "board_number",
   "section_break_3",
   "surname",
+  "date_of_birth",
+  "gender",
   "column_break_7",
   "other_names",
   "full_name",
-  "id_number",
+  "special_category",
   "section_break_4",
   "date_of_joining",
   "column_break_11",
@@ -245,12 +248,29 @@
    "fieldname": "alerted",
    "fieldtype": "Check",
    "label": "Alerted"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "Male\nFemale"
+  },
+  {
+   "fieldname": "special_category",
+   "fieldtype": "Select",
+   "label": "Special Category",
+   "options": "PWD\nYouth\nMarginalised Communities\nN/A"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-08-17 23:08:20.024675",
+ "modified": "2021-09-22 09:56:35.323201",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",
