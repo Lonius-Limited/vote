@@ -9,10 +9,13 @@ frappe.ui.form.on('Poll Agent', {
 
 frappe.ui.form.on('Agent Polling Station', {
 	polling_stations_add:(frm)=>{
+        let already_entered =[]
+        frm.doc.polling_stations.forEach((row)=>{already_entered.push(row.polling_station)})
 	     frm.set_query("polling_station","polling_stations", function() {
             return {
                 "filters": {
-                    "is_polling_station": 1
+                    "is_polling_station": 1,
+                    "name": ["NOT IN", already_entered]
                 }
             };
         });
