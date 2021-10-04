@@ -242,7 +242,6 @@
    "fieldname": "board_number",
    "fieldtype": "Data",
    "label": "Board Number"
-<<<<<<< HEAD
   },
   {
    "default": "0",
@@ -266,18 +265,12 @@
    "fieldtype": "Select",
    "label": "Special Category",
    "options": "PWD\nYouth\nMarginalised Communities\nN/A"
-=======
->>>>>>> develop
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
-<<<<<<< HEAD
  "modified": "2021-09-22 09:56:35.323201",
-=======
- "modified": "2021-05-05 09:31:39.414436",
->>>>>>> develop
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",
