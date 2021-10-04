@@ -17,12 +17,8 @@
   "receipted",
   "tallied",
   "branch",
-<<<<<<< HEAD
   "no_wallet",
   "vote_hash"
-=======
-  "no_wallet"
->>>>>>> develop
  ],
  "fields": [
   {
@@ -116,23 +112,16 @@
    "fieldtype": "Check",
    "label": "No Wallet",
    "read_only": 1
-<<<<<<< HEAD
   },
   {
    "fieldname": "vote_hash",
    "fieldtype": "Data",
    "label": "Vote Hash"
-=======
->>>>>>> develop
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
-<<<<<<< HEAD
  "modified": "2021-08-18 12:07:24.360661",
-=======
- "modified": "2021-05-11 09:33:11.122052",
->>>>>>> develop
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Ballot Entry",
