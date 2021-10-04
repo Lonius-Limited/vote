@@ -1,0 +1,37 @@
+{
+ "actions": [],
+ "creation": "2021-09-26 12:57:31.283679",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "position",
+  "spoilt_votes"
+ ],
+ "fields": [
+  {
+   "fieldname": "position",
+   "fieldtype": "Link",
+   "label": "Position",
+   "options": "Institution Position"
+  },
+  {
+   "default": "0",
+   "fieldname": "spoilt_votes",
+   "fieldtype": "Int",
+   "label": "Spoilt Votes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-09-26 12:57:59.388322",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Agent Ballot Tally Spoilt Votes",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
