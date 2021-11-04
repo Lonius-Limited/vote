@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format: V{######}",
+ "autoname": "format: {institution_id}/{region_id}/V{#######}",
  "creation": "2020-12-02 14:34:49.612250",
  "description": "-",
  "doctype": "DocType",
@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "institution",
+  "institution_id",
   "id_number",
   "column_break_3",
   "member_id",
@@ -20,6 +21,7 @@
   "other_names",
   "full_name",
   "special_category",
+  "member_category",
   "section_break_4",
   "date_of_joining",
   "column_break_11",
@@ -42,6 +44,7 @@
   "eligible_voter",
   "eligible_candidate",
   "electoral_district",
+  "region_id",
   "applicable_voter_districts",
   "image",
   "alerted"
@@ -265,12 +268,33 @@
    "fieldtype": "Select",
    "label": "Special Category",
    "options": "PWD\nYouth\nMarginalised Communities\nN/A"
+  },
+  {
+   "fetch_from": "institution.institution_id",
+   "fieldname": "institution_id",
+   "fieldtype": "Data",
+   "label": "Institution ID",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "electoral_district.region_id",
+   "fieldname": "region_id",
+   "fieldtype": "Data",
+   "label": "Region ID",
+   "read_only": 1
+  },
+  {
+   "default": "Member",
+   "fieldname": "member_category",
+   "fieldtype": "Select",
+   "label": "Member Category",
+   "options": "\nMember\nVolunteer\nMember and Volunteer"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-09-22 09:56:35.323201",
+ "modified": "2021-10-11 15:03:14.911084",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",
