@@ -700,6 +700,7 @@ def get_member_with_phonenumber(institution, phone, id_number):
 			"date_of_birth",
 			"gender",
 			"special_category",
+			"member_category"
 		],
 	)
 	# return frappe.db.get_value(
@@ -758,7 +759,7 @@ def member_profile_info(
 		# MEMBER DOES NOT EXIST. CREATE
 
 		institution = get_institution_for_domain(domain)
-		electoral_district_id = frappe.db.get_value("Electoral District",electoral_district,["region_id"], as_dict=1)
+		electoral_district_id = frappe.db.get_value("Electoral District",electoral_district.upper(),["region_id"], as_dict=1)
 		institution_id = frappe.db.get_value("Institution",institution,["institution_id"], as_dict=1)
 		member_info = frappe.get_doc(
 			{
@@ -1246,3 +1247,28 @@ def handle_unreceipted_ballots():
 	return
 def demo_sms():
 	send_sms(["0722810063","0722256327"], "Test Message from Vote App")
+
+
+@frappe.whitelist(allow_guest=True)
+def send_registration_confirmation(phone, id_number, domain):
+	institution = get_institution_for_domain(domain)
+	profile = get_member_with_phonenumber(institution, phone, id_number)
+	confirmation = "Dear {}, You have successfully registered as a {} of UPA Kenya Party.\nTo download your Membership Certificate, go to \nhttps://upakenya.com/profile"
+	try:
+		message = send_sms([str(phone), ], confirmation.format(profile[0]['surname'], profile[0]['member_category'] ))
+		frappe.local.response.update(
+			{
+				"message": "Message sent successfully.",
+				"status": "success"
+			}
+		)
+		return
+	except Exception as e:
+		frappe.local.response.update(
+			{
+				"message": "Request Failed",
+				"status": "error",
+				"error": e,
+			}
+		)
+		return

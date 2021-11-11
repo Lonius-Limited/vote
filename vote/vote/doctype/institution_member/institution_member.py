@@ -44,6 +44,8 @@ class InstitutionMember(Document):
 		other_names = self.other_names	 
 		self.full_name = f"{surname}, {other_names}"
 		self.generate_voter_domains()
+		if not self.member_id:
+			self.member_id = self.name
 		return
 	def capitalize_essential_fields(self):
 		if self.surname:
