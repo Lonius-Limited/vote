@@ -544,7 +544,7 @@ def _return_branch_position_tally(election="", branch="", position="", pos_id=No
 	return results
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_election_results_v3(election=None):
 
 	data = frappe.get_value(
@@ -1272,3 +1272,18 @@ def send_registration_confirmation(phone, id_number, domain):
 			}
 		)
 		return
+
+# def update_member_ids():
+# 	docs = frappe.get_list('Institution Member', fields=['name'])
+# 	for doc in docs:
+# 		d = frappe.get_doc('Institution Member', doc['name'])
+# 		# d.member_id = doc['name']
+# 		d.db_set('member_id', doc['name'], commit=True)
+# 		d.save()
+# 	frappe.local.response.update(
+# 			{
+# 				"status": "success",
+# 				"docs": docs
+# 			}
+# 		)
+# 	return frappe.get_list('Institution Member', fields=['name', 'member_id'])

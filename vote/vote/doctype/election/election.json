@@ -23,6 +23,7 @@
   "candidates",
   "section_break_10",
   "election_officials",
+  "final_results",
   "amended_from",
   "status"
  ],
@@ -143,12 +144,18 @@
    "hidden": 1,
    "label": "Status",
    "options": "Scheduled\nOpen\nClosed"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "final_results",
+   "fieldtype": "Attach",
+   "label": "Final Results"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-05-05 23:01:34.683380",
+ "modified": "2021-12-02 15:11:25.917698",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Election",
