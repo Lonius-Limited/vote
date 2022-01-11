@@ -1,0 +1,95 @@
+{
+ "actions": [],
+ "creation": "2021-12-02 16:32:58.875121",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "election",
+  "slack_logs",
+  "mail_logs",
+  "sms_logs",
+  "backup_ballots",
+  "blockchain_manual",
+  "final_results_declared",
+  "date_released",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "slack_logs",
+   "fieldtype": "Attach",
+   "label": "Slack Logs"
+  },
+  {
+   "fieldname": "mail_logs",
+   "fieldtype": "Attach",
+   "label": "Mail Logs"
+  },
+  {
+   "fieldname": "sms_logs",
+   "fieldtype": "Attach",
+   "label": "SMS Logs"
+  },
+  {
+   "fieldname": "backup_ballots",
+   "fieldtype": "Attach",
+   "label": "Backup Ballots"
+  },
+  {
+   "fieldname": "blockchain_manual",
+   "fieldtype": "Attach",
+   "label": "Blockchain Manual"
+  },
+  {
+   "fieldname": "final_results_declared",
+   "fieldtype": "Attach",
+   "label": "Final Results Declared"
+  },
+  {
+   "fieldname": "date_released",
+   "fieldtype": "Date",
+   "label": "Date Released"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Results Artefacts",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "election",
+   "fieldtype": "Link",
+   "label": "Election",
+   "options": "Election"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-12-02 16:34:05.948000",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Results Artefacts",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

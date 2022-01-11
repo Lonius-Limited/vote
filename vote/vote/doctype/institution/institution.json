@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "field:institution_name",
  "creation": "2020-12-02 13:34:12.077100",
  "doctype": "DocType",
@@ -7,13 +8,16 @@
  "engine": "InnoDB",
  "field_order": [
   "institution_name",
+  "institution_id",
   "contact_and_address_section",
   "phone",
   "contact_html",
   "address_html",
   "section_break_3",
   "website",
-  "vote_link"
+  "vote_link",
+  "section_break_9",
+  "naming_series"
  ],
  "fields": [
   {
@@ -55,12 +59,28 @@
   {
    "fieldname": "vote_link",
    "fieldtype": "Data",
-   "label": "Vote Link"
+   "label": "Vote Link",
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Default Naming Series",
+   "options": "{institution_id}-{electoral_district_id}-{######}"
+  },
+  {
+   "fieldname": "institution_id",
+   "fieldtype": "Data",
+   "label": "Abbreviation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-09-21 22:54:37.276640",
+ "modified": "2021-10-11 14:57:41.745350",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution",
