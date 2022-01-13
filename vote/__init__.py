@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 import frappe
 import requests
 from frappe import _
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+#from sendgrid import SendGridAPIClient
+#from sendgrid.helpers.mail import Mail
 
 __version__ = "0.0.1"
 
@@ -54,25 +54,25 @@ def send_simple_mailgun_message(recipients, message, subject):
 	)
 
 
-def sendgrid_email(recepients, message, subject):
-	email = Mail(
-		from_email="IEC KMPDU <elections@kmpdu.org>",
-		to_emails=",".join(recepients),
-		subject=subject,
-		html_content=message,
-	)
-	try:
-		sg = SendGridAPIClient(
-			"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"
-		)
-		response = sg.send(email)
-		print(response.status_code)
-		print(response.body)
-		print(response.headers)
-		return {"success": "email sent successfully"}
-	except Exception as e:
-		print(f"{e}")
-		return {"error": "failed to send email. Error={}".format(f"{e}")}
+#def sendgrid_email(recepients, message, subject):
+#	email = Mail(
+#		from_email="IEC KMPDU <elections@kmpdu.org>",
+#		to_emails=",".join(recepients),
+#		subject=subject,
+#		html_content=message,
+#	)
+#	try:
+#		sg = SendGridAPIClient(
+#			"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"
+#		)
+#		response = sg.send(email)
+#		print(response.status_code)
+#		print(response.body)
+#		print(response.headers)
+#		return {"success": "email sent successfully"}
+#	except Exception as e:
+#		print(f"{e}")
+#		return {"error": "failed to send email. Error={}".format(f"{e}")}
 
 
 def make_candidate_logins():
