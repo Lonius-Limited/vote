@@ -6,15 +6,57 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.core.doctype.user_permission.user_permission import clear_user_permissions
+from frappe.core.doctype.sms_settings.sms_settings import send_sms
+from frappe.utils.background_jobs import enqueue
+from frappe import _
+from vote.utils.election_details import stage_otp
+from vote import sendmail
+
+
+template = """
+	<div>
+	<p><b>Dear {} </b></p> 
+	<p>You have been registered to participate in the KMPDU elections 2021. </p>
+	<p><b>VOTER ID:</b> {} </p>
+	<p>Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.</p>
+	<p><b>URL:</b> https://kmpdu.bizpok.com </p>
+	<br/>
+	<b>KMPDU IEC</b>
+	</div>
+"""
+sms_template ="""
+	Dear {} , You have been registered to participate in the KMPDU elections 2021. 
+	VOTER ID: {}
+	Use the Voter ID and your National ID to log into the portal provided below to verify or edit your details.
+	URL: kmpdu.bizpok.com
+"""
+universal_sms_template = """
+	Dear {} , You have been registered to participate in the {}. VOTER ID: {}
+	Use the Voter ID and your PF Number to log into the portal provided below to verify or edit your details.
+	URL: nnak.bizpok.com
+"""
 
 class InstitutionMember(Document):
 	def before_save(self):
-		self.validate_member_id()
+		self = self.capitalize_essential_fields()
+		self.validate_member_id()	
 		surname = self.surname
-		other_names = self.other_names
+		other_names = self.other_names	 
 		self.full_name = f"{surname}, {other_names}"
 		self.generate_voter_domains()
+		if not self.member_id:
+			self.member_id = self.name
 		return
+	def capitalize_essential_fields(self):
+		if self.surname:
+			self.set('surname',str(self.surname).upper().strip())
+		if self.other_names:
+			self.set('other_names',str(self.other_names).upper().strip())
+		if self.electoral_district:
+			self.set('electoral_district',str(self.electoral_district).upper().strip())
+		if self.email_address:
+			self.set('email_address',str(self.email_address).lower().strip())
+		return self
 	def validate_member_id(self):
 		duplicate = frappe.db.get_value("Institution Member",\
 			{"member_id": self.member_id,"institution": self.institution,"name":["!=",self.name]},"full_name")
@@ -63,7 +105,14 @@ class InstitutionMember(Document):
 		frappe.msgprint("User {0} - {1} has been assigned to {2}".format(userid, fullname, institution))
 		#self.flags.ignore_user_permissions=True
 		self.save()'''
-	def create_application_user(self):
+	def create_application_user(self, preferred_role_profile = None):
+		existing_user =	frappe.get_all("User", filters = dict(email=self.email_address), fields =["*"])
+		if existing_user:
+			if existing_user[0].get("role_profile_name") =='KMPDU Audit': return
+			doc = frappe.get_doc("User", self.email_address)
+			doc.db_set("role_profile_name", preferred_role_profile)
+			# doc.save(ignore_permissions = True)
+			return
 		position = self.current_position
 		
 		position_settings = frappe.db.get_value("Institution Position",position,
@@ -75,16 +124,69 @@ class InstitutionMember(Document):
 		if not position_settings.requires_application_user_account:
 			frappe.throw(f"{position} not permitted to have a user account. Please update Institution Position")
 			return
-		role_profile = "Institution Manager"
+		role_profile = preferred_role_profile or "Institution Manager"
+		frappe.flags.in_import = True
 		user = frappe.get_doc({
 							'doctype': 'User',
-							'send_welcome_email': 1,
+							'send_welcome_email': 0,
 							'email': self.email_address,
 							'first_name': self.full_name,
-							'role_profile': role_profile
-							#'user_type': 'Website User'
+							'role_profile_name': role_profile,
+							'user_type': 'System User'
 							#'redirect_url': link
 							})
 		user.insert()
 		frappe.msgprint(f"{user}")
 		return user
+	def send_voter_card(self, election=None):
+
+		if not election: return #has to be the election document
+
+		voter_id = self.get("name")
+
+		doc = self
+
+		telephone, email = doc.get("cell_number"), doc.get("email_address")
+	
+		# message =  self.get_voter_registration_message(election=election)
+		# sms_msg = sms_template.format(self.get("full_name"), self.get("name"))
+
+		sms_msg = universal_sms_template.format(self.get("full_name"), election, self.get("name"))
+
+		if telephone: send_sms([telephone], sms_msg)
+
+		self.db_set("alerted", True)
+		print(" Set as alerted")
+
+		# email_message =f"<h3></h3><h6>{message}</h6>"
+		email_message = template.format(self.full_name, voter_id )
+		# email_args =dict(
+		# 	recipients = [email],
+		#     message = _(email_message),
+		# 	subject = _("Voter Registration ID")
+		# )
+		# if email: enqueue(method=vote.sendmail, queue='long', timeout=300, **email_args)
+		# if email: sendmail(recipients=[email], message=_(email_message), subject=_("Voter Registration ID"))
+		return
+	def get_voter_registration_message(self, election = None):
+		if not election: return
+		election_type = 'Mock' if election.is_mock_elections else ''
+		institution = election.get("institution")
+		starts_from = election.get("election_start")
+		ends = election.get("election_ends")
+		voter_id = self.get("name")
+		voter_name = self.get("full_name")
+
+		link1, link2 = "https://kmpdu.bizpok.com/", "https://vote-ui.netlify.app/#/"
+		links_text = f"{link1} or {link2}"
+		# otp = stage_otp(self.get("name"), instant_otp = 0)
+		# details =f"Voter ID: {voter_id}\nElection Starts:{starts_from}\nElection Ends: {ends}\n\nPlease use {links_text} to access the system."
+		details =f"Voter ID: {voter_id}\nLink: {links_text}."
+
+		return f"KMPDU Elections Voter Instruction:\n{details}"
+
+		'''return f"Dear {voter_name} your\
+			 voting details for the upcoming {election_type} Elections in {institution}\
+				 have been generated as below\n\n{details}\n\n"'''
+
+		

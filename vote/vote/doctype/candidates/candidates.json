@@ -8,7 +8,6 @@
  "field_order": [
   "election",
   "institution",
-  "candidate_position_settings",
   "candidates",
   "amended_from"
  ],
@@ -27,7 +26,8 @@
    "in_list_view": 1,
    "label": "Institution",
    "options": "Institution",
-   "reqd": 1
+   "reqd": 1,
+   "set_only_once": 1
   },
   {
    "fieldname": "amended_from",
@@ -39,23 +39,17 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "candidates",
    "fieldtype": "Table",
    "label": "Candidates",
    "options": "Candidates List"
-  },
-  {
-   "description": "How many open positions can an election have per Institution Position.",
-   "fieldname": "candidate_position_settings",
-   "fieldtype": "Table",
-   "label": "Candidate Position Settings",
-   "options": "Candidate Position Settings"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-03-22 15:29:33.563442",
+ "modified": "2021-05-05 22:38:14.189545",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Candidates",

@@ -1,0 +1,115 @@
+{
+ "actions": [],
+ "creation": "2021-04-26 20:34:03.112927",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "election",
+  "branch",
+  "position",
+  "candidate",
+  "candidate_name",
+  "headshot",
+  "ballot",
+  "vote_count",
+  "registered_voters",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "election",
+   "fieldtype": "Link",
+   "label": "Election",
+   "options": "Election"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Electoral District"
+  },
+  {
+   "fieldname": "candidate",
+   "fieldtype": "Link",
+   "label": "Candidate",
+   "options": "Institution Member"
+  },
+  {
+   "fieldname": "ballot",
+   "fieldtype": "Link",
+   "label": "Ballot",
+   "options": "Ballot Entry"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Vote Repository",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fetch_from": "branch.registered_voters",
+   "fieldname": "registered_voters",
+   "fieldtype": "Int",
+   "label": "Registered Voters"
+  },
+  {
+   "fieldname": "position",
+   "fieldtype": "Link",
+   "label": "Position",
+   "options": "Institution Position"
+  },
+  {
+   "fetch_from": "candidate.full_name",
+   "fieldname": "candidate_name",
+   "fieldtype": "Data",
+   "label": "Candidate Name"
+  },
+  {
+   "fetch_from": "candidate.image",
+   "fieldname": "headshot",
+   "fieldtype": "Data",
+   "label": "Headshot"
+  },
+  {
+   "fieldname": "vote_count",
+   "fieldtype": "Int",
+   "label": "Vote Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-05-09 09:30:17.445217",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Vote Repository",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

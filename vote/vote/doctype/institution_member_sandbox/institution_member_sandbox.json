@@ -1,0 +1,310 @@
+{
+ "actions": [],
+ "autoname": "format: SV{######}",
+ "creation": "2021-04-22 19:59:09.243119",
+ "description": "-",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "reject_this_application",
+  "create_a_new_record",
+  "link_with_document",
+  "institution",
+  "column_break_3",
+  "member_id",
+  "board_number",
+  "section_break_3",
+  "surname",
+  "column_break_7",
+  "other_names",
+  "full_name",
+  "id_number",
+  "section_break_4",
+  "date_of_joining",
+  "column_break_11",
+  "member_status",
+  "current_position",
+  "section_break_13",
+  "is_elective",
+  "contacts_and_address_section",
+  "contact_and_address_information",
+  "contact_information_section",
+  "cell_number",
+  "column_break_20",
+  "email_address",
+  "app_user_section",
+  "user_id",
+  "create_application_user",
+  "private_key",
+  "public_key",
+  "electoral_district_settings_section",
+  "eligible_voter",
+  "eligible_candidate",
+  "electoral_district_text",
+  "electoral_district",
+  "applicable_voter_districts",
+  "image",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "label": "Institution",
+   "options": "Institution"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "member_id",
+   "fieldtype": "Data",
+   "label": "Member ID",
+   "reqd": 1
+  },
+  {
+   "description": "Such as licence, membership number issued by a professional body. Not to be confused with Member registration number",
+   "fieldname": "board_number",
+   "fieldtype": "Data",
+   "label": "Board Number",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "surname",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Surname",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "other_names",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Other Names",
+   "reqd": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "date_of_joining",
+   "fieldtype": "Date",
+   "label": "Date of Joining"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Active",
+   "fieldname": "member_status",
+   "fieldtype": "Select",
+   "label": "Member Status",
+   "options": "Active\nLeft"
+  },
+  {
+   "default": "Member",
+   "depends_on": "eval:doc.member_status==\"Active\"",
+   "fieldname": "current_position",
+   "fieldtype": "Link",
+   "label": "Current Position",
+   "mandatory_depends_on": "eval:doc.member_status==\"Active\"",
+   "options": "Institution Position"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break",
+   "hidden": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "current_position.is_elective",
+   "fieldname": "is_elective",
+   "fieldtype": "Check",
+   "label": "Is Elective",
+   "read_only": 1
+  },
+  {
+   "fieldname": "contacts_and_address_section",
+   "fieldtype": "Section Break",
+   "label": "Physical Address"
+  },
+  {
+   "fieldname": "contact_and_address_information",
+   "fieldtype": "Text",
+   "label": "Physical Address Information"
+  },
+  {
+   "fieldname": "contact_information_section",
+   "fieldtype": "Section Break",
+   "label": "Contact Information"
+  },
+  {
+   "fieldname": "cell_number",
+   "fieldtype": "Data",
+   "label": "Cell Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "app_user_section",
+   "fieldtype": "Section Break",
+   "label": "Application User"
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Link",
+   "label": "User Id",
+   "options": "User"
+  },
+  {
+   "description": "This will apply Institution Permissions to all Doctypes.",
+   "fieldname": "create_application_user",
+   "fieldtype": "Button",
+   "label": "Create Application User",
+   "options": "create_application_user"
+  },
+  {
+   "fieldname": "private_key",
+   "fieldtype": "Data",
+   "label": "Private Key"
+  },
+  {
+   "fieldname": "public_key",
+   "fieldtype": "Data",
+   "label": "Public Key"
+  },
+  {
+   "fieldname": "electoral_district_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Elections Settings"
+  },
+  {
+   "default": "1",
+   "description": "Terms and Conditions apply.",
+   "fieldname": "eligible_voter",
+   "fieldtype": "Check",
+   "label": "Eligible Voter"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.eligible_voter",
+   "fieldname": "eligible_candidate",
+   "fieldtype": "Check",
+   "label": "Eligible Candidate"
+  },
+  {
+   "description": "Region or branch one belongs to. Permissions apply upwards based on hierarchy of branches. e.g if one belongs to Branch A which is under Branch B and the Overall Branch is C, they will be restricted to vie and/or vote only those branches(A,B and C).",
+   "fetch_from": "link_with_document.electoral_district",
+   "fieldname": "electoral_district",
+   "fieldtype": "Link",
+   "label": "Electoral District",
+   "mandatory_depends_on": "eval:doc.eligible_voter;",
+   "options": "Electoral District"
+  },
+  {
+   "fieldname": "applicable_voter_districts",
+   "fieldtype": "Table",
+   "label": "Applicable Voter Districts",
+   "options": "Institution Member Voter Districts",
+   "read_only": 1
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "hidden": 1,
+   "label": "Image"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Institution Member Sandbox",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "electoral_district_text",
+   "fieldtype": "Data",
+   "label": "Electoral District Text"
+  },
+  {
+   "fieldname": "link_with_document",
+   "fieldtype": "Link",
+   "label": "Link With Document",
+   "options": "Institution Member"
+  },
+  {
+   "default": "0",
+   "fieldname": "create_a_new_record",
+   "fieldtype": "Check",
+   "label": "Create a New Record"
+  },
+  {
+   "default": "0",
+   "fieldname": "reject_this_application",
+   "fieldtype": "Check",
+   "label": "Reject This Application"
+  }
+ ],
+ "image_field": "image",
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-05-03 21:28:43.658748",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Institution Member Sandbox",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "full_name",
+ "track_changes": 1
+}

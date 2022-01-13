@@ -1,0 +1,19 @@
+{
+ "content": null,
+ "creation": "2021-12-02 16:24:15.103322",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2021-12-02 16:24:15.103322",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "election-results",
+ "owner": "Administrator",
+ "page_name": "Election Results",
+ "roles": [],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Election Results"
+}

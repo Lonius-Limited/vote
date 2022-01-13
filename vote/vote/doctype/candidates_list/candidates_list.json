@@ -5,13 +5,18 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "branch",
+  "headshot",
   "candidate_id",
   "candidate_name",
   "contested_position",
-  "current_position"
+  "current_position",
+  "political_party",
+  "party_symbol"
  ],
  "fields": [
   {
+   "allow_on_submit": 1,
    "fieldname": "candidate_id",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -20,6 +25,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fetch_from": "candidate_id.full_name",
    "fieldname": "candidate_name",
    "fieldtype": "Data",
@@ -39,12 +45,39 @@
    "in_list_view": 1,
    "label": "Contested Position",
    "options": "Institution Position"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Electoral District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "political_party",
+   "fieldtype": "Link",
+   "label": "Political Party",
+   "options": "Political Party"
+  },
+  {
+   "fetch_from": "political_party.party_symbol",
+   "fieldname": "party_symbol",
+   "fieldtype": "Attach Image",
+   "label": "Party Symbol"
+  },
+  {
+   "fieldname": "headshot",
+   "fieldtype": "Attach Image",
+   "label": "Headshot",
+   "options": "candidate_id.image"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-03-22 14:44:32.890214",
+ "modified": "2021-05-05 22:40:48.470803",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Candidates List",

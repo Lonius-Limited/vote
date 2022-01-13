@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from . import __version__ as app_version
+from . import __version__ 
 
 app_name = "vote"
 app_title = "Vote"
@@ -16,7 +16,7 @@ app_license = "MIT"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/vote/css/vote.css"
-# app_include_js = "/assets/vote/js/vote.js"
+app_include_js = ["/assets/js/elections.min.js", "/assets/js/template.min.js"]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/vote/css/vote.css"
@@ -24,6 +24,8 @@ app_license = "MIT"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "vote/public/scss/website"
+
+fixtures =["Institution","Electoral District", "Slack Webhook URL", "Notification", {"dt":"Scheduled Job Type", "filters":{"name":"election_switch"}},{"dt":"Workspace", "filters":{"name":"eVote"}}, "SMS Settings", "Institution Member" ,"Candidates", "Voter Register", "Election"]
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}

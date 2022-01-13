@@ -1,19 +1,27 @@
 {
  "actions": [],
- "autoname": "format: V{######}",
+ "autoname": "format: {institution_id}/{region_id}/V{#######}",
  "creation": "2020-12-02 14:34:49.612250",
+ "description": "-",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "institution",
+  "institution_id",
+  "id_number",
   "column_break_3",
   "member_id",
+  "board_number",
   "section_break_3",
   "surname",
+  "date_of_birth",
+  "gender",
   "column_break_7",
   "other_names",
   "full_name",
+  "special_category",
+  "member_category",
   "section_break_4",
   "date_of_joining",
   "column_break_11",
@@ -30,17 +38,22 @@
   "app_user_section",
   "user_id",
   "create_application_user",
+  "private_key",
+  "public_key",
   "electoral_district_settings_section",
   "eligible_voter",
   "eligible_candidate",
   "electoral_district",
-  "applicable_voter_districts"
+  "region_id",
+  "applicable_voter_districts",
+  "image",
+  "alerted"
  ],
  "fields": [
   {
    "fieldname": "member_id",
    "fieldtype": "Data",
-   "label": "Institution ID"
+   "label": "Member ID"
   },
   {
    "fieldname": "surname",
@@ -80,7 +93,8 @@
    "fieldtype": "Link",
    "label": "Institution",
    "options": "Institution",
-   "reqd": 1
+   "reqd": 1,
+   "set_only_once": 1
   },
   {
    "fieldname": "section_break_3",
@@ -115,7 +129,8 @@
   },
   {
    "fieldname": "section_break_13",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "default": "0",
@@ -203,11 +218,83 @@
    "label": "Applicable Voter Districts",
    "options": "Institution Member Voter Districts",
    "read_only": 1
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "hidden": 1,
+   "label": "Image"
+  },
+  {
+   "fieldname": "private_key",
+   "fieldtype": "Data",
+   "label": "Private Key"
+  },
+  {
+   "fieldname": "public_key",
+   "fieldtype": "Data",
+   "label": "Public Key"
+  },
+  {
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number"
+  },
+  {
+   "description": "Such as licence, membership number issued by a professional body. Not to be confused with Member registration number",
+   "fieldname": "board_number",
+   "fieldtype": "Data",
+   "label": "Board Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "alerted",
+   "fieldtype": "Check",
+   "label": "Alerted"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "Male\nFemale"
+  },
+  {
+   "fieldname": "special_category",
+   "fieldtype": "Select",
+   "label": "Special Category",
+   "options": "PWD\nYouth\nMarginalised Communities\nN/A"
+  },
+  {
+   "fetch_from": "institution.institution_id",
+   "fieldname": "institution_id",
+   "fieldtype": "Data",
+   "label": "Institution ID",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "electoral_district.region_id",
+   "fieldname": "region_id",
+   "fieldtype": "Data",
+   "label": "Region ID",
+   "read_only": 1
+  },
+  {
+   "default": "Member",
+   "fieldname": "member_category",
+   "fieldtype": "Select",
+   "label": "Member Category",
+   "options": "Member\nMember and Volunteer\nMember and Aspirant"
   }
  ],
+ "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-03-22 00:02:47.067713",
+ "modified": "2021-11-10 16:09:04.864730",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",

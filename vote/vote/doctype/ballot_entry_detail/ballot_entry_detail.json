@@ -1,0 +1,85 @@
+{
+ "actions": [],
+ "creation": "2021-03-26 15:33:01.711793",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "position",
+  "branch",
+  "candidate_id",
+  "candidate_name",
+  "choice",
+  "political_party",
+  "party_symbol",
+  "voter_branch"
+ ],
+ "fields": [
+  {
+   "fieldname": "position",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Position",
+   "options": "Institution Position"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Electoral District"
+  },
+  {
+   "fieldname": "candidate_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Candidate ID",
+   "options": "Institution Member"
+  },
+  {
+   "fetch_from": "candidate_id.full_name",
+   "fieldname": "candidate_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Candidate Name",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "choice",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Choice"
+  },
+  {
+   "fieldname": "political_party",
+   "fieldtype": "Link",
+   "label": "Political Party",
+   "options": "Political Party"
+  },
+  {
+   "fieldname": "party_symbol",
+   "fieldtype": "Data",
+   "label": "Party Symbol"
+  },
+  {
+   "fieldname": "voter_branch",
+   "fieldtype": "Link",
+   "label": "Source Branch",
+   "options": "Electoral District",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-05-10 10:01:54.187985",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Ballot Entry Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

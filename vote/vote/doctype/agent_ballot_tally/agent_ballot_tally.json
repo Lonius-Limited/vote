@@ -1,0 +1,121 @@
+{
+ "actions": [],
+ "creation": "2021-09-22 11:34:52.800962",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "election",
+  "institution",
+  "section_break_2",
+  "agent",
+  "agent_name",
+  "section_break_3",
+  "polling_station",
+  "document_hash",
+  "registered_voters",
+  "applicable_voter_positions",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "depends_on": "eval:doc.institution",
+   "fieldname": "agent",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Agent ",
+   "options": "Institution Member",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "agent.full_name",
+   "fieldname": "agent_name",
+   "fieldtype": "Data",
+   "label": "Agent Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "polling_station",
+   "fieldtype": "Link",
+   "label": "Polling Station",
+   "options": "Electoral District"
+  },
+  {
+   "fieldname": "document_hash",
+   "fieldtype": "Data",
+   "label": "Document Hash",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.document_hash",
+   "fieldname": "applicable_voter_positions",
+   "fieldtype": "Table",
+   "label": "Applicable Voter Positions",
+   "options": "Agent Ballot Tally Position"
+  },
+  {
+   "fieldname": "election",
+   "fieldtype": "Link",
+   "label": "Election",
+   "options": "Election",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.election",
+   "fetch_from": "election.institution",
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "label": "Institution",
+   "options": "Institution",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Agent Ballot Tally",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "registered_voters",
+   "fieldtype": "Int",
+   "label": "Registered Voters",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-09-26 13:04:16.364354",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Agent Ballot Tally",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
