@@ -1,2 +1,4 @@
 frappe
 sendgrid
+web3
+uuid
