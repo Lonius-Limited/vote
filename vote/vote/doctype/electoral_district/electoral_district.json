@@ -1,13 +1,19 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "field:electoral_district_name",
  "creation": "2021-03-20 17:28:23.585383",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "institution",
   "electoral_district_name",
   "region_id",
+  "is_polling_station",
+  "reference_election",
+  "registered_voters",
+  "active_register",
   "lft",
   "rgt",
   "is_group",
@@ -51,23 +57,60 @@
    "options": "Electoral District"
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "parent_electoral_district",
    "fieldtype": "Link",
    "label": "Parent Electoral District",
    "options": "Electoral District"
   },
   {
+   "allow_in_quick_entry": 1,
    "description": "Region / Branch ",
    "fieldname": "electoral_district_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Region",
+   "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "label": "Institution",
+   "options": "Institution"
+  },
+  {
+   "fieldname": "reference_election",
+   "fieldtype": "Link",
+   "label": "Reference Election",
+   "options": "Election",
+   "read_only": 1
+  },
+  {
+   "fieldname": "registered_voters",
+   "fieldtype": "Int",
+   "label": "Registered Voters",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "description": "The active voter register.",
+   "fieldname": "active_register",
+   "fieldtype": "Link",
+   "label": "Active Register",
+   "options": "Voter Register"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_polling_station",
+   "fieldtype": "Check",
+   "label": "is Polling Station"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2021-03-20 18:01:39.247372",
+ "modified": "2021-11-04 08:46:56.409741",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Electoral District",
@@ -83,6 +126,19 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
    "share": 1,
    "write": 1
   }
