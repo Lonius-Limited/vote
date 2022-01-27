@@ -483,6 +483,7 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
 				)
 				row.headshot = get_headshot(candidate.get("candidate_id"))
 		ballot_document.current_tally = ballot_tally(election)
+		ballot_document.flags.ignore_permissions = True
 		ballot_document.insert(ignore_permissions=True)
 		ballot_name = ballot_document.get("name")
 		frappe.local.response.update(
