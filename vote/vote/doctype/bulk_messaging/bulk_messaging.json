@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "MSG.#####",
+ "creation": "2021-04-27 02:19:53.768180",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "send_messages",
+  "subject",
+  "custom_recipients_section",
+  "send_to_custom_recipients",
+  "receiver_list",
+  "section_break_5",
+  "message",
+  "email",
+  "initiated",
+  "sent",
+  "html_3",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Subject",
+   "reqd": 1
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Text",
+   "label": "Message"
+  },
+  {
+   "fieldname": "html_3",
+   "fieldtype": "HTML",
+   "options": "<div>\n<p>These are the template options available: </p>\n<table>\n<tbody><tr><td>First Name</td><td>{first_name}</td></tr>\n<tr><td>Last Name</td><td>{last_name}</td></tr>\n<tr><td>Voter ID</td><td>{voter_id}</td></tr>\n</tbody></table>\n</div>\n<p>E.g Dear {firstname},</p>\n<p>You have successfully been registered under Voter ID: {voter_id}</p>"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Bulk Messaging",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Text Editor",
+   "label": "Email"
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.receiver_list",
+   "fieldname": "custom_recipients_section",
+   "fieldtype": "Section Break",
+   "label": "Custom Recipients"
+  },
+  {
+   "default": "0",
+   "fieldname": "send_to_custom_recipients",
+   "fieldtype": "Check",
+   "label": "Send to Custom Recipients"
+  },
+  {
+   "depends_on": "eval:doc.send_to_custom_recipients",
+   "fieldname": "receiver_list",
+   "fieldtype": "Code",
+   "label": "Receiver List"
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "sent",
+   "fieldtype": "Check",
+   "label": "Sent",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.docstatus==1",
+   "fieldname": "send_messages",
+   "fieldtype": "Button",
+   "label": "Send Messages"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "initiated",
+   "fieldtype": "Check",
+   "label": "Initiated",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-08-17 19:26:36.046062",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Bulk Messaging",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

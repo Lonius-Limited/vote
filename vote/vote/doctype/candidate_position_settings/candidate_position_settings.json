@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "creation": "2021-03-22 15:26:28.190288",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "branch",
+  "position",
+  "maximum_number_of_positions"
+ ],
+ "fields": [
+  {
+   "fieldname": "position",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Position",
+   "options": "Institution Position"
+  },
+  {
+   "fieldname": "maximum_number_of_positions",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Maximum Number of Posts"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Electoral District"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-03-24 12:30:14.064679",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Candidate Position Settings",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

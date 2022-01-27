@@ -1,0 +1,59 @@
+{
+ "actions": [],
+ "autoname": "format:P-AGENT-{######}",
+ "creation": "2021-09-21 22:07:14.991014",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "election",
+  "agent_name",
+  "polling_stations"
+ ],
+ "fields": [
+  {
+   "fieldname": "election",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Election",
+   "options": "Election",
+   "reqd": 1
+  },
+  {
+   "fieldname": "agent_name",
+   "fieldtype": "Link",
+   "label": "Agent Name",
+   "options": "Institution Member"
+  },
+  {
+   "fieldname": "polling_stations",
+   "fieldtype": "Table",
+   "label": "Polling Stations",
+   "options": "Agent Polling Station"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-09-22 09:36:38.686084",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Poll Agent",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

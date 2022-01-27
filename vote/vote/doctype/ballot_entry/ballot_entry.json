@@ -1,0 +1,164 @@
+{
+ "actions": [],
+ "creation": "2021-03-26 15:33:54.811571",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "institution",
+  "voter_id",
+  "election",
+  "ballot_entry_detail",
+  "voter_name",
+  "tx_hash",
+  "vote_time",
+  "vote_hash",
+  "current_tally",
+  "section_break_8",
+  "voter_email",
+  "posted_to_blockchain",
+  "receipted",
+  "tallied",
+  "branch",
+  "no_wallet"
+ ],
+ "fields": [
+  {
+   "columns": 1,
+   "fieldname": "voter_id",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Voter ID",
+   "options": "Institution Member"
+  },
+  {
+   "fieldname": "ballot_entry_detail",
+   "fieldtype": "Table",
+   "label": "Ballot Entry Detail",
+   "options": "Ballot Entry Detail"
+  },
+  {
+   "fieldname": "election",
+   "fieldtype": "Link",
+   "label": "Election",
+   "options": "Election"
+  },
+  {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Institution",
+   "options": "Institution",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "voter_id.full_name",
+   "fieldname": "voter_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Voter Name",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "tx_hash",
+   "fieldtype": "Data",
+   "label": "Transaction Hash",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "Turnout so far",
+   "fieldname": "current_tally",
+   "fieldtype": "Int",
+   "label": "Current Tally",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "voter_id.email_address",
+   "fieldname": "voter_email",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "Voter Email",
+   "options": "Email"
+  },
+  {
+   "default": "0",
+   "fieldname": "posted_to_blockchain",
+   "fieldtype": "Check",
+   "label": "Posted To Blockchain",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "tallied",
+   "fieldtype": "Check",
+   "label": "Tallied",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "voter_id.electoral_district",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Electoral District"
+  },
+  {
+   "default": "0",
+   "fieldname": "receipted",
+   "fieldtype": "Check",
+   "label": "Receipted",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "no_wallet",
+   "fieldtype": "Check",
+   "label": "No Wallet",
+   "read_only": 1
+  },
+  {
+   "fieldname": "vote_hash",
+   "fieldtype": "Data",
+   "label": "Vote Hash"
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break",
+   "permlevel": 5
+  },
+  {
+   "columns": 2,
+   "fetch_from": "creation",
+   "fetch_if_empty": 1,
+   "fieldname": "vote_time",
+   "fieldtype": "Data",
+   "label": "Vote Time",
+   "read_only": 1
+  }
+ ],
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-11-30 17:26:18.358275",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Ballot Entry",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

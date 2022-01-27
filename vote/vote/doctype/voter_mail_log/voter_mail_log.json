@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "creation": "2021-04-28 11:02:52.801398",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "voter",
+  "email_address",
+  "subject",
+  "message",
+  "response",
+  "response_html",
+  "response_text"
+ ],
+ "fields": [
+  {
+   "fieldname": "voter",
+   "fieldtype": "Link",
+   "label": "Voter",
+   "options": "Institution Member"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Recipient Email Address"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Data",
+   "label": "Message",
+   "read_only": 1
+  },
+  {
+   "fieldname": "response",
+   "fieldtype": "HTML Editor",
+   "label": "Response",
+   "read_only": 1
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Subject",
+   "read_only": 1
+  },
+  {
+   "fieldname": "response_html",
+   "fieldtype": "HTML Editor",
+   "label": "Response HTML",
+   "read_only": 1
+  },
+  {
+   "fieldname": "response_text",
+   "fieldtype": "Text Editor",
+   "label": "Response Text",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-04-28 14:24:29.818804",
+ "modified_by": "Administrator",
+ "module": "Vote",
+ "name": "Voter Mail Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "track_views": 1
+}
