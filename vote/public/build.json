@@ -1,8 +1,0 @@
-{
-    "js/elections.min.js": [
-        "public/js/elections/elections.js"
-    ],
-    "js/template.min.js": [
-        "public/js/template/template.js"
-    ]
-}

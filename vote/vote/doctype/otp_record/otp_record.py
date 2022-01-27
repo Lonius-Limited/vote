@@ -9,7 +9,7 @@ from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils.background_jobs import enqueue
 from frappe import msgprint, _
 from vote import sendmail
-
+from vote.utils.mtrhsps import mtrhsps
 
 class OTPRecord(Document):
     def after_insert(self):
@@ -32,6 +32,9 @@ class OTPRecord(Document):
                 message=_(email_message),
                 subject=_(f"CryptoVote One Time Pin - {docid}"),
             )
+        if frappe.get_value("Institution Member",voter_id,'institution') =="MTRH Staff Pension Scheme": 
+            mtrhsps(telephone,message)
+            return otp_code
         send_sms([telephone], message)
         # enqueue(method=frappe.sendmail, queue='short', timeout=300, **email_args)
 
