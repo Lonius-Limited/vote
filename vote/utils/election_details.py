@@ -265,6 +265,7 @@ def get_e_ballot(election, voter=None):
 	payload["institution"] = institution
 	payload["institution_contact"] = institution_contact
 	payload["voter_name"] = voter_name
+	payload["is_official"] = is_official(voter)
 	###
 	payload["county_facility"] = voter_doc.get("electoral_district")
 	payload["voter_branch"] = (
@@ -956,7 +957,17 @@ def election_results_v2(election):
 			all_results.append(branch_results)
 	return all_results
 
-
+def is_official(voter_id):
+	is_official = 0
+	election_list = frappe.db.get_all(
+		"Election", filters=dict(status="Open"), fields=["name"]
+	)
+	if not election_list:
+		return 0
+	open_elections = [x.get("name") for x in election_list]
+	official_status = frappe.get_value("Election Official",dict(member=voter_id),"name")
+	if official_status: is_official = 1
+	return is_official 
 def post_ballot_entries():
 	election_list = frappe.db.get_all(
 		"Election", filters=dict(status="Open"), fields=["name"]
@@ -1150,6 +1161,7 @@ def election_status_switch():
 	print(open_elections)
 
 	def handle_open_elections(election):
+		post_election_ballot_entries(election=election)
 		frappe.get_doc("Election", election).db_set("status", "Closed")
 
 	def handle_scheduled_election(election):
