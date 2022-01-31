@@ -139,6 +139,7 @@ class InstitutionMember(Document):
 		frappe.msgprint(f"{user}")
 		return user
 	def send_voter_card(self, election=None):
+		from vote.utils.mtrhsps import mtrhsps
 
 		if not election: return #has to be the election document
 
@@ -153,7 +154,11 @@ class InstitutionMember(Document):
 
 		sms_msg = universal_sms_template.format(self.get("full_name"), election, self.get("name"))
 
-		if telephone: send_sms([telephone], sms_msg)
+		if telephone: 
+			if frappe.get_value("Institution Member",voter_id,'institution') =="MTRH Staff Pension Scheme": 
+				mtrhsps(telephone,sms_msg)
+			else:
+				send_sms([telephone], sms_msg)
 
 		self.db_set("alerted", True)
 		print(" Set as alerted")
