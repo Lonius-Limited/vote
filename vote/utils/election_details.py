@@ -18,6 +18,7 @@ from vote.utils.ethereum import (
 from vote.vote.report.election_tally.election_tally import get_results
 from vote.img_utils import get_headshot, get_party_symbol
 from vote.vote.report.election_tally.election_tally import get_branch_voters
+from vote.utils.mtrhsps import mtrhsps
 
 ILLEGAL_LOGIN = "Sorry, the Voter ID or National ID provided do not match our records"
 WRONG_OTP = "Sorry, the OTP code has either been used or is invalid"
@@ -983,7 +984,7 @@ def voter_is_official(voter_id):
         return 0
     open_elections = [x.get("name") for x in election_list]
     official_status = frappe.get_value(
-        "Election Official", dict(member=voter_id), "name")
+        "Election Official", dict(member=voter_id,parent=["IN",open_elections]), "name")
     if official_status:
         is_official = 1
     return is_official
