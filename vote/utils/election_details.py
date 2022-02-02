@@ -1168,10 +1168,14 @@ def get_votes_from_blockchain():
 
 def election_status_switch():
     from datetime import datetime
+    import pytz
+    now_date = datetime.now(pytz.timezone("Africa/Nairobi"))
 
-    print(datetime.now())
+    print(now_date)
+
+
     scheduled_args = dict(
-        docstatus=1, status="Scheduled", election_start=["<=", datetime.now()]
+        docstatus=1, status="Scheduled", election_start=["<=", now_date]
     )
 
     scheduled_elections = frappe.get_all(
@@ -1179,7 +1183,7 @@ def election_status_switch():
     )
 
     open_args = dict(docstatus=1, status="Open",
-                     election_ends=["<=", datetime.now()])
+                     election_ends=["<=", now_date])
 
     open_elections = frappe.get_all(
         "Election", filters=open_args, fields=["name"])
