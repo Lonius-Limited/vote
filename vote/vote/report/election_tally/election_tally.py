@@ -67,7 +67,9 @@ def get_branch_voters(election, branch):#Those who voted
 
 	branch_children = get_branch_children(branch)
 
-	args = dict(election=election, branch=["IN", branch_children])
+	args = dict(election=election,tallied=1, branch=["IN", branch_children])
+
+	# return sum([x.get("vote_count") for x in frappe.get_all("Ballot Entry", filters=args), fields=["vote_count"]])
 
 	return frappe.get_all("Ballot Entry", filters=args)	
 
