@@ -605,7 +605,8 @@ def get_election_results_v3(election=None):
 
         position = j.get("position")
 
-        branch_turnout = len(get_branch_voters(election, branch_name)) or 0
+        # branch_turnout = len(get_branch_voters(election, branch_name)) or 0
+        # branch_turnout= sum([x.get("vote_count") for x in results_repository if x.get("")])
 
         context = list(
             filter(
@@ -616,6 +617,8 @@ def get_election_results_v3(election=None):
                 results_repository,
             )
         )
+
+        branch_turnout = sum([x.get("vote_count") for x in context])
 
         def _get_branch_position_tally(context=[], branch_turnout=0):
             context_tally = None
