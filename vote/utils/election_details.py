@@ -582,7 +582,7 @@ def get_election_results_v3(election=None):
     results_repository = frappe.db.get_all(
         "Vote Repository", filters=dict(election=election), fields=["*"], order_by="idx"
     )
-
+    tallied_ballots = get_branch_voters(election, frappe.get_value("Electoral District",dict(institution=institution, parent_electoral_district=""),'name'))
     all_results = []
 
     k = 0
@@ -606,6 +606,7 @@ def get_election_results_v3(election=None):
         position = j.get("position")
 
         # branch_turnout = len(get_branch_voters(election, branch_name)) or 0
+        branch_turnout = len(filter(lambda x: x.get("branch") == branch_name,tallied_ballots))
         # branch_turnout= sum([x.get("vote_count") for x in results_repository if x.get("")])
 
         context = list(
@@ -618,7 +619,7 @@ def get_election_results_v3(election=None):
             )
         )
 
-        branch_turnout = sum([x.get("vote_count") for x in context])
+        # branch_turnout = sum([x.get("vote_count") for x in context])
 
         def _get_branch_position_tally(context=[], branch_turnout=0):
             context_tally = None
