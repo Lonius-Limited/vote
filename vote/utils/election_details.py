@@ -200,6 +200,7 @@ def handle_eth_wallet(voter_id):
 @frappe.whitelist(allow_guest=True)
 def get_voter_elections(voter_id, status=None):
     election_status = ["Open"] if status == None else ["Closed", "Scheduled"]
+    if voter_is_official(voter_id): election_status=["Open","Closed","Scheduled"]#See everything
     voter_registers = frappe.db.sql(
         f"SELECT DISTINCT parent  FROM `tabVoter Register Member` WHERE system_id = '{voter_id}' AND parent IN (SELECT applicable_voter_register FROM `tabElection` WHERE docstatus = 1)",
         as_dict=1,
@@ -982,7 +983,7 @@ def election_results_v2(election):
 def voter_is_official(voter_id):
     is_official = 0
     election_list = frappe.db.get_all(
-        "Election", filters=dict(status="Open"), fields=["name"]
+        "Election", filters=dict(status=["IN",["Scheduled","Open"]]), fields=["name"]
     )
     if not election_list:
         return 0
