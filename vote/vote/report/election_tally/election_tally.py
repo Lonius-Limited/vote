@@ -71,7 +71,7 @@ def get_branch_voters(election, branch):#Those who voted
 
 	# return sum([x.get("vote_count") for x in frappe.get_all("Ballot Entry", filters=args), fields=["vote_count"]])
 
-	return frappe.get_all("Ballot Entry", filters=args)	
+	return frappe.get_all("Ballot Entry", filters=args, fields=["*"])	
 
 def search_params(branch=None, candidate_id=None, parent = None, position=None, page_length=None):
 	params= dict(
