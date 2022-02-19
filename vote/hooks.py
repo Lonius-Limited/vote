@@ -104,23 +104,36 @@ fixtures =["Institution","Electoral District", "Slack Webhook URL", "Notificatio
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"vote.tasks.all"
-# 	],
-# 	"daily": [
-# 		"vote.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"vote.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"vote.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"vote.tasks.monthly"
-# 	]
-# }
+scheduler_events = {
+	# "all": [
+	# 	"vote.utils.election_details.post_ballot_entries",
+    #     "vote.utils.election_details.election_status_switch"
+	# ],
+    "cron": {
+        "* * * * *": [
+            "vote.utils.election_details.post_ballot_entries",
+            "vote.utils.election_details.election_status_switch"
+        ],
+        # "*/6 * * * *": [
+        #     "app.scheduled_tasks..collect_error_snapshots"
+        # ],
+        # "annual": [
+        #     "app.scheduled_tasks.collect_error_snapshots"
+        # ]
+    }
+	# "daily": [
+	# 	"vote.tasks.daily"
+	# ],
+	# "hourly": [
+	# 	"vote.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"vote.tasks.weekly"
+	# ]
+	# "monthly": [
+	# 	"vote.tasks.monthly"
+	# ]
+}
 
 # Testing
 # -------
