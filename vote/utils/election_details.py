@@ -607,9 +607,9 @@ def get_election_results_v3(election=None):
         position = j.get("position")
 
         # branch_turnout = len(get_branch_voters(election, branch_name)) or 0
-        branch_turnout = len(list(filter(lambda x: x.get("branch") == branch_name,tallied_ballots)))
+        # branch_turnout = len(list(filter(lambda x: x.get("branch") == branch_name,tallied_ballots)))
         # branch_turnout= sum([x.get("vote_count") for x in results_repository if x.get("")])
-
+        branch_turnout = len(get_branch_voters(election, branch_name) or [] )or 0
         context = list(
             filter(
                 lambda x: (
