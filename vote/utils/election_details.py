@@ -261,7 +261,7 @@ def get_in_register(voter, election=None):
 
 
 @frappe.whitelist(allow_guest=True)
-def get_e_ballot(election, voter=None):
+def get_e_ballot(election=None, voter=None):
     payload = {}
 
     institution = get_voter_institution(voter)
@@ -607,7 +607,7 @@ def get_election_results_v3(election=None):
         position = j.get("position")
 
         # branch_turnout = len(get_branch_voters(election, branch_name)) or 0
-        branch_turnout = len(filter(lambda x: x.get("branch") == branch_name,tallied_ballots))
+        branch_turnout = len(list(filter(lambda x: x.get("branch") == branch_name,tallied_ballots)))
         # branch_turnout= sum([x.get("vote_count") for x in results_repository if x.get("")])
 
         context = list(
