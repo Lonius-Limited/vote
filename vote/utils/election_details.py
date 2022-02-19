@@ -1197,9 +1197,11 @@ def election_status_switch():
 
     def handle_open_elections(election):
         post_election_ballot_entries(election=election)
+        # post_ballot_entries
         frappe.get_doc("Election", election).db_set("status", "Closed")
 
     def handle_scheduled_election(election):
+        # post_election_ballot_entries()
         frappe.get_doc("Election", election).db_set("status", "Open")
 
     if scheduled_elections:
