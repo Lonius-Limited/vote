@@ -1,0 +1,14 @@
+{
+  "name": "vote",
+  "version": "1.0.0",
+  "description": "e-Voting Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd vote-frontend && yarn dev",
+    "build": "cd vote-frontend && yarn build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
