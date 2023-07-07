@@ -1,4 +1,4 @@
-import { createApp, reactive } from "vue";
+import  { createApp, reactive } from "vue";
 import App from "./App.vue";
 
 import router from './router';
@@ -7,12 +7,25 @@ import call from "../../../doppio/libs/controllers/call";
 import socket from "../../../doppio/libs/controllers/socket";
 import Auth from "../../../doppio/libs/controllers/auth";
 
+import BootstrapVueNext from 'bootstrap-vue-next'
+
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
+
+
 const app = createApp(App);
 const auth = reactive(new Auth());
 
 // Plugins
 app.use(router);
 app.use(resourceManager);
+
+// Make BootstrapVue available throughout your project
+app.use(BootstrapVueNext)
+
+// Optionally install the BootstrapVue icon components plugin
+// Vue.use(IconsPlugin)
 
 // Global Properties,
 // components can inject this
