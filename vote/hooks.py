@@ -159,4 +159,4 @@ scheduler_events = {
 # auto_cancel_exempted_doctypes = ["Auto Repeat"]
 
 
-website_route_rules = [{'from_route': '/vote-frontend/<path:app_path>', 'to_route': 'vote-frontend'},]
+website_route_rules = [{'from_route': '/evote/<path:app_path>', 'to_route': 'evote'}, {'from_route': '/vote-frontend/<path:app_path>', 'to_route': 'vote-frontend'},]
