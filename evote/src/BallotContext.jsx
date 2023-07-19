@@ -10,7 +10,7 @@ const BallotProvider = ({ children }) => {
   const [hasVoted, setHasVoted] = useState(false);
   const [ballotLength, setBallotLength] = useState(0);
   //Functions
-  const updateVoterInfo = ({ bioData }) => {
+  const updateVoterInfo = ( bioData ) => {
     /*{
         "institution": "MTRH Staff Pension Scheme",
         "institution_contact": null,
@@ -38,6 +38,7 @@ const BallotProvider = ({ children }) => {
       ballotReceipt.find((x) => x.position === ballotSelection.position) ||
       null;
 
+    //Default Behavior
     if (!positionExists) {
       setBallotReceipt([...ballotReceipt, ballotSelection]);
 
