@@ -4,5 +4,5 @@
 *.swp
 tags
 vote/docs/current
-node_modules
+vote/node_modules
 vote/evote/node_modules
