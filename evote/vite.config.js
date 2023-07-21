@@ -26,7 +26,7 @@ export default defineConfig(({ command, mode }) => {
 			rollupOptions: {
 				external: [
 					"react/jsx-runtime",
-					/^react:.*/,
+					/^react*/,
 				]
 
 			}
