@@ -8,7 +8,7 @@ export default defineConfig(({ command, mode }) => {
 	const env = loadEnv(mode, process.cwd(), '')
 	return {
 		plugins: [react()],
-		define: { 'process.env': env},
+		define: { 'process.env': env },
 		server: {
 			port: 8080,
 			proxy: proxyOptions
@@ -16,13 +16,18 @@ export default defineConfig(({ command, mode }) => {
 		resolve: {
 			alias: {
 				'@': path.resolve(__dirname, 'src')
-			}
+			},
+			extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
 		},
 		build: {
 			outDir: '../vote/public/evote',
 			emptyOutDir: true,
 			target: 'es2015',
+			rollupOptions:{
+				"jsx": "react/jsx-runtime"
+			}
 		},
+		
 	}
 });
 // export default defineConfig(({ command, mode }) => {
