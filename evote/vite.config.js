@@ -23,11 +23,14 @@ export default defineConfig(({ command, mode }) => {
 			outDir: '../vote/public/evote',
 			emptyOutDir: true,
 			target: 'es2015',
-			rollupOptions:{
-				"jsx": "react/jsx-runtime"
+			rollupOptions: {
+				external: [
+					"react/jsx-runtime"
+				]
+
 			}
 		},
-		
+
 	}
 });
 // export default defineConfig(({ command, mode }) => {
