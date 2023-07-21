@@ -28,6 +28,10 @@ export default defineConfig(({ command, mode }) => {
 					"react/jsx-runtime",
 					"react",
 					/^react*/,
+					"frappe-react-sdk",
+					"antd",
+					"@uidotdev/usehooks"
+
 				]
 
 			}
