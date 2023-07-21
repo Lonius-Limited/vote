@@ -31,7 +31,6 @@ export default defineConfig(({ command, mode }) => {
 					"frappe-react-sdk",
 					"antd",
 					"@uidotdev/usehooks"
-
 				]
 
 			}
