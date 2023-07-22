@@ -1,6 +1,7 @@
 import React from "react";
-import { Card, List } from "antd";
-import { useMediaQuery } from "@uidotdev/usehooks";
+import { Card, Col, List, Row } from "antd";
+// import { useMediaQuery } from "@uidotdev/usehooks";
+import useMediaQuery, { MediaQueryKey } from "use-media-antd-query";
 
 const data = [
   {
@@ -20,9 +21,14 @@ const data = [
 {voting_start, vote_ends, votes_cast, total_voter_count }
 */
 const ElectionSummary = () => {
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 800px)");
+  // const isSmallDevice = useMediaQuery("only screen and (max-width : 800px)");
+
+  const colSize = useMediaQuery();
+  console.log(colSize); // "xs" | "sm" | "md" | "lg" | "xl" | "xxl"
   return (
-    <div
+    <>
+    {colSize}
+    <Row
       style={{
         width: "100%",
         position: "sticky",
@@ -30,12 +36,29 @@ const ElectionSummary = () => {
         zIndex: 2,
       }}
     >
-      {isSmallDevice ? (
+      <Col xs={24} sm={24} md={24} lg={12} xl={12}>
         <SingleCardlayout payload={data} />
-      ) : (
+      </Col>
+      <Col>
         <MultiCardLayout payload={data} />
-      )}
-    </div>
+      </Col>
+    </Row>
+    </>
+    // <div
+    //   style={{
+    //     width: "100%",
+    //     position: "sticky",
+    //     top: 0,
+    //     zIndex: 2,
+    //   }}
+    // >
+    //   {isSmallDevice ? (
+    //     <SingleCardlayout payload={data} />
+    //   ) : (
+    //     <MultiCardLayout payload={data} />
+    //   )}
+    // </div>
+    
   );
 };
 const MultiCardLayout = ({ payload }) => {
