@@ -25,21 +25,21 @@ export default defineConfig(({ command, mode }) => {
 			emptyOutDir: true,
 			target: 'es2015',
 			rollupOptions: {
-				external: [/node_modules/]
-				// external: [
-				// 	"react",
-				// 	"react/jsx-runtime",
-				// 	// "react/jsx-runtime",
-				// 	"frappe-react-sdk/*",
-				// 	"antd/*",
-				// 	"@uidotdev/usehooks/*"
-				// ], output: {
-				// 	globals: {
-				// 		'react': 'react',
-				// 		//   'react-dom': 'ReactDOM',
-				// 		'react/jsx-runtime': 'react/jsx-runtime',
-				// 	},
-				// },
+				// external: ["evote/node_modules/"]
+				external: [
+					"./evote/react",
+					"./evote/react/jsx-runtime/",
+					// "react/jsx-runtime",
+					"./evote/frappe-react-sdk/",
+					"./evote/antd/*",
+					"./evote/@uidotdev/usehooks/"
+				], output: {
+					globals: {
+						'react': 'react',
+						//   'react-dom': 'ReactDOM',
+						'react/jsx-runtime': 'react/jsx-runtime',
+					},
+				},
 
 			}
 		},
