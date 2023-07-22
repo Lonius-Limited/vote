@@ -27,12 +27,12 @@ export default defineConfig(({ command, mode }) => {
 			rollupOptions: {
 				// external: ["evote/node_modules/"]
 				external: [
-					"./evote/react",
-					"./evote/react/jsx-runtime/",
+					"./evote/node_modules/react",
+					"./evote/node_modules/react/jsx-runtime/",
 					// "react/jsx-runtime",
-					"./evote/frappe-react-sdk/",
-					"./evote/antd/*",
-					"./evote/@uidotdev/usehooks/"
+					"./evote/node_modules/frappe-react-sdk/",
+					"./evote/node_modules/antd/*",
+					"./evote/node_modules/@uidotdev/usehooks/"
 				], output: {
 					globals: {
 						'react': 'react',
