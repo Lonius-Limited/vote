@@ -6,6 +6,7 @@ import Ballot from "./pages/Ballot";
 import Results from "./pages/Results";
 import Protected from "./Protected";
 import Login from "./pages/Login";
+import OTPConfirm from "./pages/OTPConfirm";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" exact element={<Index />} />
           <Route path="/login" exact element={<Login />} />
+          <Route path="/otp-confirm" exact element={<OTPConfirm />} />
           <Route
             path="/ballot"
             exact

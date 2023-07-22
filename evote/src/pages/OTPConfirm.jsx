@@ -6,7 +6,7 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
-const Login = () => (
+const OTPConfirm = () => (
   <>  
     <Form
       name="basic"
@@ -27,8 +27,8 @@ const Login = () => (
       autoComplete="off"
     >
       <Form.Item
-        label="Username"
-        name="username"
+        label="OTP Code"
+        name="otp_code"
         rules={[
           {
             required: true,
@@ -40,40 +40,19 @@ const Login = () => (
       </Form.Item>
 
       <Form.Item
-        label="Password"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: "Please input your password!",
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
         wrapperCol={{
           offset: 8,
           span: 16,
         }}
       >
         <Button type="primary" htmlType="submit">
-          LOGIN
+          VERIFY
+        </Button>
+        <Button type="secondary" >
+          BACK
         </Button>
       </Form.Item>
     </Form>
   </>
 );
-export default Login;
+export default OTPConfirm;

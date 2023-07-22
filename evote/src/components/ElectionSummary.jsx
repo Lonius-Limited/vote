@@ -33,20 +33,6 @@ const ElectionSummary = () => {
         <SingleCardlayout payload={data} />
       )}
     </>
-    // <div
-    //   style={{
-    //     width: "100%",
-    //     position: "sticky",
-    //     top: 0,
-    //     zIndex: 2,
-    //   }}
-    // >
-    //   {isSmallDevice ? (
-    //     <SingleCardlayout payload={data} />
-    //   ) : (
-    //     <MultiCardLayout payload={data} />
-    //   )}
-    // </div>
   );
 };
 const MultiCardLayout = ({ payload }) => {
