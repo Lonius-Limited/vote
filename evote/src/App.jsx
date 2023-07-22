@@ -1,6 +1,4 @@
-import { useState } from "react";
 import "./App.css";
-import { FrappeProvider } from "frappe-react-sdk";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Index from "./Index";
 import MainLayout from "./MainLayout";
