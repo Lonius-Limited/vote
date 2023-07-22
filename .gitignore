@@ -6,4 +6,4 @@ tags
 vote/docs/current
 vote/node_modules
 vote/evote/node_modules
-vote/public/evote/assets/
+vote/public/evote/assets/index*
