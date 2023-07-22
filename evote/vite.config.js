@@ -27,7 +27,7 @@ export default defineConfig(({ command, mode }) => {
 				external: [
 					"react/*",
 					"react/jsx-runtime/*",
-					"react/jsx-runtime",
+					// "react/jsx-runtime",
 					"frappe-react-sdk/*",
 					"antd/*",
 					"@uidotdev/usehooks/*"
