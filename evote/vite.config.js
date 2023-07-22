@@ -2,6 +2,7 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react'
 import proxyOptions from './proxyOptions';
+// const pkg = require('./package.json');
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -24,20 +25,21 @@ export default defineConfig(({ command, mode }) => {
 			emptyOutDir: true,
 			target: 'es2015',
 			rollupOptions: {
-				external: [
-					"react",
-					"react/jsx-runtime",
-					// "react/jsx-runtime",
-					"frappe-react-sdk/*",
-					"antd/*",
-					"@uidotdev/usehooks/*"
-				], output: {
-					globals: {
-						'react': 'react',
-						//   'react-dom': 'ReactDOM',
-						'react/jsx-runtime': 'react/jsx-runtime',
-					},
-				},
+				external: [/node_modules/]
+				// external: [
+				// 	"react",
+				// 	"react/jsx-runtime",
+				// 	// "react/jsx-runtime",
+				// 	"frappe-react-sdk/*",
+				// 	"antd/*",
+				// 	"@uidotdev/usehooks/*"
+				// ], output: {
+				// 	globals: {
+				// 		'react': 'react',
+				// 		//   'react-dom': 'ReactDOM',
+				// 		'react/jsx-runtime': 'react/jsx-runtime',
+				// 	},
+				// },
 
 			}
 		},
