@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Col, List, Row } from "antd";
 // import { useMediaQuery } from "@uidotdev/usehooks";
-import useMediaQuery, { MediaQueryKey } from "use-media-antd-query";
+import useMediaQuery from "use-media-antd-query";
 
 const data = [
   {
@@ -27,22 +27,11 @@ const ElectionSummary = () => {
   console.log(colSize); // "xs" | "sm" | "md" | "lg" | "xl" | "xxl"
   return (
     <>
-    {colSize}
-    <Row
-      style={{
-        width: "100%",
-        position: "sticky",
-        top: 0,
-        zIndex: 2,
-      }}
-    >
-      <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-        <SingleCardlayout payload={data} />
-      </Col>
-      <Col>
+      {["md", "lg", "xl","xxl"].includes(colSize) ? (
         <MultiCardLayout payload={data} />
-      </Col>
-    </Row>
+      ) : (
+        <SingleCardlayout payload={data} />
+      )}
     </>
     // <div
     //   style={{
@@ -58,7 +47,6 @@ const ElectionSummary = () => {
     //     <MultiCardLayout payload={data} />
     //   )}
     // </div>
-    
   );
 };
 const MultiCardLayout = ({ payload }) => {

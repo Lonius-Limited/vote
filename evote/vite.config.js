@@ -28,7 +28,7 @@ export default defineConfig(({ command, mode }) => {
 				// external: ["evote/node_modules/"]
 				external: [
 					"./evote/node_modules/react",
-					"./evote/node_modules/react/jsx-runtime/",
+					"./evote/node_modules/react/jsx-runtime/*",
 					// "react/jsx-runtime",
 					"./evote/node_modules/frappe-react-sdk/",
 					"./evote/node_modules/antd/*",

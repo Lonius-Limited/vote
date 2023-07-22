@@ -6,8 +6,7 @@ import { useFrappeGetCall } from "frappe-react-sdk";
 const Ballot = () => {
   return (
     <div style={{ width: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <TestPing />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <ElectionSummary />
       </div>
       <BallotDetail />
