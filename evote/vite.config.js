@@ -25,13 +25,19 @@ export default defineConfig(({ command, mode }) => {
 			target: 'es2015',
 			rollupOptions: {
 				external: [
-					"react/*",
-					"react/jsx-runtime/*",
+					"react",
+					"react/jsx-runtime",
 					// "react/jsx-runtime",
 					"frappe-react-sdk/*",
 					"antd/*",
 					"@uidotdev/usehooks/*"
-				]
+				], output: {
+					globals: {
+						'react': 'react',
+						//   'react-dom': 'ReactDOM',
+						'react/jsx-runtime': 'react/jsx-runtime',
+					},
+				},
 
 			}
 		},
