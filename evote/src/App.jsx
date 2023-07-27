@@ -5,16 +5,16 @@ import MainLayout from "./MainLayout";
 import Ballot from "./pages/Ballot";
 import Results from "./pages/Results";
 import Protected from "./Protected";
-import Login from "./pages/Login";
-import OTPConfirm from "./pages/OTPConfirm";
 
+import LoginV3 from "./pages/LoginV3";
+import OTPConfirmV3 from "./pages/OTPConfirmV3";
+import { BallotProvider } from "./BallotContext";
 function App() {
   return (
     <div className="App">
-     
-        <MainLayout>
-          <AppRoutes />
-        </MainLayout>
+      <MainLayout>
+        <AppRoutes />
+      </MainLayout>
     </div>
   );
 }
@@ -26,14 +26,17 @@ const AppRoutes = () => {
       <Router basename="/evote">
         <Routes>
           <Route path="/" exact element={<Index />} />
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/otp-confirm" exact element={<OTPConfirm />} />
+          <Route path="/confirm-registration" exact element={<Index />} />
+          <Route path="/login" exact element={<LoginV3 />} />
+          <Route path="/otp-confirm" exact element={<OTPConfirmV3 />} />
           <Route
             path="/ballot"
             exact
             element={
               <Protected>
-                <Ballot />
+                <BallotProvider>
+                  <Ballot />
+                </BallotProvider>
               </Protected>
             }
           />
@@ -42,7 +45,9 @@ const AppRoutes = () => {
             exact
             element={
               <Protected>
-                <Results />
+                <Ballot>
+                  <Results />
+                </Ballot>
               </Protected>
             }
           />

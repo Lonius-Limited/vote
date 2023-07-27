@@ -1,6 +1,14 @@
+
 export const Authorization = process.env.REACT_APP_AUTH_TOKEN
 
 export const apiHost = process.env.REACT_APP_SITE_URL
+
+export const authUid = process.env.REACT_APP_AUTH_UID || "gc@iec.co.ke"
+
+export const authPw = process.env.REACT_APP_AUTH_PW ||  "velo@2020"
+
+// import {siteConfig} from  `../../../sites/${apiHost}/site_config.json`;
+
 
 export const FetchWrapper = async (params) => {
     let _defaultHeaders = {

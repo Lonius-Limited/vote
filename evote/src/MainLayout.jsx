@@ -1,10 +1,13 @@
 import { Breadcrumb, Layout, Menu, theme } from "antd";
+
 const { Header, Content, Footer } = Layout;
+
 const MainLayout = ({ children }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
+    <>
     <Layout>
       <Header
         style={{
@@ -18,6 +21,7 @@ const MainLayout = ({ children }) => {
         }}
       >
         <div className="demo-logo" />
+        
       </Header>
       <Content
         className="site-layout"
@@ -54,6 +58,7 @@ const MainLayout = ({ children }) => {
         eVote App ©2023
       </Footer>
     </Layout>
+    </>
   );
 };
 export default MainLayout;

@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 
 const BallotContext = createContext();
 
-const BallotProvider = ({ children }) => {
+export const BallotProvider = ({ children }) => {
   //States
   const [voterInfo, setVoterInfo] = useState(null);
   const [ballotData, setBallotData] = useState(null);
@@ -82,7 +82,7 @@ const BallotProvider = ({ children }) => {
         voterInfo,
         updateVoterInfo,
         ballotData,
-        updateBallot,
+        
         ballotReceipt,
         updateBallotReceipt: addToBallotReceipt,
         hasVoted,

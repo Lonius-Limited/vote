@@ -2,7 +2,8 @@ import React from "react";
 import BallotDetail from "../components/BallotDetail";
 import ElectionSummary from "../components/ElectionSummary";
 import { useFrappeGetCall } from "frappe-react-sdk";
-
+//get_voter_elections
+//get_e_ballot
 const Ballot = () => {
   return (
     <div style={{ width: "100%" }}>

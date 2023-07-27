@@ -19,7 +19,7 @@ class OTPRecord(Document):
     def send_otp(self):
         voter_id = self.get("voter")
         otp_code = self.get("key")
-        message = f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive."
+        message = f"Your OTP Code is {otp_code}.\nNB: OTP IS Case sensitive. Try again after 01:00 minutes, if you haven't received."
         if(self.get("registration")):
             telephone = self.get("phone")
         else:   

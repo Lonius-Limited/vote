@@ -98,10 +98,27 @@ def stage_otp(voter_id="", instant_otp=1, registration=0, otp="", phone=""):
         registration=registration,
         phone=phone,
     )
-    frappe.get_doc(args).insert(ignore_permissions=True)
+    frappe.get_doc(args).save(ignore_permissions=True)
     return otp_code
-
-
+@frappe.whitelist(allow_guest=True)
+def fetch_voter_detail(user_id):
+    fields= ["name","member_id","board_number","surname","cell_number","user_id","image","electoral_district","region_id"]
+    return frappe.get_value("Institution Member",dict(user_id=user_id), fields,as_dict=1) or {}
+    # return frappe.get_all("Institution Member",filters=dict(user_id=user_id), fields=["*"]) or []
+@frappe.whitelist(allow_guest=True)
+def authenticate_by_pf(pf_number):#Member ID in Institution Member
+    fields = ["name","member_id","board_number","surname","cell_number","user_id","image","electoral_district","region_id"]
+    member = frappe.get_value("Institution Member",dict(member_id=pf_number), fields,as_dict=1) or None
+    if not member: return dict(error=ILLEGAL_LOGIN)
+    return member
+@frappe.whitelist(allow_guest=True)
+def resend_undelivered_otp(voter_id):
+    no_recent = "Please relogin on /evote/login/"
+    args = dict(voter=voter_id,valid=True)
+    recent = frappe.get_value("OTP Record", args, as_dict=1)
+    if not recent: return dict(error=no_recent)
+    frappe.get_doc("OTP Record", args).send_otp()
+    return
 @frappe.whitelist(allow_guest=True)
 def authenticate_otp(voter_id, key, resend_otp=0):
     args = dict(voter=voter_id, key=key, valid=1)
