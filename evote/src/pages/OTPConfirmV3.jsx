@@ -3,7 +3,7 @@ import {
   RollbackOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Input, Row, Statistic, message } from "antd";
+import { Button, Col, Input, Row, Statistic, message, Alert } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { _defaultHeaders } from "../api/queries";
@@ -15,13 +15,12 @@ import {
   useFrappePutCall,
 } from "frappe-react-sdk";
 const { Countdown } = Statistic;
-import { Alert } from "antd";
+// import { Alert } from "antd";
 import { authPw, authUid } from "../lib/auth";
 
 const OTPConfirmV3 = () => {
   const navigate = useNavigate();
-  const [sendOTPStatus, setSendOTPStatus] = useState(false);
-  const [validateOTP, setValidateOTP] = useState(false);
+  const [sendOTPStatus, setSendOTPStatus] = useState(false);//Toggle Start Timer
   const [otpString, setOTPString] = useState("");
 
   const stageOTPmethod = "vote.utils.election_details.stage_otp";
@@ -40,11 +39,12 @@ const OTPConfirmV3 = () => {
           message.error(JSON.stringify(result));
           return;
         }
-        setCookie("voter_validated", true, 4);
+        setCookie("voter_validated", true, 12);
         if (currentUser !== "Guest") {
           login(authUid, authPw);
         }
-        navigate("/ballot");
+        window.location.href ="/evote/ballot"
+        // navigate("/ballot");
       })
       .catch((error) => {
         message.error(error?.message);
@@ -77,7 +77,8 @@ const OTPConfirmV3 = () => {
       navigate("/login");
     }
     if (validated && userId !== "Guest") {
-      navigate("/ballot");
+      // navigate("/ballot");
+      window.location.href ="/evote/ballot"
     }
   }, []);
   //End Handle Send OTP
@@ -103,11 +104,25 @@ const OTPConfirmV3 = () => {
     );
   }
   if (error) {
-    return <Alert message={JSON.stringify(error)} type="error" />;
+    return (
+      <>
+        <Alert message={JSON.stringify(error)} type="error" />
+        <Button type="link" onClick={() => navigate("/login")}>
+          Back To login
+        </Button>
+      </>
+    );
   }
   if (data) {
     if (Object.keys(data.message).includes("error")) {
-      return <Alert message={JSON.stringify(data)} type="success" />;
+      return (
+        <>
+          <Alert message={JSON.stringify(data)} type="success" />{" "}
+          <Button type="link" onClick={() => navigate("/login")}>
+            Back To login
+          </Button>
+        </>
+      );
     } else {
       const { cell_number, name, member_id } = data.message;
 
@@ -115,7 +130,7 @@ const OTPConfirmV3 = () => {
       setCookie(
         "voter_registration_details",
         JSON.stringify(voter_registration_details),
-        4
+        12
       );
       return (
         <>
@@ -227,70 +242,6 @@ const ResetPasswordCountDown = ({ handleToggleSendOTP }) => {
       />
     </>
   );
-};
-
-const AuthComponent = () => {
-  const navigate = useNavigate();
-  const { currentUser, isValidating, isLoading, login, logout, error } =
-    useFrappeAuth();
-  if (isValidating) {
-    return <p>Creating a session</p>;
-  }
-
-  if (currentUser !== "Guest") {
-    login(authUid, authPw);
-    navigate("/ballot");
-  }
-  navigate("/ballot");
-};
-
-const ValidateOTPFn = ({ otpString, endValidation }) => {
-  const navigate = useNavigate();
-  const { currentUser, login } = useFrappeAuth();
-
-  if (otpString.length < 3) {
-    return (
-      <Alert
-        message="Sorry, the entered OTPdoes not satisfy length requirements "
-        type="error"
-      />
-    );
-  }
-  const loginCredentials = getCookie("voter_registration_details");
-
-  if (!loginCredentials) {
-    navigate("/login");
-  }
-
-  const { voter_id } = JSON.parse(loginCredentials);
-
-  const params = { voter_id, key: otpString };
-
-  const method = "vote.utils.election_details.authenticate_otp";
-
-  const { data, error, isValidating, mutate } = useFrappeGetCall(
-    method,
-    params,
-    _defaultHeaders
-  );
-
-  if (isValidating) {
-    return (
-      <Alert message="Please wait as we validate your OTP" type="success" />
-    );
-  }
-  if (error) {
-    return <Alert message={JSON.stringify(error)} type="error" />;
-  }
-  if (data) {
-    if (Object.keys(data.message).includes("error")) {
-      return <Alert message={JSON.stringify(data.message)} type="error" />;
-    } else {
-      setCookie("voter_validated", true, 4);
-      login(authUid, authPw);
-      navigate("/ballot");
-    }
-  }
 };
 
 export default OTPConfirmV3;

@@ -21,7 +21,7 @@ const LoginV2 = () => {
   const onFinish = async (values) => {
     login(values.login_id, values.password)
       .then((result) => {
-        setCookie("voter_login_credentials", JSON.stringify(values.login_id), 4);
+        setCookie("voter_login_credentials", JSON.stringify(values.login_id), 12);
         navigate("/otp-confirm");
       })
       .catch((error) => {

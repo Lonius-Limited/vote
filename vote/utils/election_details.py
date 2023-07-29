@@ -107,7 +107,7 @@ def fetch_voter_detail(user_id):
     # return frappe.get_all("Institution Member",filters=dict(user_id=user_id), fields=["*"]) or []
 @frappe.whitelist(allow_guest=True)
 def authenticate_by_pf(pf_number):#Member ID in Institution Member
-    fields = ["name","member_id","board_number","surname","cell_number","user_id","image","electoral_district","region_id"]
+    fields = ["name","member_id","board_number","institution","surname","other_names","cell_number","user_id","image","electoral_district","region_id"]
     member = frappe.get_value("Institution Member",dict(member_id=pf_number), fields,as_dict=1) or None
     if not member: return dict(error=ILLEGAL_LOGIN)
     return member

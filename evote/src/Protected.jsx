@@ -7,7 +7,17 @@ const Protected = ({ children }) => {
   // if (!getCookie("evote_token")) {
   //   return <Unauthorized />;
   // }
-  return <>{ children }</>;
+  const validated = getCookie("voter_validated");
+  const userId = getCookie("user_id");
+  const pf = getCookie("pf_number");
+
+  if (!validated || userId === "Guest" || !pf) {
+    return <Unauthorized />;
+  }
+  // if (validated && userId !== "Guest") {
+  //   navigate("/ballot");
+  // }
+  return <>{children}</>;
 };
 const Unauthorized = () => {
   const routeToLogin = () => {
@@ -16,8 +26,8 @@ const Unauthorized = () => {
   return (
     <Result
       status="403"
-      title="403"
-      subTitle="Sorry, you are not authorized to access this page."
+      title="Access Denied"
+      subTitle="Sorry, you are not authorized to access this page, please login to gain access."
       extra={
         <Button onClick={() => routeToLogin()} type="primary">
           Back To Login

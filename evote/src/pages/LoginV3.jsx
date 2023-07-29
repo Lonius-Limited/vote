@@ -11,7 +11,7 @@ const LoginV3 = () => {
 
   const onFinish = async (values) => {
     const { pf_number } = values;
-    setCookie("pf_number", pf_number, 4);
+    setCookie("pf_number", pf_number, 12);
     navigate("/otp-confirm");
   };
   const onFinishFailed = (errorInfo) => {

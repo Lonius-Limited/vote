@@ -7,19 +7,12 @@ import "./App.css";
 const Index = () => {
   const navigate = useNavigate();
   const gotoBallot = () => {
-    navigate("/ballot");
+    navigate("/login");
   };
   return (
     <>
       <Row>
-        <Col
-          xs={24}
-          sm={24}
-          md={24}
-          lg={12}
-          xl={12}
-          
-        >
+        <Col sm={24} md={24} lg={12}>
           <h1>Choose your leadership</h1>
           <Carousel123 />
           <Button type="primary" onClick={() => gotoBallot()}>
@@ -27,11 +20,7 @@ const Index = () => {
           </Button>
         </Col>
         <Col>
-          <img
-            className="landingImg"
-            src={electionSVG}
-            alt="Elections SVG"
-          />
+          <img className="landingImg" src={electionSVG} alt="Elections SVG" />
         </Col>
       </Row>
     </>

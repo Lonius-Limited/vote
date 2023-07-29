@@ -1,29 +1,18 @@
 import React from "react";
-import BallotDetail from "../components/BallotDetail";
-import ElectionSummary from "../components/ElectionSummary";
 import { useFrappeGetCall } from "frappe-react-sdk";
-//get_voter_elections
-//get_e_ballot
+import { _defaultHeaders } from "../api/queries";
+import { getCookie, setCookie } from "../lib/cookies";
+import NoBallot from "../components/NoBallot";
+import { useNavigate } from "react-router-dom";
 const Ballot = () => {
-  return (
-    <div style={{ width: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <ElectionSummary />
-      </div>
-      <BallotDetail />
-    </div>
-  );
-};
-
-const TestPing = () => {
-  const params = {};
-  const method = "vote.utils.election_details.ping";
-  const _defaultHeaders = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "X-Requested-With",
-  };
-  const { data, error, isValidating, mutate } = useFrappeGetCall(
+  const navigate = useNavigate()
+  const voterRegistration = getCookie("voter_registration_details");
+  const status = "just_any";
+  const { voter_id } = JSON.parse(voterRegistration);
+  // console.log("vid",voterRegistration,voter_id)
+  const params = { voter_id, status };
+  const method = "vote.utils.election_details.get_voter_elections";
+  const { data, error, isValidating } = useFrappeGetCall(
     method,
     params,
     _defaultHeaders
@@ -35,7 +24,16 @@ const TestPing = () => {
     return <>{JSON.stringify(error)}</>;
   }
   if (data) {
-    return <>{JSON.stringify(data)}</>;
+    const scheduledOROpen =
+      // data.message.find((x) => ["Scheduled", "Open"].includes(x.status)) || {};
+      data.message.find((x) => ["Closed"].includes(x.status)) || {};
+    if (Object.keys(scheduledOROpen).length < 1) {
+      return <NoBallot />;
+    }
+    setCookie("active_elections", JSON.stringify(scheduledOROpen), 12);
+
+    // navigate(`/ballot/${scheduledOROpen.name}`)
+    window.location.href = `/evote/ballot/${scheduledOROpen.name}`
   }
 };
 

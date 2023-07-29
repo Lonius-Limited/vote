@@ -9,6 +9,9 @@ import Protected from "./Protected";
 import LoginV3 from "./pages/LoginV3";
 import OTPConfirmV3 from "./pages/OTPConfirmV3";
 import { BallotProvider } from "./BallotContext";
+import Logout from "./components/Logout";
+import BallotSubmit from "./pages/BallotSubmit";
+import VotingPage from "./pages/VotingPage";
 function App() {
   return (
     <div className="App">
@@ -30,6 +33,15 @@ const AppRoutes = () => {
           <Route path="/login" exact element={<LoginV3 />} />
           <Route path="/otp-confirm" exact element={<OTPConfirmV3 />} />
           <Route
+            path="/logout"
+            exact
+            element={
+              // <Protected>
+              <Logout />
+              // </Protected>
+            }
+          />
+          <Route
             path="/ballot"
             exact
             element={
@@ -41,13 +53,33 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/ballot/:election"
+            exact
+            element={
+              <Protected>
+                <BallotProvider>
+                  <VotingPage />
+                </BallotProvider>
+              </Protected>
+            }
+          />
+          <Route
+            path="/ballot-submit"
+            exact
+            element={
+              <Protected>
+                <BallotProvider>
+                  <BallotSubmit />
+                </BallotProvider>
+              </Protected>
+            }
+          />
+          <Route
             path="/results"
             exact
             element={
               <Protected>
-                <Ballot>
-                  <Results />
-                </Ballot>
+                <Results />
               </Protected>
             }
           />

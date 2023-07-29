@@ -147,7 +147,7 @@ const LoginActionPost = async ({ params, updateLoginSequence }) => {
   if (result) {
     if (result.status === "success") {
       updateLoginSequence();
-      setCookie("voter_login_credentials", JSON.stringify(params), 4);
+      setCookie("voter_login_credentials", JSON.stringify(params), 12);
       navigate("/otp-confirm");
     } else {
       return (
@@ -178,7 +178,7 @@ const LoginAction = ({ params, updateLoginSequence }) => {
   }
   if (data) {
     if (data.status === "success") {
-      setCookie("voter_login_credentials", JSON.stringify(params), 4);
+      setCookie("voter_login_credentials", JSON.stringify(params), 12);
       navigate("/otp-confirm");
     } else {
       return (
