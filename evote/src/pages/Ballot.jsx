@@ -10,7 +10,7 @@ const Ballot = () => {
   const status = "just_any";
   const { voter_id } = JSON.parse(voterRegistration);
   // console.log("vid",voterRegistration,voter_id)
-  const params = { voter_id, status };
+  const params = { voter_id };
   const method = "vote.utils.election_details.get_voter_elections";
   const { data, error, isValidating } = useFrappeGetCall(
     method,
@@ -25,8 +25,8 @@ const Ballot = () => {
   }
   if (data) {
     const scheduledOROpen =
-      // data.message.find((x) => ["Scheduled", "Open"].includes(x.status)) || {};
-      data.message.find((x) => ["Closed"].includes(x.status)) || {};
+      data.message.find((x) => ["Scheduled", "Open"].includes(x.status)) || {};
+      // data.message.find((x) => ["Closed"].includes(x.status)) || {};
     if (Object.keys(scheduledOROpen).length < 1) {
       return <NoBallot />;
     }
