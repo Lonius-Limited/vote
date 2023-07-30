@@ -27,7 +27,7 @@ const BallotDetailV2 = ({ data }) => {
 
     return (
       newChoice === 1 &&
-      parseInt(candidates.filter((r) => parseInt(r.choice) === 1).length) >
+      parseInt(candidates.filter((r) => parseInt(r.choice) === 1).length) >=
         parseInt(maximum_number_of_positions)
     );
   };
@@ -99,6 +99,8 @@ const BallotDetailV2 = ({ data }) => {
                   dataSource={candidates}
                   renderItem={(item, index) => (
                     <List.Item
+                      style={{backgroundColor: item.choice===1? "green" : null}}
+                      onClick={() => message.success(item.candidate_name)}
                       actions={[
                         <Checkbox
                           checked={parseInt(item.choice)}
@@ -125,8 +127,8 @@ const BallotDetailV2 = ({ data }) => {
                       <List.Item.Meta
                         avatar={
                           <Avatar
-                            size="md"
-                            shape="square"
+                            size="lg"                            
+                            shape="circle"
                             src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
                           />
                         }
