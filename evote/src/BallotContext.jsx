@@ -7,19 +7,17 @@ export const BallotProvider = ({ children }) => {
   const [ballotData, setBallotData] = useState(null);
   //Functions
 
-  const updateBallotData = (voterChoice) => {
-    
+  const updateBallotData = (voterChoice) => {};
+  const createBallotData = async (ballotRcpt) => {
+    setBallotData((r) => ballotRcpt);
   };
-  const createBallotData = (ballotRcpt)=>{
-    setBallotData(r=>ballotRcpt)
-  }
 
   return (
     <BallotContext.Provider
       value={{
         ballotData,
         updateBallotData,
-        createBallotData
+        createBallotData,
       }}
     >
       {children}

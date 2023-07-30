@@ -20,6 +20,7 @@ import BallotDetail from "../components/BallotDetail";
 import BallotDetailV2 from "../components/BallotDetailV2";
 const VotingPage = () => {
   //ballotReceipt, addToBallotReceipt
+  const { createBallotData } = useContext(BallotContext);
   const { election } = useParams();
   const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
   const params = { election, voter: voter_id };
@@ -48,10 +49,10 @@ const VotingPage = () => {
     );
   }
   if (data) {
-    if (data.message.has_voted==="Yes") {
+    if (data.message.has_voted === "Yes") {
       return <HasVoted />;
     }
-
+    
     return (
       <div style={{ width: "100%" }}>
         <div
@@ -62,7 +63,7 @@ const VotingPage = () => {
           }}
         >
           {/* <ElectionSummary data={data.message} /> */}
-          <BallotDetailV2 data={data.message} />
+          <BallotDetailV2 data={data.message}/>
         </div>
       </div>
     );

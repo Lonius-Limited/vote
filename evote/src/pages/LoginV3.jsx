@@ -23,7 +23,7 @@ const LoginV3 = () => {
     if (voterValidated) {
       navigate("/ballot");
     }
-    if (!voterValidated && userId !== "Guest") {
+    if (!voterValidated && userId !== "Guest" && !getCookie("pf_number")) {
       navigate("/otp-confirm");
     }
   }, []);
