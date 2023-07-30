@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 import json
 import re
+import random
 from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.model.document import Document
 from vote.utils.ethereum import (
@@ -370,13 +371,13 @@ def get_candidates_per_position(election, position=None, branch=None):
             "political_party",
             "party_symbol",
             "headshot",
-        ],
+        ], 
     )  # ..Party, Symbol, Image,
     for j in result:
         j["choice"] = 0
         candidate_id = j.get("candidate_id")
         j.headshot = get_headshot(id=candidate_id)
-    return result
+    return random.shuffle(result)
 
 
 @frappe.whitelist(allow_guest=True)
