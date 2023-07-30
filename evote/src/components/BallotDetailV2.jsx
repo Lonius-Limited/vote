@@ -129,7 +129,7 @@ const BallotDetailV2 = ({ data }) => {
                           <Avatar
                             size="lg"                            
                             shape="circle"
-                            src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
+                            src= {item.headshot} //{`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
                           />
                         }
                         title={item.candidate_name}
