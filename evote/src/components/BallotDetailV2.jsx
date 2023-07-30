@@ -27,7 +27,7 @@ const BallotDetailV2 = ({ data }) => {
 
     return (
       newChoice === 1 &&
-      parseInt(candidates.map((r) => parseInt(r.choice) === 1).length) >
+      parseInt(candidates.filter((r) => parseInt(r.choice) === 1).length) >
         parseInt(maximum_number_of_positions)
     );
   };
