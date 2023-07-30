@@ -20,7 +20,7 @@ import BallotDetail from "../components/BallotDetail";
 import BallotDetailV2 from "../components/BallotDetailV2";
 const VotingPage = () => {
   //ballotReceipt, addToBallotReceipt
-  const { createBallotData } = useContext(BallotContext);
+  
   const { election } = useParams();
   const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
   const params = { election, voter: voter_id };
