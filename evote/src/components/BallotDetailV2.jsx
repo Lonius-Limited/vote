@@ -1,27 +1,65 @@
 import React from "react";
 import { Card, Avatar, List, Statistic, Checkbox, Button, message } from "antd";
-import { useContext } from "react";
-import BallotContext from "../BallotContext";
 import { useState } from "react";
 const BallotDetailV2 = ({ data }) => {
   const { ballot_data } = data;
   const [ballotData, setBallotData] = useState(ballot_data);
+  // const [ballotChoice, setBallotChoice] = useState(ballot_data);
+  const maximumCandidateChoiceAttained = (positionSelected, candidateId) => {
+    if (ballotChoice.length < 1) {
+      return true;
+    }
+    if (!ballotChoice.find((r) => r.position === positionSelected)) {
+      return true;
+    }
+    //Down to business
+    const positionProfile = ballotChoice.filter(
+      (r) => r.position === positionSelected
+    )[0]; //I need the object
+    const { candidates, maximum_number_of_positions } = positionProfile;
+
+    return parseInt(candidates) + 1 > parseInt(maximum_number_of_positions);
+  };
+  const handleAddToBallotChoice = (candidateSelection) => {
+    const { candidateId, positionSelected } = candidateSelection;
+    //message.success(`${JSON.stringify(candidateSelection)}`);
+    // {"candidateId":"MTRHSPS/MTRHSPS/V0012256","positionSelected":"MTRH Pension Trustee"}
+    setBallotChoice((prevState) => {
+      const ballotCopy = [...prevState];
+      const value = parseInt(
+        ballotCopy
+          .filter((p) => p.position === positionSelected)[0]
+          .candidates.find((c) => c.candidate_id === candidateId).choice
+      );
+      //positionIndex
+      const positionIndex = ballotCopy.map(r=>r.position).indexOf(positionSelected)
+      //candidateIndex
+      const positionCandidates = ballotCopy.filter((p) => p.position === positionSelected)[0].candidates
+      const candidateIndex = positionCandidates.map(r=>r.candidate_id).indexOf(candidateId)
+      const newChoice = value === 1 ? 0 : 1;
+      return [...ballotCopy,
+        ballotCopy.filter((p) => p.position === positionSelected)[0]
+        .candidates.find((c) => c.candidate_id === candidateId).choice =
+        newChoice];
+    });
+  };
   const handleAddToBallotReceipt = (candidateSelection) => {
     //
     const { candidateId, positionSelected } = candidateSelection;
-    // message.success(`${JSON.stringify(candidateSelection)}`);
+    //message.success(`${JSON.stringify(candidateSelection)}`);
+    // {"candidateId":"MTRHSPS/MTRHSPS/V0012256","positionSelected":"MTRH Pension Trustee"}
     setBallotData((prevState) => {
-      let ballotCopy = [...prevState];
+      const ballotCopy = [...prevState];
       const value = parseInt(
         ballotCopy
           .filter((p) => p.position === positionSelected)[0]
           .candidates.find((c) => c.candidate_id === candidateId).choice
       );
       const newChoice = value === 1 ? 0 : 1;
-      return (ballotCopy
-        .filter((p) => p.position === positionSelected)[0]
+      return [...ballotCopy,
+        ballotCopy.filter((p) => p.position === positionSelected)[0]
         .candidates.find((c) => c.candidate_id === candidateId).choice =
-        newChoice);
+        newChoice];
     });
   };
   return (
@@ -32,13 +70,13 @@ const BallotDetailV2 = ({ data }) => {
           minWidth: "90%",
         }}
       >
-        {JSON.stringify(ballotData)}
+        {JSON.stringify({ballotData})}
         {ballotData.map((positionData, idx) => {
           const { candidates, position } = positionData;
           return (
             <>
               <Card
-                title={`Using State: ${idx + 1}.${position}`}
+                title={`${idx + 1}.${position}`}
                 extra={
                   <Statistic
                     title="Maximum Allowed Positions:"

@@ -40,7 +40,7 @@ const OTPConfirmV3 = () => {
           return;
         }
         setCookie("voter_validated", true, 12);
-        if (currentUser !== "Guest") {
+        if (getCookie('user_id') === "Guest") {
           login(authUid, authPw);
         }
         window.location.href ="/evote/ballot"
