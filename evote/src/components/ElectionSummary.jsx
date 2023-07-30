@@ -2,7 +2,12 @@ import React from "react";
 import { Descriptions, Row, Statistic } from "antd";
 
 const ElectionSummary = ({ data }) => {
-  const {status} = data;
+  const { status } = data;
+  const statusColorMap = {
+    Scheduled: "orange",
+    Open: "green",
+    Closed: "red",
+  };
   return (
     <>
       <Descriptions title="Voter Card">
@@ -17,14 +22,7 @@ const ElectionSummary = ({ data }) => {
           {data.election_ends}
         </Descriptions.Item>
         <Descriptions.Item label="Status">
-          <b style={{color:"blue"}}>{data.status}</b>
-          {/* <Statistic
-            title="Status"
-            value={data.status}
-            style={{
-              marginRight: 32,
-            }}
-          /> */}
+          <b style={{ color: statusColorMap[status] }}>{status}</b>
         </Descriptions.Item>
       </Descriptions>
     </>
