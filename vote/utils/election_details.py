@@ -89,7 +89,7 @@ def stage_otp(voter_id="", instant_otp=1, registration=0, otp="", phone=""):
             if otp_code == otp:
                 frappe.get_doc("OTP Record", valid_args).invalidate()
         return otp_code
-    otp_code = str(frappe.generate_hash(length=8)).upper()
+    otp_code = str(frappe.generate_hash(length=4)).upper()
     args = dict(
         doctype="OTP Record",
         voter=voter_id,
