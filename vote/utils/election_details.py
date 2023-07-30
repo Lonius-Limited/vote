@@ -377,7 +377,8 @@ def get_candidates_per_position(election, position=None, branch=None):
         j["choice"] = 0
         candidate_id = j.get("candidate_id")
         j.headshot = get_headshot(id=candidate_id)
-    return random.shuffle(result)
+    random.shuffle(result)
+    return result
 
 
 @frappe.whitelist(allow_guest=True)
