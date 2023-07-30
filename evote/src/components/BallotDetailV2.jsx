@@ -27,7 +27,7 @@ const BallotDetailV2 = ({ data }) => {
 
     return (
       newChoice === 1 &&
-      parseInt(candidates.map((r) => parseInt(r.choice) === 1).length) >=
+      parseInt(candidates.map((r) => parseInt(r.choice) === 1).length) >
         parseInt(maximum_number_of_positions)
     );
   };
@@ -39,6 +39,7 @@ const BallotDetailV2 = ({ data }) => {
       message.error(
         `Sorry, you have reached the maximum positions you can vote for under ${positionSelected}`
       );
+      return
     }
     setBallotData((prevState) => {
       const ballotCopy = [...prevState];
