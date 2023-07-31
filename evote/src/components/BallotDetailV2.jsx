@@ -13,6 +13,13 @@ import { useState } from "react";
 import { useFrappePostCall } from "frappe-react-sdk";
 const BallotDetailV2 = ({ data }) => {
   const { ballot_data } = data;
+
+  //Modal
+  const [open, setOpen] = useState(false);
+  const showModal = () => {
+    setOpen(!open);
+  };
+  //EndModal
   const [ballotData, setBallotData] = useState(ballot_data);
   // const [ballotChoice, setBallotChoice] = useState(ballot_data);
   const maximumCandidateChoiceAttained = (positionSelected, candidateId) => {
@@ -39,7 +46,7 @@ const BallotDetailV2 = ({ data }) => {
       message.error(
         `Sorry, you have reached the maximum positions you can vote for under ${positionSelected}`
       );
-      return
+      return;
     }
     setBallotData((prevState) => {
       const ballotCopy = [...prevState];
@@ -99,7 +106,9 @@ const BallotDetailV2 = ({ data }) => {
                   dataSource={candidates}
                   renderItem={(item, index) => (
                     <List.Item
-                      style={{backgroundColor: item.choice===1? "green" : null}}
+                      style={{
+                        backgroundColor: item.choice === 1 ? "green" : null,
+                      }}
                       onClick={() => message.success(item.candidate_name)}
                       actions={[
                         <Checkbox
@@ -127,7 +136,7 @@ const BallotDetailV2 = ({ data }) => {
                       <List.Item.Meta
                         avatar={
                           <Avatar
-                            size="lg"                            
+                            size="lg"
                             shape="circle"
                             src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
                           />
@@ -143,6 +152,14 @@ const BallotDetailV2 = ({ data }) => {
           );
         })}
       </div>
+      {/* ballotData, openStatus, toggleOpenStatus */}
+      {open ? (
+        <ConfirmBallotChoice
+          ballotData={ballotData}
+          openStatus={open}
+          toggleOpenStatus={showModal}
+        />
+      ) : null}
     </>
   );
 };
@@ -174,5 +191,39 @@ const VoteSummary = ({ data }) => {
     </>
   );
 };
+const ConfirmBallotChoice = ({ ballotData, openStatus, toggleOpenStatus }) => {
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState("Following are your selections:");
 
+  const handleOk = () => {
+    setModalText("The modal will be closed after two seconds");
+    setConfirmLoading(true);
+    // setTimeout(() => {
+    //   setOpen(false);
+    //   setConfirmLoading(false);
+    // }, 2000);
+    toggleOpenStatus();
+    setConfirmLoading(false);
+  };
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    toggleOpenStatus();
+  };
+  return (
+    <>
+      <Button type="primary" onClick={showModal}>
+        Open Modal with async logic
+      </Button>
+      <Modal
+        title="Title"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+      >
+        <p>{modalText}</p>
+      </Modal>
+    </>
+  );
+};
 export default BallotDetailV2;
