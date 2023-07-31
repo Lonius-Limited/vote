@@ -1,5 +1,6 @@
-import { Breadcrumb, Layout, Menu, theme, Row, Col, Button } from "antd";
-import { PoweroffOutlined } from "@ant-design/icons";
+import { Breadcrumb, Layout, Menu, theme, Row, Col, Button, Image } from "antd";
+import { PoweroffOutlined, CheckSquareOutlined } from "@ant-design/icons";
+import "./App.css";
 
 const { Header, Content, Footer } = Layout;
 
@@ -16,17 +17,16 @@ const MainLayout = ({ children }) => {
             top: 0,
             zIndex: 1,
             width: "100%",
-            display: "flex",
-            alignItems: "center",
+            // display: "flex",
+            // alignItems: "center",
             background: colorBgContainer,
           }}
         >
-          <Row style={{ width: "100%", display: "flex" }}>
+           {/* <Row style={{ width: "100%", display: "flex" }}>
             <Col span={4} style={{ float: "left" }}>
               eVote
             </Col>
-            {/* <Col span={2}></Col>
-            <Col span={16}></Col> */}
+          
             <Col span={2} style={{ float: "right",display:"flex", justifyItems:"right", alignItems: "right" }}>
               <Button
                 type="primary"
@@ -34,12 +34,29 @@ const MainLayout = ({ children }) => {
                 onClick={() => (window.location.href = "/evote/logout")}
               ></Button>
             </Col>
-          </Row>
+          </Row>  */}
+          <div class="topnav">
+            <a class="active" href="#home">
+              <CheckSquareOutlined />
+              MTRH-SPS eVote Platform
+            {/* <Image
+              width={30}
+              src="./mtrh-sps-logo3.jpg"
+            /> */}
+            </a>
+            <div class="login-container">
+            <Button
+                type="primary"
+                icon={<PoweroffOutlined />}
+                onClick={() => (window.location.href = "/evote/logout")}
+              ></Button>
+            </div>
+          </div>
         </Header>
         <Content
           className="site-layout"
           style={{
-            padding: "0 20px",
+            padding: "0 10px",
           }}
         >
           <br />
