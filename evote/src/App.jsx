@@ -12,6 +12,7 @@ import { BallotProvider } from "./BallotContext";
 import Logout from "./components/Logout";
 import BallotSubmit from "./pages/BallotSubmit";
 import VotingPage from "./pages/VotingPage";
+import ElectionResults from "./pages/ElectionResults";
 function App() {
   return (
     <div className="App">
@@ -75,11 +76,20 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/results"
+            path="/stats"
             exact
             element={
               <Protected>
                 <Results />
+              </Protected>
+            }
+          />
+          <Route
+            path="/stats/:election"
+            exact
+            element={
+              <Protected>
+                <ElectionResults />
               </Protected>
             }
           />

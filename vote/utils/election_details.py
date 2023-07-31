@@ -111,6 +111,15 @@ def authenticate_by_pf(pf_number):#Member ID in Institution Member
     fields = ["name","member_id","board_number","institution","surname","other_names","cell_number","user_id","image","electoral_district","region_id"]
     member = frappe.get_value("Institution Member",dict(member_id=pf_number), fields,as_dict=1) or None
     if not member: return dict(error=ILLEGAL_LOGIN)
+    cell_number = member.get("cell_number") or "000000"
+    len_to_mask = len(cell_number )/2
+    def _mask_digit(index_and_val):
+        idx, digit = index_and_val
+        if idx >= len_to_mask and idx<len(cell_number)-1:
+            return 'X'
+        return digit
+    hidden_cell_num = "".join(list(map(_mask_digit, enumerate(cell_number))))#[x for x in cell_number]
+    member.cell_number = "N/A" if cell_number=="000000" else hidden_cell_num
     return member
 @frappe.whitelist(allow_guest=True)
 def resend_undelivered_otp(voter_id):
@@ -576,7 +585,7 @@ def _return_branch_position_tally(election="", branch="", position="", pos_id=No
 
 
 @frappe.whitelist(allow_guest=True)
-def get_election_results_v3(election=None):
+def get_election_results_v3(election=None, voter=None):
 
     data = frappe.get_value(
         "Election", election, ["institution", "applicable_voter_register"], as_dict=1
@@ -663,14 +672,16 @@ def get_election_results_v3(election=None):
                     {"absconded": branch_turnout - votes_cast})
             votes_cast = 0
             return context_tally
-
-        tally = _get_branch_position_tally(
-            context=context, branch_turnout=branch_turnout
-        )
-        absconded = []
-        absconded = [x for x in tally if "absconded" in x.keys()]
-        if absconded:
-            branch_results["absconded"] = tally.pop().get("absconded")
+        voter_official_status = 0
+        if voter: voter_official_status = voter_is_official(voter)
+        if voter_official_status==1:
+            tally = _get_branch_position_tally(
+                context=context, branch_turnout=branch_turnout
+            )
+        # absconded = []
+        # absconded = [x for x in tally if "absconded" in x.keys()]
+        # if absconded:
+            # branch_results["absconded"] = tally.pop().get("absconded")
         eligible_voters = len(
             get_branch_eligible_voters(
                 linked_voter_register=linked_voter_register, branch=branch_name
@@ -689,10 +700,11 @@ def get_election_results_v3(election=None):
         branch_results["eligible_voters"] = eligible_voters
         branch_results["turnout"] = turnout
         branch_results["turnout_percent"] = turnout_percent
-        branch_results["tally"] = tally
+        branch_results["tally"] = tally or []
         all_results.append(branch_results)
 
         payload["all_results"] = all_results
+        
 
     return payload
 

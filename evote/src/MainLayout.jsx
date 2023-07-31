@@ -27,7 +27,15 @@ const MainLayout = ({ children }) => {
             </Col>
             {/* <Col span={2}></Col>
             <Col span={16}></Col> */}
-            <Col span={2} style={{ float: "right",display:"flex", justifyItems:"right", alignItems: "right" }}>
+            <Col
+              span={2}
+              style={{
+                float: "right",
+                display: "flex",
+                justifyItems: "right",
+                alignItems: "right",
+              }}
+            >
               <Button
                 type="primary"
                 icon={<PoweroffOutlined />}
