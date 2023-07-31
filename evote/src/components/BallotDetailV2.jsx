@@ -8,17 +8,28 @@ import {
   Button,
   message,
   Descriptions,
+  Modal,
+  Popconfirm,
+  notification
 } from "antd";
 import { useState } from "react";
 import { useFrappePostCall } from "frappe-react-sdk";
+import { Navigate, useNavigate } from "react-router-dom";
+import { getCookie } from "../lib/cookies";
 const BallotDetailV2 = ({ data }) => {
-  const { ballot_data } = data;
+  const [api, contextHolder] = notification.useNotification();
+
+  const navigate = useNavigate();
+  const { ballot_data, election } = data;
 
   //Modal
   const [open, setOpen] = useState(false);
   const showModal = () => {
     setOpen(!open);
   };
+  //Election and Voter
+
+  //End Election and voter
   //EndModal
   const [ballotData, setBallotData] = useState(ballot_data);
   // const [ballotChoice, setBallotChoice] = useState(ballot_data);
@@ -48,6 +59,7 @@ const BallotDetailV2 = ({ data }) => {
       );
       return;
     }
+
     setBallotData((prevState) => {
       const ballotCopy = [...prevState];
       const value = parseInt(
@@ -72,8 +84,43 @@ const BallotDetailV2 = ({ data }) => {
       return ballotCopy;
     });
   };
+  // post_e_ballot(voter, election, ballot_data)
+  const postVoterBallotMethod = "vote.utils.election_details.post_e_ballot";
+  const { call: postVoterBallot } = useFrappePostCall(postVoterBallotMethod);
+  const handleSubmitBallot = async () => {
+    const { name } = JSON.parse(getCookie("active_elections"));
+    const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
+    const params = {
+      voter: voter_id,
+      election: name,
+      ballot_data: JSON.stringify(ballotData),
+    };
 
-  const handlePostBallot = () => {};
+    await postVoterBallot(params)
+      .then((result) => {
+        if (Object.keys(result).includes("error")) {
+          message.error(JSON.stringify(result));
+          return;
+        }
+        navigate("/ballot-submit", {
+          state: {
+            ballotResult: result,
+          },
+        });
+        // navigate("/ballot");
+      })
+      .catch((error) => {
+        message.error(error?.message);
+      });
+  };
+  const openNotification = (message, description) => {
+    api.open({
+      message: {message},
+      description:
+        {description},
+      duration: 0,
+    });
+  };
   return (
     <>
       <div
@@ -83,6 +130,41 @@ const BallotDetailV2 = ({ data }) => {
         }}
       >
         <VoteSummary data={data} />
+        <Popconfirm
+          style={{ right: 0 }}
+          title="Cast Ballot"
+          description="Are you sure to Cast your Ballot? Please check your ballot selections before clicking Yes."
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() => {
+            const abscondedBallots = ballotData
+              .map((position) => {
+                const { candidates, maximum_number_of_positions } = position;
+                const choices = candidates.filter(
+                  (x) => parseInt(x.choice) === 1
+                );
+                const absconded =
+                  choices.length != parseInt(maximum_number_of_positions);
+
+                return { absconded, position: position.position };
+              })
+              .filter((x) => x.absconded);
+
+            if (abscondedBallots.length > 0) {
+              message.error(
+                `Sorry, you have not selected the maximum number candidates you can vote for under the following positions ${abscondedBallots.map(
+                  (x) => x.position
+                )}`
+              );
+              return;
+            }
+
+            handleSubmitBallot();
+          }}
+          onCancel={() => message.success("Action cancelled.")}
+        >
+          <Button primary>Submit Ballot Data</Button>
+        </Popconfirm>
         {/* {JSON.stringify({ ballotData })} */}
         {ballotData.map((positionData, idx) => {
           const { candidates, position } = positionData;
@@ -91,10 +173,12 @@ const BallotDetailV2 = ({ data }) => {
               <Card
                 title={`${idx + 1}.${position}`}
                 extra={
-                  <Statistic
-                    title="Maximum Allowed Positions:"
-                    value={positionData.maximum_number_of_positions}
-                  />
+                  <>
+                    <Statistic
+                      title="Maximum Allowed Positions:"
+                      value={positionData.maximum_number_of_positions}
+                    />
+                  </>
                 }
                 style={{
                   width: "90%",
@@ -106,10 +190,16 @@ const BallotDetailV2 = ({ data }) => {
                   dataSource={candidates}
                   renderItem={(item, index) => (
                     <List.Item
+                      onClick={() =>
+                        handleAddToBallotChoice({
+                          candidateId: item.candidate_id,
+                          positionSelected: position,
+                        })
+                      }
                       style={{
-                        backgroundColor: item.choice === 1 ? "green" : null,
+                        backgroundColor:
+                          parseInt(item.choice) === 1 ? "#d3ebd7" : null,
                       }}
-                      onClick={() => message.success(item.candidate_name)}
                       actions={[
                         <Checkbox
                           checked={parseInt(item.choice)}
@@ -118,27 +208,27 @@ const BallotDetailV2 = ({ data }) => {
                             console.log(checkedValue.target.checked)
                           }
                         ></Checkbox>,
-                        <Button
-                          type={parseInt(item.choice) ? "danger" : "primary"}
-                          size="large"
-                          onClick={() =>
-                            handleAddToBallotChoice({
-                              candidateId: item.candidate_id,
-                              positionSelected: position,
-                            })
-                          }
-                        >
-                          {parseInt(item.choice) ? "UNVOTE" : "VOTE"}
-                        </Button>,
+                        // <Button
+                        //   type={parseInt(item.choice) ? "danger" : "primary"}
+                        //   size="large"
+                        //   onClick={() =>
+                        //     handleAddToBallotChoice({
+                        //       candidateId: item.candidate_id,
+                        //       positionSelected: position,
+                        //     })
+                        //   }
+                        // >
+                        //   {parseInt(item.choice) ? "UNVOTE" : "VOTE"}
+                        // </Button>,
                         // <DeleteRowOutlined />,
                       ]}
                     >
                       <List.Item.Meta
                         avatar={
                           <Avatar
-                            size="lg"
+                            size={100}
                             shape="circle"
-                            src= {item.headshot} //{`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
+                            src={item.headshot}
                           />
                         }
                         title={item.candidate_name}
@@ -196,7 +286,7 @@ const ConfirmBallotChoice = ({ ballotData, openStatus, toggleOpenStatus }) => {
   const [modalText, setModalText] = useState("Following are your selections:");
 
   const handleOk = () => {
-    setModalText("The modal will be closed after two seconds");
+    setModalText("Posting your ballot");
     setConfirmLoading(true);
     // setTimeout(() => {
     //   setOpen(false);
@@ -211,17 +301,20 @@ const ConfirmBallotChoice = ({ ballotData, openStatus, toggleOpenStatus }) => {
   };
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      {/* <Button type="primary" onClick={showModal}>
         Open Modal with async logic
-      </Button>
+      </Button> */}
       <Modal
-        title="Title"
+        title="Confirmation"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <p>{modalText}</p>
+        <>
+          <p>{modalText}</p>
+          {JSON.stringify(ballotData)}
+        </>
       </Modal>
     </>
   );

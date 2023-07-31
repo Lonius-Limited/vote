@@ -20,7 +20,7 @@ import BallotDetail from "../components/BallotDetail";
 import BallotDetailV2 from "../components/BallotDetailV2";
 const VotingPage = () => {
   //ballotReceipt, addToBallotReceipt
-  
+
   const { election } = useParams();
   const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
   const params = { election, voter: voter_id };
@@ -33,7 +33,7 @@ const VotingPage = () => {
   if (isValidating) {
     return (
       <Alert
-        message="Please wait as we validate your load your ballot..."
+        message="Please wait as we validate and your load your ballot page..."
         type="success"
       />
     );
@@ -52,7 +52,7 @@ const VotingPage = () => {
     if (data.message.has_voted === "Yes") {
       return <HasVoted />;
     }
-    
+
     return (
       <div style={{ width: "100%" }}>
         <div
@@ -63,7 +63,7 @@ const VotingPage = () => {
           }}
         >
           {/* <ElectionSummary data={data.message} /> */}
-          <BallotDetailV2 data={data.message}/>
+          <BallotDetailV2 data={data.message} />
         </div>
       </div>
     );
@@ -74,14 +74,18 @@ const HasVoted = () => (
     status="404"
     // icon={<SmileOutlined />}
     title="Sorry, but you have voted already!"
-    extra={
+    extra={[
       <Button
         type="primary"
-        onClick={() => (window.location.href = "/evote/logout")}
+        key="resultsbt"
+        onClick={() => (window.location.href = "/evote/stats")}
       >
+        Show Me Voting Statistics
+      </Button>,
+      <Button onClick={() => (window.location.href = "/evote/logout")}>
         Log Me Out
-      </Button>
-    }
+      </Button>,
+    ]}
   />
 );
 

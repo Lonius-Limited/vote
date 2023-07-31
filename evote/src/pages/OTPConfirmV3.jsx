@@ -41,7 +41,7 @@ const OTPConfirmV3 = () => {
         }
         setCookie("voter_validated", true, 12);
         if (getCookie('user_id') === "Guest") {
-          login(authUid, authPw);
+           login(authUid, authPw);
         }
         window.location.href ="/evote/ballot"
         // navigate("/ballot");
@@ -144,7 +144,7 @@ const OTPConfirmV3 = () => {
               <Col span={6}></Col>
               <Col span={12}>
                 {cell_number || cell_number !== "" ? (
-                  <p>Enter the Verification Code sent to {cell_number}</p>
+                  <p>The Verification Code will be sent to {cell_number}</p>
                 ) : (
                   <p>
                     Sorry, we do not have a valid phone number in our records
@@ -233,7 +233,7 @@ const ResetPasswordCountDown = ({ handleToggleSendOTP }) => {
   return (
     <>
       <Countdown
-        title="Time remaining before OTP expires"
+        title="Time remaining before you can request for a new OTP"
         value={deadline}
         onFinish={onFinish}
         onChange={(val) => {
