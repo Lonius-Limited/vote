@@ -127,7 +127,7 @@ const BallotDetailV2 = ({ data }) => {
                       <List.Item.Meta
                         avatar={
                           <Avatar
-                            size="lg"                            
+                            size={100}                           
                             shape="circle"
                             src= {item.headshot} //{`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
                           />
