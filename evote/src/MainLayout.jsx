@@ -56,7 +56,7 @@ const MainLayout = ({ children }) => {
         <Content
           className="site-layout"
           style={{
-            padding: "0 10px",
+            // padding: "0 10px",
           }}
         >
           <br />
@@ -64,8 +64,8 @@ const MainLayout = ({ children }) => {
           <br />
           <div
             style={{
-              padding: 24,
-              margin: 24,
+              // padding: 24,
+              // margin: 24,
               minHeight: 380,
               background: colorBgContainer,
               width: "auto",

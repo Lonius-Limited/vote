@@ -68,6 +68,10 @@
   background: #ccc;
 }
 
+.ant-layout-header {
+  padding-inline: 0px !important;
+}
+
 /* Add responsiveness - On small screens, display the navbar vertically instead of horizontally */
 @media screen and (max-width: 600px) {
   .topnav .login-container {
