@@ -101,7 +101,7 @@ const ElectionResults = () => {
             .map((r) => parseInt(r.votes))
             .reduce((a, b) => a + b, 0);
 
-          const notVoted = turnout - totalVotesCast;
+          const notVoted = eligible_voters - turnout;
           const summaryPayload = {
             eligible_voters,
             turnout,
