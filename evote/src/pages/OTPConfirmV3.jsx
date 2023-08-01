@@ -41,9 +41,9 @@ const OTPConfirmV3 = () => {
         }
         setCookie("voter_validated", true, 12);
         // if (getCookie('user_id') === "Guest") {
-        login(authUid, authPw);
+        login(authUid, authPw).then(r=>window.location.href = "/evote/ballot")
         // }
-        window.location.href = "/evote/ballot";
+        
         // navigate("/ballot");
       })
       .catch((error) => {
