@@ -20,7 +20,7 @@ import { authPw, authUid } from "../lib/auth";
 
 const OTPConfirmV3 = () => {
   const navigate = useNavigate();
-  const [sendOTPStatus, setSendOTPStatus] = useState(false);//Toggle Start Timer
+  const [sendOTPStatus, setSendOTPStatus] = useState(false); //Toggle Start Timer
   const [otpString, setOTPString] = useState("");
 
   const stageOTPmethod = "vote.utils.election_details.stage_otp";
@@ -40,10 +40,10 @@ const OTPConfirmV3 = () => {
           return;
         }
         setCookie("voter_validated", true, 12);
-        if (getCookie('user_id') === "Guest") {
-           login(authUid, authPw);
-        }
-        window.location.href ="/evote/ballot"
+        // if (getCookie('user_id') === "Guest") {
+        login(authUid, authPw);
+        // }
+        window.location.href = "/evote/ballot";
         // navigate("/ballot");
       })
       .catch((error) => {
@@ -78,7 +78,7 @@ const OTPConfirmV3 = () => {
     }
     if (validated && userId !== "Guest") {
       // navigate("/ballot");
-      window.location.href ="/evote/ballot"
+      window.location.href = "/evote/ballot";
     }
   }, []);
   //End Handle Send OTP
@@ -193,7 +193,7 @@ const OTPConfirmV3 = () => {
                   block
                   danger
                   icon={<RollbackOutlined />}
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/logout")}
                 >
                   CANCEL
                 </Button>
