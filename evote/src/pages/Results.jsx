@@ -62,12 +62,14 @@ const Results = () => {
 const RecentElections = ({ payload }) => {
   return (
     <>
-      <h2>Please select one of the elections below to view stats</h2>
+      <h2>No open election currently. Please select one of the elections below to view stats</h2>
       <List
         itemLayout="horizontal"
         dataSource={payload}
         renderItem={(item, index) => (
-          <List.Item>
+          <List.Item
+          actions={[<Button type="primary" onClick={()=>window.location.href = `/evote/stats/${closedOROpen[0].name}`}>Open Stats</Button>]}
+          >
             <List.Item.Meta
               avatar={
                 <Avatar
