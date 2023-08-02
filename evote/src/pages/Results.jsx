@@ -3,7 +3,7 @@ import { useFrappeGetCall } from "frappe-react-sdk";
 import { _defaultHeaders } from "../api/queries";
 import { getCookie, setCookie } from "../lib/cookies";
 import { useNavigate } from "react-router-dom";
-import { Button, Empty, List } from "antd";
+import { Button, Empty, List, Avatar } from "antd";
 
 const Results = () => {
   const voterRegistration = getCookie("voter_registration_details");
