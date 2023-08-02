@@ -68,7 +68,7 @@ const RecentElections = ({ payload }) => {
         dataSource={payload}
         renderItem={(item, index) => (
           <List.Item
-          actions={[<Button type="primary" onClick={()=>window.location.href = `/evote/stats/${closedOROpen[0].name}`}>Open Stats</Button>]}
+          actions={[<Button type="primary" onClick={()=>window.location.href = `/evote/stats/${item.name}`}>Open Stats</Button>]}
           >
             <List.Item.Meta
               avatar={

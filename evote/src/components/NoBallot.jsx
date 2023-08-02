@@ -9,15 +9,22 @@ const NoBallot = () => {
     <Result
       status="warning"
       title={` Dear voter, there are no open or scheduled elections for now. Please check at a later date`}
-      extra={
+      extra={[
         <Button
           type="primary"
+          key="stats"
+          onClick={() => navigate("/stats")}
+        >
+          Show me previous election stats
+        </Button>,
+        <Button
+          
           key="console"
           onClick={() => navigate("/logout")}
         >
           Log Me Out
         </Button>
-      }
+      ]}
     />
   );
 };
