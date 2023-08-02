@@ -35,7 +35,12 @@ const Results = () => {
         }}
         description={<span>No stats for now.</span>}
       >
-        <Button type="primary"onClick={()=>window.location.href="/evote/logout"}>Log Me Out</Button>
+        <Button
+          type="primary"
+          onClick={() => (window.location.href = "/evote/logout")}
+        >
+          Log Me Out
+        </Button>
       </Empty>;
     }
     if (closedOROpen.length === 1) {
@@ -43,7 +48,11 @@ const Results = () => {
       window.location.href = `/evote/stats/${closedOROpen[0].name}`;
       return;
     }
-    return <RecentElections payload={closedOROpen} />;
+    return (
+      <div style={{ width: "90%", minWidth: "90%" }}>
+        <RecentElections payload={closedOROpen} />;
+      </div>
+    );
     //
 
     // navigate(`/ballot/${scheduledOROpen.name}`)
@@ -53,29 +62,29 @@ const Results = () => {
 const RecentElections = ({ payload }) => {
   return (
     <>
-    <h2>Please select one of the elections below to view stats</h2>
-    <List
-      itemLayout="horizontal"
-      dataSource={payload}
-      renderItem={(item, index) => (
-        <List.Item>
-          <List.Item.Meta
-            avatar={
-              <Avatar
-              style={{
-                backgroundColor: '#fde3cf',
-                color: '#f56a00',
-              }}
-              >...</Avatar>
-            }
-            title={<a href={`/evote/stats/${item.name}`}>{item.name}</a>}
-            description={`${item.election_start} - ${item.election_ends} | ${item.status}`}
-
-          />
-        </List.Item>
-        
-      )}
-    />
+      <h2>Please select one of the elections below to view stats</h2>
+      <List
+        itemLayout="horizontal"
+        dataSource={payload}
+        renderItem={(item, index) => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  style={{
+                    backgroundColor: "#fde3cf",
+                    color: "#f56a00",
+                  }}
+                >
+                  ...
+                </Avatar>
+              }
+              title={<a href={`/evote/stats/${item.name}`}>{item.name}</a>}
+              description={`${item.election_start} - ${item.election_ends} | ${item.status}`}
+            />
+          </List.Item>
+        )}
+      />
     </>
   );
 };
