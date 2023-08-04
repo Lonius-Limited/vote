@@ -1012,6 +1012,7 @@ def election_results_v2(election):
 
 
 def voter_is_official(voter_id):
+    return frappe.get_value("Institution Member",voter_id, 'is_official')
     is_official = 0
     election_list = frappe.db.get_all(
         "Election", filters=dict(status=["IN",["Scheduled","Open"]]), fields=["name"]

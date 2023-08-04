@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format: {institution_id}/{region_id}/V{#######}",
+ "autoname": "format: {institution_id}/V{#######}",
  "creation": "2020-12-02 14:34:49.612250",
  "description": "-",
  "doctype": "DocType",
@@ -42,6 +42,7 @@
   "public_key",
   "electoral_district_settings_section",
   "eligible_voter",
+  "is_official",
   "eligible_candidate",
   "electoral_district",
   "region_id",
@@ -289,12 +290,18 @@
    "fieldtype": "Select",
    "label": "Member Category",
    "options": "Member\nMember and Volunteer\nMember and Aspirant"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_official",
+   "fieldtype": "Check",
+   "label": "Is Official"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-11-10 16:09:04.864730",
+ "modified": "2023-08-05 00:34:20.833535",
  "modified_by": "Administrator",
  "module": "Vote",
  "name": "Institution Member",
