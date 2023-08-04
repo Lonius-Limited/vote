@@ -13,12 +13,13 @@ import Logout from "./components/Logout";
 import BallotSubmit from "./pages/BallotSubmit";
 import VotingPage from "./pages/VotingPage";
 import ElectionResults from "./pages/ElectionResults";
+import MainLayoutV2 from "./MainLayoutV2";
 function App() {
   return (
     <div className="App">
-      <MainLayout>
+      <MainLayoutV2>
         <AppRoutes />
-      </MainLayout>
+      </MainLayoutV2>
     </div>
   );
 }
