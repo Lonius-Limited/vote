@@ -231,7 +231,7 @@ const CandidatesSummary = ({ candidateResults, turnout }) => {
             avatar={
               <Avatar size={80} src={item.headshot} alt={item.candidate} />
             }
-            title={item.candidate}
+            title={`${item.candidate}-(${item.votes} votes.)`}
             description={
               <Progress
                 percent={(100 * parseFloat(item.votes)) / parseFloat(turnout)}
