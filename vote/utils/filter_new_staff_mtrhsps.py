@@ -70443,24 +70443,24 @@ def filter_action():
     existing_pfs = [y.get("Member ID") for y in existing]
     these_pfs = [z.get("PF") for z in payload] 
     missing = [x for x in existing if x.get("Member ID") not in these_pfs]
-    to_return=[]
-    starting_idx=999999
-    for b in missing:
-        starting_idx += 1
-        obj ={}
-        obj["ID"] = "V000"+str(starting_idx)
-        obj["Institution"] = "MTRH Staff Pension Scheme"
-        obj["Surname"] = b.get("NAME")
-        obj["Other Names"] =""
-        obj["Member ID"] = b.get("PF")
-        obj["ID Number"] = b.get("PF")
-        obj["Current Position"] ="Member"
-        obj["Member Status"] = "Active"
-        obj["Electoral District"] = "MTRHSPS Station"
-        obj["Cell Number"] = b.get("tel2") or ""
-        obj["Eligible Voter"] =1
-        to_return.append(obj)
-    return to_return
+    # to_return=[]
+    # starting_idx=999999
+    # for b in missing:
+    #     starting_idx += 1
+    #     obj ={}
+    #     obj["ID"] = "V000"+str(starting_idx)
+    #     obj["Institution"] = "MTRH Staff Pension Scheme"
+    #     obj["Surname"] = b.get("NAME")
+    #     obj["Other Names"] =""
+    #     obj["Member ID"] = b.get("PF")
+    #     obj["ID Number"] = b.get("PF")
+    #     obj["Current Position"] ="Member"
+    #     obj["Member Status"] = "Active"
+    #     obj["Electoral District"] = "MTRHSPS Station"
+    #     obj["Cell Number"] = b.get("tel2") or ""
+    #     obj["Eligible Voter"] =1
+    #     to_return.append(obj)
+    return missing
 # @frappe.whitelist(allow_guest=1)
 # def write_to_file():   
 #     import json
