@@ -13,12 +13,18 @@ const Ballot = () => {
   const status = "just_any";
   const { voter_id } = JSON.parse(voterRegistration);
   // console.log("vid",voterRegistration,voter_id)
+  const swrOptions = {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  };
   const params = { voter_id, status }; //status to be added , status
   const method = "vote.utils.election_details.get_voter_elections";
   const { data, error, isValidating } = useFrappeGetCall(
     method,
     params,
-    _defaultHeaders
+    _defaultHeaders,
+    swrOptions
   );
   if (isValidating) {
     return <>Loading</>;

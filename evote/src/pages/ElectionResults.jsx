@@ -23,11 +23,13 @@ const ElectionResults = () => {
   const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
 
   const params = { election, voter: voter_id };
+  const swrOptions ={refreshInterval: 60000}
   const method = "vote.utils.election_details.get_election_results_v3";
   const { data, error, isValidating } = useFrappeGetCall(
     method,
     params,
-    _defaultHeaders
+    _defaultHeaders,
+    swrOptions
   );
   if (isValidating) {
     return <>Loading...</>;
