@@ -25,10 +25,16 @@ const VotingPage = () => {
   const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
   const params = { election, voter: voter_id };
   const method = "vote.utils.election_details.get_e_ballot";
+  const swrOptions = {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  };
   const { data, error, isValidating, mutate } = useFrappeGetCall(
     method,
     params,
-    _defaultHeaders
+    _defaultHeaders,
+    swrOptions
   );
   if (isValidating) {
     return (
