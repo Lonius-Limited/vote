@@ -11,7 +11,7 @@ import {
   Avatar,
   List,
   Progress,
-  Empty
+  Empty,
 } from "antd";
 import { useFrappeGetCall } from "frappe-react-sdk";
 import { _defaultHeaders } from "../api/queries";
@@ -20,9 +20,9 @@ import { getCookie } from "../lib/cookies";
 const ElectionResults = () => {
   const { election } = useParams();
 
-  const {voter_id} = JSON.parse(getCookie("voter_registration_details"))
+  const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
 
-  const params = { election, voter:voter_id };
+  const params = { election, voter: voter_id };
   const method = "vote.utils.election_details.get_election_results_v3";
   const { data, error, isValidating } = useFrappeGetCall(
     method,
@@ -137,9 +137,7 @@ const ElectionStats = ({ payload }) => {
 
   return (
     <>
-      <Descriptions title="Candidate Results">
-        
-      </Descriptions>
+      <Descriptions title="Candidate Results"></Descriptions>
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <Card bordered={false}>
@@ -217,14 +215,22 @@ const CandidatesSummary = ({ candidateResults, turnout }) => {
   //       "headshot": "http://demo.elections.co.ke/files/felix_koech.jpg"
   //   }
   // ]
-  if (candidateResults.length<1){
+  if (candidateResults.length < 1) {
     return <Empty description={false} />;
   }
-
+  const sortByVotes = (a, b) => {
+    if (a.votes < b.votes) {
+      return -1;
+    }
+    if (a.votes > b.votes) {
+      return 1;
+    }
+    return 0;
+  };
   return (
     <List
       itemLayout="horizontal"
-      dataSource={candidateResults}
+      dataSource={candidateResults.filter(b=>!b.absconded).sort(sortByVotes).reverse()}
       renderItem={(item, index) => (
         <List.Item>
           <List.Item.Meta
