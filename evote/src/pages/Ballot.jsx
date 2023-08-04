@@ -47,9 +47,9 @@ const Ballot = () => {
       return <ScheduledElectionTimer election={scheduled} />;
     }
     if (open) {
-      setCookie("active_elections", JSON.stringify(scheduledOROpen), 12);
+      setCookie("active_elections", JSON.stringify(open), 12);
 
-      window.location.href = `/evote/ballot/${scheduledOROpen.name}`;
+      window.location.href = `/evote/ballot/${open.name}`;
     }
   }
 };
