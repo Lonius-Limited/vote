@@ -9,9 +9,13 @@ import {
   Image,
   Avatar,
 } from "antd";
-import { PoweroffOutlined, CheckSquareOutlined } from "@ant-design/icons";
+import {
+  LogoutOutlined,
+  PoweroffOutlined,
+  CheckSquareOutlined,
+} from "@ant-design/icons";
 import "./App.css";
-import evoteImage from "../public/eVote Logo.png";
+import evoteImage from "../public/evote-high-resolution-logo-white-on-transparent-background.svg";
 // import { useNavigate } from "react-router-dom";
 const { Header, Content, Footer } = Layout;
 
@@ -40,6 +44,7 @@ const MainLayoutV2 = ({ children }) => {
             <Col span={4}>
               <Avatar
                 src={evoteImage}
+                // size ="large"
                 size={{
                   xs: 80,
                   sm: 80,
@@ -52,18 +57,45 @@ const MainLayoutV2 = ({ children }) => {
                 // onClick={()=>navigate("/")}
               />
             </Col>
-            {/* <Col span={4}><h2>MTRHSPS eVote</h2></Col> */}
-            <Col span={17}></Col>
+
+            <Col span={4}>
+              <span
+                style={{
+                  alignContent: "left",
+                  alignItems: "left",
+                  fontWeight: "bold",
+                  // fontSize: "18px",
+                  "vertical-align": "inherit",
+                }}
+              >
+                MTRHSPS_eVote 
+              </span>
+            </Col>
+            <Col span={13}></Col>
             <Col span={1}>
               <Button
                 type="primary"
-                icon={<PoweroffOutlined />}
-                onClick={() => window.location.href="/evote/logout"}
+                icon={<LogoutOutlined />}
+                onClick={() => (window.location.href = "/evote/logout")}
               ></Button>
             </Col>
             <Col span={1}></Col>
           </Row>
         </Header>
+
+        {/* <Row style={{margin:"2px 0 2px 0"}}>
+          
+        <Col span ={14}>
+          </Col>
+          <Col span={4}>
+            <Button type="primary" block>Vote Now</Button>
+          </Col>
+          <Col span={4}>
+          <Button type="danger" block>View Stats</Button>
+          </Col>
+          <Col span ={1}>
+          </Col>
+        </Row> */}
         <Content
           className="site-layout"
           style={

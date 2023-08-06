@@ -7,7 +7,7 @@ import { Button, Col, Input, Row, Statistic, message, Alert } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { _defaultHeaders } from "../api/queries";
-import { getCookie, setCookie } from "../lib/cookies";
+import { eraseCookie, getCookie, setCookie } from "../lib/cookies";
 import {
   useFrappeAuth,
   useFrappeGetCall,
@@ -41,9 +41,11 @@ const OTPConfirmV3 = () => {
         }
         setCookie("voter_validated", true, 12);
         // if (getCookie('user_id') === "Guest") {
-        login(authUid, authPw).then(r=>window.location.href = "/evote/ballot")
+        login(authUid, authPw).then(
+          (r) => (window.location.href = "/evote/ballot")
+        );
         // }
-        
+
         // navigate("/ballot");
       })
       .catch((error) => {
@@ -193,7 +195,11 @@ const OTPConfirmV3 = () => {
                   block
                   danger
                   icon={<RollbackOutlined />}
-                  onClick={() => navigate("/logout")}
+                  onClick={() => {
+                    eraseCookie("voter_registration_details");
+                    eraseCookie("pf_number");
+                    window.location.href ="/evote/logout";
+                  }}
                 >
                   CANCEL
                 </Button>
