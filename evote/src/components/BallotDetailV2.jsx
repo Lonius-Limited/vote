@@ -10,7 +10,7 @@ import {
   Descriptions,
   Modal,
   Popconfirm,
-  notification
+  notification,
 } from "antd";
 import { useState } from "react";
 import { useFrappePostCall } from "frappe-react-sdk";
@@ -21,6 +21,12 @@ const BallotDetailV2 = ({ data }) => {
 
   const navigate = useNavigate();
   const { ballot_data, election } = data;
+  const [optionsSelected, setOptionsSelected] = useState(false); //Has selected none onload
+
+  const handleToggleHasSelectedAny = () => {
+    if (optionsSelected) return;
+    setOptionsSelected((prevState) => true); //Once clicked just set it to true
+  };
 
   //Modal
   const [open, setOpen] = useState(false);
@@ -59,7 +65,7 @@ const BallotDetailV2 = ({ data }) => {
       );
       return;
     }
-
+    handleToggleHasSelectedAny();
     setBallotData((prevState) => {
       const ballotCopy = [...prevState];
       const value = parseInt(
@@ -110,14 +116,13 @@ const BallotDetailV2 = ({ data }) => {
         // navigate("/ballot");
       })
       .catch((error) => {
-        message.error(error?.message);
+        message.error(JSON.stringify(error));
       });
   };
   const openNotification = (message, description) => {
     api.open({
-      message: {message},
-      description:
-        {description},
+      message: { message },
+      description: { description },
       duration: 0,
     });
   };
@@ -130,41 +135,43 @@ const BallotDetailV2 = ({ data }) => {
         }}
       >
         <VoteSummary data={data} />
-        <Popconfirm
-          style={{ right: 0 }}
-          title="Cast Ballot"
-          description="Are you sure to Cast your Ballot? Please check your ballot selections before clicking Yes."
-          okText="Yes"
-          cancelText="No"
-          onConfirm={() => {
-            const abscondedBallots = ballotData
-              .map((position) => {
-                const { candidates, maximum_number_of_positions } = position;
-                const choices = candidates.filter(
-                  (x) => parseInt(x.choice) === 1
+        {optionsSelected ? (
+          <Popconfirm
+            style={{ right: 0 }}
+            title="Cast Ballot"
+            description="Are you sure to Cast your Ballot? Please check your ballot selections before clicking Yes."
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => {
+              const abscondedBallots = ballotData
+                .map((position) => {
+                  const { candidates, maximum_number_of_positions } = position;
+                  const choices = candidates.filter(
+                    (x) => parseInt(x.choice) === 1
+                  );
+                  const absconded =
+                    choices.length != parseInt(maximum_number_of_positions);
+
+                  return { absconded, position: position.position };
+                })
+                .filter((x) => x.absconded);
+
+              if (abscondedBallots.length > 0) {
+                message.error(
+                  `Sorry, you have not selected the maximum number candidates you can vote for under the following positions ${abscondedBallots.map(
+                    (x) => x.position
+                  )}`
                 );
-                const absconded =
-                  choices.length != parseInt(maximum_number_of_positions);
-
-                return { absconded, position: position.position };
-              })
-              .filter((x) => x.absconded);
-
-            if (abscondedBallots.length > 0) {
-              message.error(
-                `Sorry, you have not selected the maximum number candidates you can vote for under the following positions ${abscondedBallots.map(
-                  (x) => x.position
-                )}`
-              );
-              return;
-            }
-
-            handleSubmitBallot();
-          }}
-          onCancel={() => message.success("Action cancelled.")}
-        >
-          <Button primary>Submit Ballot Data</Button>
-        </Popconfirm>
+                return;
+              } else {
+                handleSubmitBallot();
+              }
+            }}
+            onCancel={() => message.success("Action cancelled.")}
+          >
+            <Button primary>Submit Ballot Data</Button>
+          </Popconfirm>
+        ) : null}
         {/* {JSON.stringify({ ballotData })} */}
         {ballotData.map((positionData, idx) => {
           const { candidates, position } = positionData;

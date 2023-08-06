@@ -287,7 +287,7 @@ def get_in_register(voter, election=None):
     return in_reg
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_e_ballot(election=None, voter=None):
     payload = {}
 
@@ -390,7 +390,7 @@ def get_candidates_per_position(election, position=None, branch=None):
     return result
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
     """1. Posts a ballot to a Ballot Entry Doctype"""
     try:
@@ -584,7 +584,7 @@ def _return_branch_position_tally(election="", branch="", position="", pos_id=No
     return results
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_election_results_v3(election=None, voter=None):
 
     data = frappe.get_value(
