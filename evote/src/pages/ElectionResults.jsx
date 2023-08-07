@@ -12,6 +12,7 @@ import {
   List,
   Progress,
   Empty,
+  Alert
 } from "antd";
 import { useFrappeGetCall } from "frappe-react-sdk";
 import { _defaultHeaders } from "../api/queries";
@@ -90,6 +91,12 @@ const ElectionResults = () => {
     // return <p>{JSON.stringify(allStats)}</p>
     return (
       <>
+      <Alert
+      message="Important to Note"
+      description="These are provisional statistics grabbed from tallied e-ballots and thus are not final results - which are declared by an appointed election committee."
+      type="info"
+      showIcon
+    />
         {allStats.map((selectedPosition) => {
           const {
             position,

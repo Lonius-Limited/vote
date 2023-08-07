@@ -74,10 +74,11 @@ const ScheduledElectionTimer = ({ election }) => {
             type="primary"
             key="resultsbt1"
             onClick={() => (window.location.href = `/evote/stats/${name}`)}
+            block
           >
             Show Me Preliminary Statistics
           </Button>,
-          <Button onClick={() => (window.location.href = "/evote/logout")}>
+          <Button onClick={() => (window.location.href = "/evote/logout")} block>
             Log Me Out
           </Button>,
         ]}
