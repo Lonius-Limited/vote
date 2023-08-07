@@ -25,7 +25,9 @@ const Results = () => {
   }
   if (data) {
     const closedOROpen =
-      data.message.filter((x) => ["Closed", "Open"].includes(x.status)) || [];
+      data.message.filter((x) =>
+        ["Closed", "Open", "Scheduled"].includes(x.status)
+      ) || []; //Variable to be re
     // data.message.find((x) => ["Closed"].includes(x.status)) || {};
     if (closedOROpen.length < 1) {
       <Empty
@@ -62,13 +64,25 @@ const Results = () => {
 const RecentElections = ({ payload }) => {
   return (
     <>
-      <h2>No open election currently. Please select one of the elections below to view stats</h2>
+      <h2>
+        No open election currently. Please select one of the elections below to
+        view stats
+      </h2>
       <List
         itemLayout="horizontal"
         dataSource={payload}
         renderItem={(item, index) => (
           <List.Item
-          actions={[<Button type="primary" onClick={()=>window.location.href = `/evote/stats/${item.name}`}>Open Stats</Button>]}
+            actions={[
+              <Button
+                type="primary"
+                onClick={() =>
+                  (window.location.href = `/evote/stats/${item.name}`)
+                }
+              >
+                Open Stats
+              </Button>,
+            ]}
           >
             <List.Item.Meta
               avatar={
