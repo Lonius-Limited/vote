@@ -5,6 +5,7 @@ import { getCookie, setCookie } from "../lib/cookies";
 import NoBallot from "../components/NoBallot";
 import { useNavigate } from "react-router-dom";
 import { Statistic } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 const { Countdown } = Statistic;
 
 const Ballot = () => {
@@ -58,11 +59,28 @@ const ScheduledElectionTimer = ({ election }) => {
   const deadline = new Date(election_start);
   return (
     <>
-      {" "}
-      <Countdown
-        title={`There is an upcoming election on ${deadline.toDateString()}`}
-        value={deadline}
-        format="D day H hour m : s "
+      <Result
+        
+        icon={<LoadingOutlined />}
+        title={
+          <Countdown
+            title={`There is an upcoming election on ${deadline.toDateString()}`}
+            value={deadline}
+            format="D day H hour m : s "
+          />
+        }
+        extra={[
+          <Button
+            type="primary"
+            key="resultsbt"
+            onClick={() => (window.location.href = `/evote/stats/${name}`)}
+          >
+            Show Me Preliminary Statistics
+          </Button>,
+          <Button onClick={() => (window.location.href = "/evote/logout")}>
+            Log Me Out
+          </Button>,
+        ]}
       />
     </>
   );

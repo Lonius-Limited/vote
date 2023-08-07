@@ -68,7 +68,7 @@ const MainLayoutV2 = ({ children }) => {
                   "vertical-align": "inherit",
                 }}
               >
-                MTRHSPS_eVote 
+                MTRHSPS_eVote
               </span>
             </Col>
             <Col span={13}></Col>
@@ -120,6 +120,7 @@ const MainLayoutV2 = ({ children }) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexWrap: "wrap",
             }}
           >
             {children}
