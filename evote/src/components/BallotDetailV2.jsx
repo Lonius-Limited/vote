@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useFrappePostCall } from "frappe-react-sdk";
 import { Navigate, useNavigate } from "react-router-dom";
 import { getCookie } from "../lib/cookies";
+import { CheckOutlined } from "@ant-design/icons";
 const BallotDetailV2 = ({ data }) => {
   const [api, contextHolder] = notification.useNotification();
 
@@ -135,43 +136,7 @@ const BallotDetailV2 = ({ data }) => {
         }}
       >
         <VoteSummary data={data} />
-        {optionsSelected ? (
-          <Popconfirm
-            style={{ right: 0 }}
-            title="Cast Ballot"
-            description="Are you sure to Cast your Ballot? Please check your ballot selections before clicking Yes."
-            okText="Yes"
-            cancelText="No"
-            onConfirm={() => {
-              const abscondedBallots = ballotData
-                .map((position) => {
-                  const { candidates, maximum_number_of_positions } = position;
-                  const choices = candidates.filter(
-                    (x) => parseInt(x.choice) === 1
-                  );
-                  const absconded =
-                    choices.length != parseInt(maximum_number_of_positions);
-
-                  return { absconded, position: position.position };
-                })
-                .filter((x) => x.absconded);
-
-              if (abscondedBallots.length > 0) {
-                message.error(
-                  `Sorry, you have not selected the maximum number candidates you can vote for under the following positions ${abscondedBallots.map(
-                    (x) => x.position
-                  )}`
-                );
-                return;
-              } else {
-                handleSubmitBallot();
-              }
-            }}
-            onCancel={() => message.success("Action cancelled.")}
-          >
-            <Button primary>Submit Ballot Data</Button>
-          </Popconfirm>
-        ) : null}
+        
         {/* {JSON.stringify({ ballotData })} */}
         {ballotData.map((positionData, idx) => {
           const { candidates, position } = positionData;
@@ -249,14 +214,44 @@ const BallotDetailV2 = ({ data }) => {
           );
         })}
       </div>
-      {/* ballotData, openStatus, toggleOpenStatus */}
-      {open ? (
-        <ConfirmBallotChoice
-          ballotData={ballotData}
-          openStatus={open}
-          toggleOpenStatus={showModal}
-        />
-      ) : null}
+
+      {optionsSelected ? (
+          <Popconfirm
+            style={{ right: 0 }}
+            title="Cast Ballot"
+            description="Are you sure to Cast your Ballot? Please check your ballot selections before clicking Yes."
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => {
+              const abscondedBallots = ballotData
+                .map((position) => {
+                  const { candidates, maximum_number_of_positions } = position;
+                  const choices = candidates.filter(
+                    (x) => parseInt(x.choice) === 1
+                  );
+                  const absconded =
+                    choices.length != parseInt(maximum_number_of_positions);
+
+                  return { absconded, position: position.position };
+                })
+                .filter((x) => x.absconded);
+
+              if (abscondedBallots.length > 0) {
+                message.error(
+                  `Sorry, you have not selected the maximum number candidates you can vote for under the following positions ${abscondedBallots.map(
+                    (x) => x.position
+                  )}`
+                );
+                return;
+              } else {
+                handleSubmitBallot();
+              }
+            }}
+            onCancel={() => message.success("Action cancelled.")}
+          >
+            <Button type="primary" size="large" shape="round" icon={<CheckOutlined />} block>Submit Ballot Data</Button>
+          </Popconfirm>
+        ) : null}
     </>
   );
 };

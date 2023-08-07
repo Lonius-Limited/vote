@@ -400,7 +400,7 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
 
             return datetime.now() > frappe.db.get_value(
                 "Election", election, "election_ends"
-            )
+            ) or frappe.get_value('Election', dict(name=election,status='Closed'))
 
         def ballot_tally(election):
             tally_args = dict(election=election)
