@@ -12,7 +12,7 @@ import {
   List,
   Progress,
   Empty,
-  Alert
+  Alert,
 } from "antd";
 import { useFrappeGetCall } from "frappe-react-sdk";
 import { _defaultHeaders } from "../api/queries";
@@ -24,7 +24,7 @@ const ElectionResults = () => {
   const { voter_id } = JSON.parse(getCookie("voter_registration_details"));
 
   const params = { election, voter: voter_id };
-  const swrOptions ={refreshInterval: 60000}
+  const swrOptions = { refreshInterval: 60000 };
   const method = "vote.utils.election_details.get_election_results_v3";
   const { data, error, isValidating } = useFrappeGetCall(
     method,
@@ -91,12 +91,12 @@ const ElectionResults = () => {
     // return <p>{JSON.stringify(allStats)}</p>
     return (
       <>
-      <Alert
-      message="Important to Note"
-      description="These are provisional statistics grabbed from tallied e-ballots and thus are not final results - which are declared by an appointed election committee."
-      type="info"
-      showIcon
-    />
+        <Alert
+          message="Important to Note"
+          description="These are provisional statistics grabbed from tallied e-ballots and thus are not final results - which are declared by an appointed election committee."
+          type="info"
+          showIcon
+        />
         {allStats.map((selectedPosition) => {
           const {
             position,
@@ -146,7 +146,7 @@ const ElectionStats = ({ payload }) => {
 
   return (
     <>
-      <Descriptions title="Candidate Results"></Descriptions>
+      <Descriptions title=""></Descriptions>
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <Card bordered={false}>
@@ -239,7 +239,10 @@ const CandidatesSummary = ({ candidateResults, turnout }) => {
   return (
     <List
       itemLayout="horizontal"
-      dataSource={candidateResults.filter(b=>!b.absconded).sort(sortByVotes).reverse()}
+      dataSource={candidateResults
+        .filter((b) => !b.absconded)
+        .sort(sortByVotes)
+        .reverse()}
       renderItem={(item, index) => (
         <List.Item>
           <List.Item.Meta
