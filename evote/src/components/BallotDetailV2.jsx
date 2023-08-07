@@ -17,6 +17,7 @@ import { useFrappePostCall } from "frappe-react-sdk";
 import { Navigate, useNavigate } from "react-router-dom";
 import { getCookie } from "../lib/cookies";
 import { CheckOutlined } from "@ant-design/icons";
+import NoBallot from "./NoBallot";
 const BallotDetailV2 = ({ data }) => {
   const [api, contextHolder] = notification.useNotification();
 
@@ -127,6 +128,10 @@ const BallotDetailV2 = ({ data }) => {
       duration: 0,
     });
   };
+  const { status } = data;
+  if (status==='Closed'){
+    return <NoBallot/>
+  }
   return (
     <>
       <div
