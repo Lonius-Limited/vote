@@ -4,7 +4,7 @@ import { _defaultHeaders } from "../api/queries";
 import { getCookie, setCookie } from "../lib/cookies";
 import NoBallot from "../components/NoBallot";
 import { useNavigate } from "react-router-dom";
-import { Statistic } from "antd";
+import { Button, Result, Statistic } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 const { Countdown } = Statistic;
 
@@ -72,7 +72,7 @@ const ScheduledElectionTimer = ({ election }) => {
         extra={[
           <Button
             type="primary"
-            key="resultsbt"
+            key="resultsbt1"
             onClick={() => (window.location.href = `/evote/stats/${name}`)}
           >
             Show Me Preliminary Statistics
