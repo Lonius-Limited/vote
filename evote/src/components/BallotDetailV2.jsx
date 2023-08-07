@@ -136,7 +136,7 @@ const BallotDetailV2 = ({ data }) => {
         }}
       >
         <VoteSummary data={data} />
-        
+
         {/* {JSON.stringify({ ballotData })} */}
         {ballotData.map((positionData, idx) => {
           const { candidates, position } = positionData;
@@ -213,9 +213,8 @@ const BallotDetailV2 = ({ data }) => {
             </>
           );
         })}
-      </div>
 
-      {optionsSelected ? (
+        {optionsSelected ? (
           <Popconfirm
             style={{ right: 0 }}
             title="Cast Ballot"
@@ -249,9 +248,18 @@ const BallotDetailV2 = ({ data }) => {
             }}
             onCancel={() => message.success("Action cancelled.")}
           >
-            <Button type="primary" size="large" shape="round" icon={<CheckOutlined />} block>Submit Ballot Data</Button>
+            <Button
+              type="primary"
+              size="large"
+              shape="round"
+              icon={<CheckOutlined />}
+              block
+            >
+              Submit Ballot Data
+            </Button>
           </Popconfirm>
         ) : null}
+      </div>
     </>
   );
 };
