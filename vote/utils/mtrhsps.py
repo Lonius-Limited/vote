@@ -44116,4 +44116,3 @@ def sendbypf():
 			print("Not found {}".format(pf))
 			continue
 		mtrhsps(voter_id[0].get("Cell Number"), msg.format(voter_id[0].get("ID")))
-
