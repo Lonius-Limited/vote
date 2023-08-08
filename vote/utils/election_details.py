@@ -1437,5 +1437,5 @@ def alert_unreceipted_mtrhsps():
         )
         mtrhsps(cell_number, message)
         doc.db_set("receipted", 1, commit=True)
-        payload_done.append()
-    return
+        payload_done.append(doc.name)
+    return payload_done or []
