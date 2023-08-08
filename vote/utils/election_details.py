@@ -1431,7 +1431,7 @@ def alert_unreceipted_mtrhsps():
         if not len(cell_number) > 6:
             continue
         message = (
-            "This is a confirmation of your vote received successfully under "
+            "This is a confirmation of your vote received successfully under Ref:"
             + doc.get("name")
             + "."
         )
