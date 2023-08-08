@@ -59,8 +59,7 @@ def authenticate_voter(voter_id="", member_id=""):
     )
 
     if not wallet:
-        wallet = create_voter_wallet(
-            frappe.get_doc("Institution Member", voter_id))
+        wallet = create_voter_wallet(frappe.get_doc("Institution Member", voter_id))
     return
 
 
@@ -83,9 +82,9 @@ def stage_otp(voter_id="", instant_otp=1, registration=0, otp="", phone=""):
     if frappe.db.get_value("OTP Record", valid_args):
         if otp == "":
             frappe.get_doc("OTP Record", valid_args).send_otp()
-            otp_code = frappe.db.get_value("OTP Record", valid_args, 'key')
+            otp_code = frappe.db.get_value("OTP Record", valid_args, "key")
         else:
-            otp_code = frappe.db.get_value("OTP Record", valid_args, 'key')
+            otp_code = frappe.db.get_value("OTP Record", valid_args, "key")
             if otp_code == otp:
                 frappe.get_doc("OTP Record", valid_args).invalidate()
         return otp_code
@@ -101,34 +100,78 @@ def stage_otp(voter_id="", instant_otp=1, registration=0, otp="", phone=""):
     )
     frappe.get_doc(args).save(ignore_permissions=True)
     return otp_code
+
+
 @frappe.whitelist(allow_guest=True)
 def fetch_voter_detail(user_id):
-    fields= ["name","member_id","board_number","surname","cell_number","user_id","image","electoral_district","region_id"]
-    return frappe.get_value("Institution Member",dict(user_id=user_id), fields,as_dict=1) or {}
+    fields = [
+        "name",
+        "member_id",
+        "board_number",
+        "surname",
+        "cell_number",
+        "user_id",
+        "image",
+        "electoral_district",
+        "region_id",
+    ]
+    return (
+        frappe.get_value("Institution Member", dict(user_id=user_id), fields, as_dict=1)
+        or {}
+    )
     # return frappe.get_all("Institution Member",filters=dict(user_id=user_id), fields=["*"]) or []
+
+
 @frappe.whitelist(allow_guest=True)
-def authenticate_by_pf(pf_number):#Member ID in Institution Member
-    fields = ["name","member_id","board_number","institution","surname","other_names","cell_number","user_id","image","electoral_district","region_id"]
-    member = frappe.get_value("Institution Member",dict(member_id=pf_number), fields,as_dict=1) or None
-    if not member: return dict(error=ILLEGAL_LOGIN)
+def authenticate_by_pf(pf_number):  # Member ID in Institution Member
+    fields = [
+        "name",
+        "member_id",
+        "board_number",
+        "institution",
+        "surname",
+        "other_names",
+        "cell_number",
+        "user_id",
+        "image",
+        "electoral_district",
+        "region_id",
+    ]
+    member = (
+        frappe.get_value(
+            "Institution Member", dict(member_id=pf_number), fields, as_dict=1
+        )
+        or None
+    )
+    if not member:
+        return dict(error=ILLEGAL_LOGIN)
     cell_number = member.get("cell_number") or "000000"
-    len_to_mask = len(cell_number )/2
+    len_to_mask = len(cell_number) / 2
+
     def _mask_digit(index_and_val):
         idx, digit = index_and_val
-        if idx >= len_to_mask and idx<len(cell_number)-1:
-            return 'X'
+        if idx >= len_to_mask and idx < len(cell_number) - 1:
+            return "X"
         return digit
-    hidden_cell_num = "".join(list(map(_mask_digit, enumerate(cell_number))))#[x for x in cell_number]
-    member.cell_number = "N/A" if cell_number=="000000" else hidden_cell_num
+
+    hidden_cell_num = "".join(
+        list(map(_mask_digit, enumerate(cell_number)))
+    )  # [x for x in cell_number]
+    member.cell_number = "N/A" if cell_number == "000000" else hidden_cell_num
     return member
+
+
 @frappe.whitelist(allow_guest=True)
 def resend_undelivered_otp(voter_id):
     no_recent = "Please relogin on /evote/login/"
-    args = dict(voter=voter_id,valid=True)
+    args = dict(voter=voter_id, valid=True)
     recent = frappe.get_value("OTP Record", args, as_dict=1)
-    if not recent: return dict(error=no_recent)
+    if not recent:
+        return dict(error=no_recent)
     frappe.get_doc("OTP Record", args).send_otp()
     return
+
+
 @frappe.whitelist(allow_guest=True)
 def authenticate_otp(voter_id, key, resend_otp=0):
     args = dict(voter=voter_id, key=key, valid=1)
@@ -158,8 +201,7 @@ def authenticate_otp(voter_id, key, resend_otp=0):
     if not valid_elections_for_voter:
         return {}
 
-    ballot = get_e_ballot(
-        election=valid_elections_for_voter[0].name, voter=voter_id)
+    ballot = get_e_ballot(election=valid_elections_for_voter[0].name, voter=voter_id)
     handle_eth_wallet(voter_id)
     return ballot
 
@@ -215,8 +257,7 @@ def voter_details_sandbox(payload=None):
         )
     except Exception as e:
         frappe.local.response.update(
-            {"message": "Failed to post your data",
-                "status": "error", "error": f"{e}"}
+            {"message": "Failed to post your data", "status": "error", "error": f"{e}"}
         )
 
 
@@ -226,7 +267,7 @@ def handle_eth_wallet(voter_id):
 
 @frappe.whitelist(allow_guest=True)
 def get_voter_elections(voter_id, status=None):
-    election_status = ["Open"] if status == None else ["Closed", "Scheduled","Open"]
+    election_status = ["Open"] if status == None else ["Closed", "Scheduled", "Open"]
     # if voter_is_official(voter_id): election_status=["Open","Closed","Scheduled"]#See everything
     voter_registers = frappe.db.sql(
         f"SELECT DISTINCT parent  FROM `tabVoter Register Member` WHERE system_id = '{voter_id}' AND parent IN (SELECT applicable_voter_register FROM `tabElection` WHERE docstatus = 1)",
@@ -292,8 +333,7 @@ def get_e_ballot(election=None, voter=None):
     payload = {}
 
     institution = get_voter_institution(voter)
-    institution_contact = frappe.db.get_value(
-        "Institution", institution, "phone")
+    institution_contact = frappe.db.get_value("Institution", institution, "phone")
     voter_name = get_voter_fullname(voter)
     voter_doc = frappe.get_doc("Institution Member", voter)
     election_doc = frappe.get_doc("Election", election)
@@ -352,8 +392,7 @@ def get_e_ballot(election=None, voter=None):
             position.get("branch"),
             position.get("maximum_number_of_positions"),
         )
-        candidates_list = get_candidates_per_position(
-            election, position, branch)
+        candidates_list = get_candidates_per_position(election, position, branch)
         if not candidates_list:
             continue
         p_obj["position"] = position
@@ -369,8 +408,7 @@ def get_e_ballot(election=None, voter=None):
 
 
 def get_candidates_per_position(election, position=None, branch=None):
-    args = {"parent": election, "branch": branch,
-            "contested_position": position}
+    args = {"parent": election, "branch": branch, "contested_position": position}
     result = frappe.db.get_all(
         "Election Candidate",
         filters=frappe._dict(args),
@@ -380,7 +418,7 @@ def get_candidates_per_position(election, position=None, branch=None):
             "political_party",
             "party_symbol",
             "headshot",
-        ], 
+        ],
     )  # ..Party, Symbol, Image,
     for j in result:
         j["choice"] = 0
@@ -400,7 +438,7 @@ def post_e_ballot(voter, election, ballot_data):  # Must include voter, election
 
             return datetime.now() > frappe.db.get_value(
                 "Election", election, "election_ends"
-            ) or frappe.get_value('Election', dict(name=election,status='Closed'))
+            ) or frappe.get_value("Election", dict(name=election, status="Closed"))
 
         def ballot_tally(election):
             tally_args = dict(election=election)
@@ -611,7 +649,14 @@ def get_election_results_v3(election=None, voter=None):
     results_repository = frappe.db.get_all(
         "Vote Repository", filters=dict(election=election), fields=["*"], order_by="idx"
     )
-    tallied_ballots = get_branch_voters(election, frappe.get_value("Electoral District",dict(institution=institution, parent_electoral_district=""),'name'))
+    tallied_ballots = get_branch_voters(
+        election,
+        frappe.get_value(
+            "Electoral District",
+            dict(institution=institution, parent_electoral_district=""),
+            "name",
+        ),
+    )
     all_results = []
 
     k = 0
@@ -637,12 +682,11 @@ def get_election_results_v3(election=None, voter=None):
         # branch_turnout = len(get_branch_voters(election, branch_name)) or 0
         # branch_turnout = len(list(filter(lambda x: x.get("branch") == branch_name,tallied_ballots)))
         # branch_turnout= sum([x.get("vote_count") for x in results_repository if x.get("")])
-        branch_turnout = len(get_branch_voters(election, branch_name) or [] )or 0
+        branch_turnout = len(get_branch_voters(election, branch_name) or []) or 0
         context = list(
             filter(
                 lambda x: (
-                    x.get("position") == position and x.get(
-                        "branch") == branch_name
+                    x.get("position") == position and x.get("branch") == branch_name
                 ),
                 results_repository,
             )
@@ -668,20 +712,21 @@ def get_election_results_v3(election=None, voter=None):
                 votes_cast += j.get("vote_count")
                 context_tally.append(row)
             if votes_cast < branch_turnout:
-                context_tally.append(
-                    {"absconded": branch_turnout - votes_cast})
+                context_tally.append({"absconded": branch_turnout - votes_cast})
             votes_cast = 0
             return context_tally
+
         voter_official_status = 0
-        if voter: voter_official_status = voter_is_official(voter)
-        if voter_official_status==1:
+        if voter:
+            voter_official_status = voter_is_official(voter)
+        if voter_official_status == 1:
             tally = _get_branch_position_tally(
                 context=context, branch_turnout=branch_turnout
             )
         # absconded = []
         # absconded = [x for x in tally if "absconded" in x.keys()]
         # if absconded:
-            # branch_results["absconded"] = tally.pop().get("absconded")
+        # branch_results["absconded"] = tally.pop().get("absconded")
         eligible_voters = len(
             get_branch_eligible_voters(
                 linked_voter_register=linked_voter_register, branch=branch_name
@@ -704,7 +749,6 @@ def get_election_results_v3(election=None, voter=None):
         all_results.append(branch_results)
 
         payload["all_results"] = all_results
-        
 
     return payload
 
@@ -749,7 +793,7 @@ def get_member_with_phonenumber(institution, phone, id_number):
             "date_of_birth",
             "gender",
             "special_category",
-            "member_category"
+            "member_category",
         ],
     )
     # return frappe.db.get_value(
@@ -773,17 +817,17 @@ def get_member_with_phonenumber(institution, phone, id_number):
 
 @frappe.whitelist(allow_guest=True)
 def member_profile_info(
-        phone,
-        id_number,
-        surname,
-        other_names,
-        date_of_birth,
-        gender,
-        special_category,
-        electoral_district,
-        domain,
-        name="",
-        member_category=None
+    phone,
+    id_number,
+    surname,
+    other_names,
+    date_of_birth,
+    gender,
+    special_category,
+    electoral_district,
+    domain,
+    name="",
+    member_category=None,
 ):
     from datetime import datetime
 
@@ -809,9 +853,11 @@ def member_profile_info(
 
         institution = get_institution_for_domain(domain)
         electoral_district_id = frappe.db.get_value(
-            "Electoral District", electoral_district.upper(), ["region_id"], as_dict=1)
-        institution_id = frappe.db.get_value("Institution", institution, [
-                                             "institution_id"], as_dict=1)
+            "Electoral District", electoral_district.upper(), ["region_id"], as_dict=1
+        )
+        institution_id = frappe.db.get_value(
+            "Institution", institution, ["institution_id"], as_dict=1
+        )
         member_info = frappe.get_doc(
             {
                 "doctype": "Institution Member",
@@ -828,7 +874,7 @@ def member_profile_info(
                 "special_category": special_category,
                 "member_category": member_category,
                 "electoral_district": electoral_district,
-                "region_id": electoral_district_id
+                "region_id": electoral_district_id,
             }
         )
 
@@ -869,8 +915,7 @@ def member_login(domain, phone, id_number, otp=""):
     stored_otp = stage_otp(registration=1, phone=phone, otp=otp)
     if otp:
         if otp == stored_otp:
-            verified_member = get_member_with_phonenumber(
-                institution, phone, id_number)
+            verified_member = get_member_with_phonenumber(institution, phone, id_number)
             frappe.local.response.update(
                 {
                     "message": f"Member verified",
@@ -882,7 +927,7 @@ def member_login(domain, phone, id_number, otp=""):
             frappe.local.response.update(
                 {
                     "message": f"The OTP you entered is invalid. Remember it is case sensitive. Please try again.",
-                    "status": "error"
+                    "status": "error",
                 }
             )
     else:
@@ -907,8 +952,7 @@ def get_branch_eligible_voters(linked_voter_register=None, branch=None):
 
     return frappe.get_all(
         "Voter Register Member",
-        filters=dict(parent=linked_voter_register,
-                     branch=["IN", linked_branches]),
+        filters=dict(parent=linked_voter_register, branch=["IN", linked_branches]),
         fields=["*"],
     )
 
@@ -948,8 +992,7 @@ def election_results_v2(election):
         branch_name = branch
 
         branch_context = list(
-            filter(lambda x: x.get("branch") ==
-                   branch_name, results_repository)
+            filter(lambda x: x.get("branch") == branch_name, results_repository)
         )
 
         branch_turnout = len(get_branch_voters(election, branch_name)) or 0
@@ -973,8 +1016,7 @@ def election_results_v2(election):
             position_name = position
 
             position_context = list(
-                filter(lambda x: x.get("position") ==
-                       position_name, branch_context)
+                filter(lambda x: x.get("position") == position_name, branch_context)
             )
 
             def _get_branch_position_tally(position_context=position_context):
@@ -1012,16 +1054,19 @@ def election_results_v2(election):
 
 
 def voter_is_official(voter_id):
-    return frappe.get_value("Institution Member",voter_id, 'is_official')
+    return frappe.get_value("Institution Member", voter_id, "is_official")
     is_official = 0
     election_list = frappe.db.get_all(
-        "Election", filters=dict(status=["IN",["Scheduled","Open"]]), fields=["name"]
+        "Election", filters=dict(status=["IN", ["Scheduled", "Open"]]), fields=["name"]
     )
     if not election_list:
         return 0
     open_elections = [x.get("name") for x in election_list]
     official_status = frappe.get_value(
-        "Election Official", dict(member=voter_id,parent=["IN",open_elections]), "name")
+        "Election Official",
+        dict(member=voter_id, parent=["IN", open_elections]),
+        "name",
+    )
     if official_status:
         is_official = 1
     return is_official
@@ -1050,8 +1095,7 @@ def post_election_ballot_entries(election=None):
     )
     if not ballot_entries:
         return
-    documents = [frappe.get_doc("Ballot Entry", x.get("name"))
-                 for x in ballot_entries]
+    documents = [frappe.get_doc("Ballot Entry", x.get("name")) for x in ballot_entries]
     list(map(lambda x: x.add_to_tally(), documents))
     return
 
@@ -1151,8 +1195,7 @@ def get_available_e_ballots(election, branch=None):
         branch
     )  # All sub branches members are to be included in the total number of ballots
 
-    args = dict(electoral_district=[
-                "IN", child_branches], name=["IN", members])
+    args = dict(electoral_district=["IN", child_branches], name=["IN", members])
 
     return len(frappe.db.get_all("Institution Member", filters=args))
     # All/branch Voters in the register
@@ -1206,10 +1249,10 @@ def get_votes_from_blockchain():
 def election_status_switch():
     from datetime import datetime
     import pytz
+
     now_date = datetime.now(pytz.timezone("Africa/Nairobi"))
 
     print(now_date)
-
 
     scheduled_args = dict(
         docstatus=1, status="Scheduled", election_start=["<=", now_date]
@@ -1219,11 +1262,9 @@ def election_status_switch():
         "Election", filters=scheduled_args, fields=["name"]
     )
 
-    open_args = dict(docstatus=1, status="Open",
-                     election_ends=["<=", now_date])
+    open_args = dict(docstatus=1, status="Open", election_ends=["<=", now_date])
 
-    open_elections = frappe.get_all(
-        "Election", filters=open_args, fields=["name"])
+    open_elections = frappe.get_all("Election", filters=open_args, fields=["name"])
 
     print(open_elections)
 
@@ -1268,8 +1309,7 @@ def ship_election_voter_cards(election):  # string, election
         x.get("name")
         for x in frappe.get_all(
             "Institution Member",
-            filters=dict(
-                alerted=0, institution=doc.get("institution")),
+            filters=dict(alerted=0, institution=doc.get("institution")),
             fields=["name"],
         )
     ]
@@ -1340,13 +1380,14 @@ def send_registration_confirmation(phone, id_number, domain):
     profile = get_member_with_phonenumber(institution, phone, id_number)
     confirmation = "Dear {}, You have successfully registered as a {} of UPA Kenya Party.\nTo download your Membership Certificate, go to \nhttps://upakenya.com/profile"
     try:
-        message = send_sms([str(phone), ], confirmation.format(
-            profile[0]['surname'], profile[0]['member_category']))
+        message = send_sms(
+            [
+                str(phone),
+            ],
+            confirmation.format(profile[0]["surname"], profile[0]["member_category"]),
+        )
         frappe.local.response.update(
-            {
-                "message": "Message sent successfully.",
-                "status": "success"
-            }
+            {"message": "Message sent successfully.", "status": "success"}
         )
         return
     except Exception as e:
@@ -1358,6 +1399,7 @@ def send_registration_confirmation(phone, id_number, domain):
             }
         )
         return
+
 
 # def update_member_ids():
 # 	docs = frappe.get_list('Institution Member', fields=['name'])
@@ -1373,3 +1415,27 @@ def send_registration_confirmation(phone, id_number, domain):
 # 			}
 # 		)
 # 	return frappe.get_list('Institution Member', fields=['name', 'member_id'])
+@frappe.whitelist(allow_guest=True)
+def alert_unreceipted_mtrhsps():
+    election = "MTRHSPS MEMBER NOMINATED TRUSTEES - FEMALE ELECTION 2023"
+    payload_done =[]
+    for b in frappe.get_all(
+        "Ballot Entry", filters=dict(election=election, receipted=0)
+    )[:100]:
+        doc = frappe.get_doc("Ballot Entry", b.get("name"))
+        cell_number = frappe.get_value(
+            "Institution Member", doc.get("voter_id"), "cell_number"
+        )
+        if not cell_number:
+            continue
+        if not len(cell_number) > 6:
+            continue
+        message = (
+            "This is a confirmation of your vote received successfully under Ref:"
+            + doc.get("name")
+            + "."
+        )
+        mtrhsps(cell_number, message)
+        doc.db_set("receipted", 1, commit=True)
+        payload_done.append(doc.name)
+    return payload_done or []
