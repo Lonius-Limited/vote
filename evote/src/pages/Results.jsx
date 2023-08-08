@@ -25,9 +25,7 @@ const Results = () => {
   }
   if (data) {
     const resultsListing =
-      data.message.filter((x) =>
-        ["Closed", "Open", "Scheduled"].includes(x.status)
-      ) || []; //Variable to be re
+      data.message.filter((x) => ["Closed", "Open"].includes(x.status)) || []; //Variable to be re
     // data.message.find((x) => ["Closed"].includes(x.status)) || {};
     if (resultsListing.length < 1) {
       <Empty
@@ -44,6 +42,12 @@ const Results = () => {
           Log Me Out
         </Button>
       </Empty>;
+    }
+    const openElection = resultsListing.find((x) => x.status === "Open");
+    if (open) {
+      setCookie("active_elections", JSON.stringify(openElection.name), 12);
+      window.location.href = `/evote/stats/${openElection.name}`;
+      return;
     }
     if (resultsListing.length === 1) {
       setCookie("active_elections", JSON.stringify(resultsListing[0].name), 12);
