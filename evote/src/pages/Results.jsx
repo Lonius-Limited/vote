@@ -43,9 +43,9 @@ const Results = () => {
         </Button>
       </Empty>;
     }
-    const openElection = resultsListing.find((x) => x.status === "Open");
-    if (open) {
-      setCookie("active_elections", JSON.stringify(openElection.name), 12);
+    const openElection = resultsListing.find((x) => x.status === "Open") || {};
+    if (Object.keys(openElection).length>0) {
+      setCookie("active_elections", JSON.stringify(openElection), 12);
       window.location.href = `/evote/stats/${openElection.name}`;
       return;
     }
