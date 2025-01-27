@@ -2,6 +2,7 @@ import requests, json, urllib, frappe
 @frappe.whitelist()
 def mtrhsps(to, message):
 	# to ="+254722810063"
+	print(f"Sending sms to {to}\n{message}")
 	if not to: return
 	to   = "{}{}".format("+254",to.replace(" ","")[-9:])
 	if len(to)!=13: frappe.throw("Invalid Mobile Number") 

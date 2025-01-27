@@ -89,6 +89,9 @@ def stage_otp(voter_id="", instant_otp=1, registration=0, otp="", phone=""):
                 frappe.get_doc("OTP Record", valid_args).invalidate()
         return otp_code
     otp_code = str(frappe.generate_hash(length=4)).upper()
+    message = "Your OTP Code is {}".format(otp_code)
+    if not phone : phone = frappe.db.get_value("Institution Member",voter_id,"cell_number")
+    mtrhsps(phone, message)
     args = dict(
         doctype="OTP Record",
         voter=voter_id,
@@ -98,7 +101,9 @@ def stage_otp(voter_id="", instant_otp=1, registration=0, otp="", phone=""):
         registration=registration,
         phone=phone,
     )
+    
     frappe.get_doc(args).save(ignore_permissions=True)
+    frappe.db.commit()
     return otp_code
 
 
